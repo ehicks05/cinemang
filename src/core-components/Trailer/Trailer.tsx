@@ -9,6 +9,8 @@ interface Props {
 const Trailer = ({ trailer }: Props) => {
 	if (!trailer) return null;
 
+	console.log("beep")
+
 	return (
 		<div>
 			<LiteYouTubeEmbed
