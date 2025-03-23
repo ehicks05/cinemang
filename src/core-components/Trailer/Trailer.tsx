@@ -1,6 +1,6 @@
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import type { Video } from '~/types/types';
-import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 
 interface Props {
 	trailer: Video;
