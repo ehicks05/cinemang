@@ -14,7 +14,7 @@ const Trailer = ({ trailer }: Props) => {
 			<LiteYouTubeEmbed
 				id={trailer.key}
 				title={trailer.name}
-				wrapperClass="yt-lite rounded-lg aspect-video"
+				wrapperClass="yt-lite rounded-lg"
 			/>
 		// </div>
 	);
