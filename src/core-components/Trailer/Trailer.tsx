@@ -9,16 +9,14 @@ interface Props {
 const Trailer = ({ trailer }: Props) => {
 	if (!trailer) return null;
 
-	console.log("beep")
-
 	return (
-		<div>
+		// <div>
 			<LiteYouTubeEmbed
 				id={trailer.key}
 				title={trailer.name}
-				wrapperClass="yt-lite rounded-lg"
+				wrapperClass="yt-lite rounded-lg aspect-video"
 			/>
-		</div>
+		// </div>
 	);
 };
 
