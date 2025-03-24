@@ -24,8 +24,6 @@ const ShowDetail = ({
 	const lastYear = format(parseISO(show.last_air_date), 'yyyy');
 	const years = firstYear === lastYear ? firstYear : `${firstYear}-${lastYear}`;
 
-	console.log(trailer);
-
 	return (
 		<div
 			className="m-auto flex max-w-5xl flex-col gap-4 p-4 sm:rounded-lg"

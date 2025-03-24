@@ -6,7 +6,7 @@ import { getShowById } from '~/hooks/useFetchShows';
 export const Route = createFileRoute('/tv/$showId')({
 	loader: async ({ params }) => {
 		const show = await getShowById(Number(params.showId));
-		const trailer = await fetchTrailer({ movieId: show.id });
+		const trailer = await fetchTrailer({ showId: show.id });
 		return { show, trailer };
 	},
 	component: RouteComponent,
