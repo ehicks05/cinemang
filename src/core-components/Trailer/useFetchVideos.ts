@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { isBefore, parseISO } from 'date-fns';
 import type { Video } from '~/types/types';
 import { tmdb } from '~/utils/tmdb';
 
@@ -25,11 +24,8 @@ export const fetchTrailer = async (input: Props) => {
 	const trailers =
 		result.data.videos.results
 			.filter((v) => v.official && v.type === 'Trailer')
-			.sort((v1, v2) =>
-				isBefore(parseISO(v1.published_at), parseISO(v2.published_at)) ? 1 : -1,
-			)
-			.sort((t1, t2) => t1.name.length - t2.name.length)
-			.sort((t1, t2) => t1.name.localeCompare(t2.name)) || [];
+			// newest
+			.sort((v1, v2) => v2.published_at.localeCompare(v1.published_at)) || [];
 
 	return trailers.filter(nameIncludesOfficial)?.[0] || trailers?.[0] || undefined;
 };
