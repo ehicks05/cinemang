@@ -5,6 +5,7 @@ import { ComboBox } from './ComboBox';
 import { Loading } from './Loading';
 import { MediaLayout } from './MediaLayout';
 import { OriginalImageLink } from './OriginalImageLink';
+import { Paginator } from './Paginator/Paginator';
 import { MediaSkeleton } from './Skeleton/MediaSkeleton';
 import { MediaSkeletons } from './Skeleton/MediaSkeletons';
 import { StatChip } from './StatChip';
@@ -22,6 +23,7 @@ export {
 	MediaSkeleton,
 	MediaSkeletons,
 	OriginalImageLink,
+	Paginator,
 	StatChip,
 	TmdbImage,
 	Trailer,
