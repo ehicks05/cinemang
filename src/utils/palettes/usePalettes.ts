@@ -1,22 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { keyBy } from 'lodash-es';
 import { getTmdbImage } from '~/utils/getTmdbImage';
-import { toPalette } from '~/utils/palettes/palette';
+import { toPalette, toPalettes } from '~/utils/palettes/palette';
 
-export const usePalettes = ({
-	items,
-}: { items: { id: number; poster_path: string }[] }) => {
+export const usePalettes = ({ paths }: { paths: string[] }) => {
 	const query = useQuery({
-		queryKey: ['palettes', items],
+		queryKey: ['palettes', paths],
 		queryFn: async () => {
-			const palettes = await Promise.all(
-				items.map(async (item) => {
-					const url = getTmdbImage({ path: item.poster_path });
-					const palette = await toPalette(url);
-					return { id: item.id, palette };
-				}),
-			);
-			return keyBy(palettes, 'id');
+			const urls = paths.map((path) => getTmdbImage({ path }));
+			return await toPalettes(urls);
 		},
 		staleTime: 1000 * 60 * 60 * 24,
 	});

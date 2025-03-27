@@ -2,6 +2,7 @@ import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import { MediaDetail } from '~/app/MediaDetail';
 import { fetchTrailer } from '~/core-components/Trailer/useFetchVideos';
 import { getFilmById } from '~/hooks/useFetchFilms';
+import { usePalette } from '~/utils/palettes/usePalettes';
 
 export const Route = createFileRoute('/films/$filmId')({
 	loader: async ({ params }) => {
@@ -11,11 +12,13 @@ export const Route = createFileRoute('/films/$filmId')({
 	},
 	component: RouteComponent,
 	errorComponent: ErrorComponent,
-	ssr: false,
 });
 
 function RouteComponent() {
 	const { film, trailer } = Route.useLoaderData();
 
-	return <MediaDetail media={film} trailer={trailer} />;
+	const { palette } = usePalette({ path: film.poster_path });
+	if (!palette) return null;
+
+	return <MediaDetail media={film} trailer={trailer} palette={palette} />;
 }

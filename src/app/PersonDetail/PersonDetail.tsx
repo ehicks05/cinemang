@@ -6,7 +6,7 @@ import { FaCalendar, FaHeart, FaStar } from 'react-icons/fa';
 import { useDocumentTitle } from 'usehooks-ts';
 import { OriginalImageLink, StatChip, TmdbImage } from '~/core-components';
 import type { Credit, Person } from '~/types/types';
-import { usePalette } from '~/utils/palettes/usePalettes';
+import type { PaletteWithGradient } from '~/utils/palettes/palette';
 import { Lifespan } from './Lifespan';
 import { PersonCredit } from './PersonCredit';
 import { PersonStats } from './PersonStats';
@@ -63,7 +63,12 @@ const toSortValue = (credit: Credit, sort: SortKey) => {
 	}
 };
 
-export const PersonDetail = ({ person }: { person: Person }) => {
+interface Props {
+	person: Person;
+	palette: PaletteWithGradient;
+}
+
+export const PersonDetail = ({ person, palette }: Props) => {
 	useDocumentTitle(person.name);
 
 	const [sort, setSort] = useState<SortKey>('released_at');
@@ -83,9 +88,6 @@ export const PersonDetail = ({ person }: { person: Person }) => {
 	const bio = truncateBio
 		? truncate(person.biography, { length: BIO_LENGTH_CUTOFF, separator: ' ' })
 		: person.biography;
-
-	const { isLoading, palette } = usePalette({ path: person.profile_path });
-	if (isLoading || !palette) return '';
 
 	return (
 		<div

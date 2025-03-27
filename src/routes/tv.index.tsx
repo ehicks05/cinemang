@@ -2,6 +2,7 @@ import { createFileRoute, stripSearchParams } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
 import { MediaList } from '~/app/MediaList';
 import { queryShows } from '~/hooks/useFetchShows';
+import { usePalettes } from '~/utils/palettes/usePalettes';
 import { DEFAULT_TV_SEARCH_FORM } from '~/utils/searchParams/constants';
 import { type TvSearchForm, TvSearchFormSchema } from '~/utils/searchParams/types';
 
@@ -11,11 +12,13 @@ export const Route = createFileRoute('/tv/')({
 	loaderDeps: ({ search }: { search: TvSearchForm }) => ({ search }),
 	loader: async ({ deps: { search } }) => queryShows(search),
 	component: RouteComponent,
-	ssr: false,
 });
 
 function RouteComponent() {
 	const { shows, count } = Route.useLoaderData();
 
-	return <MediaList media={shows} count={count} />;
+	const { palettes } = usePalettes({ paths: shows.map((show) => show.poster_path) });
+	if (!palettes) return null;
+
+	return <MediaList media={shows} count={count} palettes={palettes} />;
 }

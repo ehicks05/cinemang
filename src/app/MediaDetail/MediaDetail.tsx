@@ -1,21 +1,20 @@
 import { useDocumentTitle } from 'usehooks-ts';
 import { OriginalImageLink, TmdbImage, Trailer } from '~/core-components';
 import type { Film, Show, Video } from '~/types/types';
-import { usePalette } from '~/utils/palettes/usePalettes';
+import type { PaletteWithGradient } from '~/utils/palettes/palette';
 import { MediaProviders, MediaStats, SubHeading, TopCrew } from '../components';
 import { Credits } from './Credits';
 import { Seasons } from './Seasons';
 
 interface Props {
 	media: Film | Show;
+	palette: PaletteWithGradient;
 	trailer: Video;
 }
 
-export const MediaDetail = ({ media, trailer }: Props) => {
+export const MediaDetail = ({ media, palette, trailer }: Props) => {
 	const title = 'title' in media ? media.title : media.name;
 	useDocumentTitle(title);
-	const { isLoading, palette } = usePalette({ path: media.poster_path });
-	if (isLoading || !palette) return '';
 
 	return (
 		<div

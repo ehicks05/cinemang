@@ -1,23 +1,15 @@
-import { Vibrant } from 'node-vibrant/browser';
+import { Vibrant } from './vibrant';
 
 export const DEFAULT_PALETTE = {
 	bgStyles: { background: '#333' },
 	darkMuted: '#333',
 	darkVibrant: '#333',
-	lightMuted: '#333',
-	lightVibrant: '#333',
-	muted: '#333',
-	vibrant: '#333',
 };
 
-export interface Palette {
+export interface PaletteWithGradient {
 	bgStyles: { background: string };
 	darkMuted: string;
 	darkVibrant: string;
-	lightMuted: string;
-	lightVibrant: string;
-	muted: string;
-	vibrant: string;
 }
 
 export const toPalette = async (url: string) => {
@@ -26,13 +18,9 @@ export const toPalette = async (url: string) => {
 	const base = {
 		darkMuted: p.DarkMuted?.hex || DEFAULT_PALETTE.darkMuted,
 		darkVibrant: p.DarkVibrant?.hex || DEFAULT_PALETTE.darkVibrant,
-		lightMuted: p.LightMuted?.hex || DEFAULT_PALETTE.lightMuted,
-		lightVibrant: p.LightVibrant?.hex || DEFAULT_PALETTE.lightVibrant,
-		muted: p.Muted?.hex || DEFAULT_PALETTE.muted,
-		vibrant: p.Vibrant?.hex || DEFAULT_PALETTE.vibrant,
 	};
 
-	// slightly vary `darkVibrant` for use in background gradients
+	// blend `darkVibrant` with dark grays for use in background gradients
 	const lessMuted = `color-mix(in oklch, ${base.darkVibrant}, #131313 50%)`;
 	const moreMuted = `color-mix(in oklch, ${base.darkVibrant}, #262626 90%)`;
 	const bgStyles = {
@@ -42,5 +30,9 @@ export const toPalette = async (url: string) => {
 	return {
 		...base,
 		bgStyles,
-	} as Palette;
+	} as PaletteWithGradient;
+};
+
+export const toPalettes = async (urls: string[]) => {
+	return Promise.all(urls.map(toPalette));
 };

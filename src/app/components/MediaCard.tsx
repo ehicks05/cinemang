@@ -1,13 +1,15 @@
 import { Link } from '@tanstack/react-router';
 import { TmdbImage } from '~/core-components';
 import type { Film, Show } from '~/types/types';
-import type { Palette } from '~/utils/palettes/palette';
+import type { PaletteWithGradient } from '~/utils/palettes/palette';
 import { MediaProviders, MediaStats, SubHeading, TopCrew } from './';
 
-export const MediaCard = ({
-	media,
-	palette,
-}: { media: Film | Show; palette: Palette }) => {
+interface Props {
+	media: Film | Show;
+	palette: PaletteWithGradient;
+}
+
+export const MediaCard = ({ media, palette }: Props) => {
 	const { title, linkTo, linkParams } =
 		'title' in media
 			? {
