@@ -12,7 +12,7 @@ export type Provider = Database['public']['Tables']['provider']['Row'];
 
 export interface Credit extends TCredit {
 	movie?: Film;
-	show?: TShow;
+	show?: Show;
 	person: TPerson;
 }
 
