@@ -3,7 +3,7 @@ import { Paginator } from '~/core-components/Paginator/Paginator';
 import type { Show } from '~/types/types';
 import { DEFAULT_PALETTE } from '~/utils/palettes/palette';
 import { usePalettes } from '~/utils/palettes/usePalettes';
-import { SearchForm, ShowCard } from './components';
+import { MediaCard, SearchForm } from './components';
 
 const Shows = ({ shows }: { shows: Show[] }) => {
 	const { isLoading, palettes } = usePalettes({ items: shows });
@@ -14,9 +14,9 @@ const Shows = ({ shows }: { shows: Show[] }) => {
 				isLoading ? (
 					<MediaSkeleton key={show.id} />
 				) : (
-					<ShowCard
+					<MediaCard
 						key={show.id}
-						show={show}
+						media={show}
 						palette={palettes?.[show.id].palette || DEFAULT_PALETTE}
 					/>
 				),

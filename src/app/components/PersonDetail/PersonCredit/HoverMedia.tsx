@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTimeout } from 'usehooks-ts';
-import { FilmCard, ShowCard } from '~/app/components';
+import { MediaCard } from '~/app/components';
 import { useFetchFilm } from '~/hooks/useFetchFilms';
 import { useFetchShow } from '~/hooks/useFetchShows';
 import { getTmdbImage } from '~/utils/getTmdbImage';
@@ -38,13 +38,7 @@ export const HoverMedia = ({ id, mediaType }: Props) => {
 
 	return (
 		<div className={container}>
-			{media &&
-				palette &&
-				('released_at' in media ? (
-					<FilmCard film={media} palette={palette} />
-				) : (
-					<ShowCard show={media} palette={palette} />
-				))}
+			{media && palette && <MediaCard media={media} palette={palette} />}
 		</div>
 	);
 };

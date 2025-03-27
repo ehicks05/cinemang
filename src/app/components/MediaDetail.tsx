@@ -1,4 +1,5 @@
 import { addMinutes, format, intervalToDuration, parseISO } from 'date-fns';
+import { Clapperboard, Lightbulb } from 'lucide-react';
 import { useDocumentTitle } from 'usehooks-ts';
 import { Credits, OriginalImageLink, Trailer } from '~/core-components';
 import type { Film, Show, Video } from '~/types/types';
@@ -23,9 +24,11 @@ export const SubHeading = ({ media }: { media: Film | Show }) => {
 
 		return (
 			<>
-				<span title={media.released_at}>{year}</span>
+				<span className="font-semibold" title={media.released_at}>
+					{year}
+				</span>
 				{' • '}
-				<span>{`${runtime.hours || 0}h ${runtime.minutes}m`}</span>
+				<span className="whitespace-nowrap">{`${runtime.hours || 0}h ${runtime.minutes}m`}</span>
 			</>
 		);
 	}
@@ -43,9 +46,20 @@ export const SubHeading = ({ media }: { media: Film | Show }) => {
 
 export const TopCrew = ({ media }: { media: Film | Show }) => {
 	if ('director' in media) {
-		return <div>Director: {media.director}</div>;
+		return (
+			<div className="flex items-center gap-1" title="Director">
+				<Clapperboard size={16} className="text-neutral-400" /> {media.director}
+			</div>
+		);
 	}
-	return <div>Created By: {media.created_by}</div>;
+	if (media.created_by) {
+		return (
+			<div className="flex items-center gap-1" title="Created by">
+				<Lightbulb size={16} className="text-neutral-400 shrink-0" />{' '}
+				{media.created_by}
+			</div>
+		);
+	}
 };
 
 export const MediaDetail = ({ media, trailer }: Props) => {
