@@ -70,7 +70,7 @@ export const Paginator = ({ count = 0, isLoading, pageSize = PAGE_SIZE }: Props)
 					<PageLink
 						isDisabled={!hasNextPage}
 						className="rounded-r"
-						page={totalPages}
+						page={totalPages - 1}
 					>
 						<FastForward className="my-auto" size={16} />
 					</PageLink>
