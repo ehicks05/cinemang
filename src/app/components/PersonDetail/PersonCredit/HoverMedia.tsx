@@ -1,15 +1,26 @@
 import { useState } from 'react';
 import { useTimeout } from 'usehooks-ts';
+import { FilmCard, ShowCard } from '~/app/components';
 import { useFetchFilm } from '~/hooks/useFetchFilms';
+import { useFetchShow } from '~/hooks/useFetchShows';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import { usePalette } from '~/utils/palettes/usePalettes';
-import { FilmCard } from '../../FilmCard';
 import { HoverLoading } from './HoverLoading';
 import { container } from './constants';
 
-export const HoverFilm = ({ id }: { id: number }) => {
-	const { data: film, error, isLoading } = useFetchFilm(id);
-	const path = getTmdbImage({ path: film?.poster_path });
+interface Props {
+	id: number;
+	mediaType: 'tv' | 'film';
+}
+
+export const HoverMedia = ({ id, mediaType }: Props) => {
+	const {
+		data: media,
+		error,
+		isLoading,
+	} = mediaType === 'film' ? useFetchFilm(id) : useFetchShow(id);
+
+	const path = getTmdbImage({ path: media?.poster_path });
 	const { palette, isLoading: isPaletteLoading } = usePalette({ path });
 
 	const [isReady, setIsReady] = useState(false);
@@ -27,7 +38,13 @@ export const HoverFilm = ({ id }: { id: number }) => {
 
 	return (
 		<div className={container}>
-			{film && palette && <FilmCard film={film} palette={palette} />}
+			{media &&
+				palette &&
+				('released_at' in media ? (
+					<FilmCard film={media} palette={palette} />
+				) : (
+					<ShowCard show={media} palette={palette} />
+				))}
 		</div>
 	);
 };
