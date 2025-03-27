@@ -60,6 +60,9 @@ export const PersonCredits = ({ person, palette }: Props) => {
 	useDocumentTitle(person.name);
 
 	const [sort, setSort] = useState<SortKey>('released_at');
+	const sortOptions = (
+		<SortOptions darkVibrant={palette.darkMuted} setSort={setSort} sort={sort} />
+	);
 
 	const castCredits = orderBy(
 		person.credits.filter((c) => c.character),
@@ -78,11 +81,7 @@ export const PersonCredits = ({ person, palette }: Props) => {
 				<>
 					<h1 className="flex items-end justify-between text-xl font-bold">
 						Cast
-						<SortOptions
-							darkVibrant={palette.darkMuted}
-							setSort={setSort}
-							sort={sort}
-						/>
+						{sortOptions}
 					</h1>
 
 					{castCredits.map((c) => (
@@ -94,11 +93,7 @@ export const PersonCredits = ({ person, palette }: Props) => {
 				<>
 					<h1 className="flex items-center justify-between text-xl font-bold">
 						Crew
-						<SortOptions
-							darkVibrant={palette.darkMuted}
-							setSort={setSort}
-							sort={sort}
-						/>
+						{sortOptions}
 					</h1>
 					{crewCredits.map((c) => (
 						<PersonCredit bgColor={palette.darkMuted} credit={c} key={c.credit_id} />
