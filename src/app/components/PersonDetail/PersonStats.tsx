@@ -11,7 +11,7 @@ interface Props {
 	};
 }
 
-const FilmStats = ({ bgColor, data, autoWidth = true }: Props) => {
+export const PersonStats = ({ bgColor, data, autoWidth = true }: Props) => {
 	const stats = [
 		{
 			color: 'text-yellow-300',
@@ -52,5 +52,3 @@ const FilmStats = ({ bgColor, data, autoWidth = true }: Props) => {
 		</div>
 	);
 };
-
-export default FilmStats;

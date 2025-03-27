@@ -12,7 +12,7 @@ import type { Palette } from '~/utils/palettes/palette';
 import { StatChip } from '../StatChip';
 import { Lifespan } from './Lifespan';
 import { PersonCredit } from './PersonCredit';
-import PersonStats from './PersonStats';
+import { PersonStats } from './PersonStats';
 
 const BIO_LENGTH_CUTOFF = 1280;
 

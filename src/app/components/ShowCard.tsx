@@ -5,7 +5,7 @@ import type { Show } from '~/types/types';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import type { Palette } from '~/utils/palettes/palette';
 import { MediaProviders } from './MediaProviders';
-import MediaStats from './MediaStats';
+import { MediaStats } from './MediaStats';
 import { toStats } from './utils';
 
 export const ShowCard = ({ show, palette }: { show: Show; palette: Palette }) => {

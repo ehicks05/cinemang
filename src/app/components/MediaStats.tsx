@@ -35,7 +35,7 @@ const starColor = (voteCount: number) =>
 				? 'text-yellow-500'
 				: 'text-yellow-700';
 
-const MediaStats = ({
+export const MediaStats = ({
 	autoWidth = true,
 	bgColor,
 	data: { genre, language, voteAverage = 0, voteCount = 0 },
@@ -86,5 +86,3 @@ const MediaStats = ({
 		</span>
 	);
 };
-
-export default MediaStats;

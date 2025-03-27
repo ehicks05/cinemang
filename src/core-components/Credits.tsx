@@ -2,14 +2,14 @@ import { groupBy } from 'lodash-es';
 
 import type { Credit } from '~/types/types';
 import type { Palette } from '~/utils/palettes/palette';
-import PersonCard from './PersonCard';
+import { PersonCard } from './PersonCard';
 
 interface Props {
 	credits: Credit[];
 	palette: Palette;
 }
 
-const Credits = ({ credits, palette }: Props) => {
+export const Credits = ({ credits, palette }: Props) => {
 	const cast = credits.filter((c) => c.character);
 	const crew = credits.filter((c) => c.job);
 	const groupedCast = groupBy(cast, (c) => c.person_id);
@@ -50,5 +50,3 @@ const Credits = ({ credits, palette }: Props) => {
 		</>
 	);
 };
-
-export default Credits;

@@ -4,10 +4,10 @@ import { useFetchShow } from '~/hooks/useFetchShows';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import { usePalette } from '~/utils/palettes/usePalettes';
 import { ShowCard } from '../../ShowCard';
-import HoverLoading from './HoverLoading';
+import { HoverLoading } from './HoverLoading';
 import { container } from './constants';
 
-const HoverShow = ({ id }: { id: number }) => {
+export const HoverShow = ({ id }: { id: number }) => {
 	const { data: show, error, isLoading } = useFetchShow(id);
 
 	const path = getTmdbImage({ path: show?.poster_path });
@@ -32,5 +32,3 @@ const HoverShow = ({ id }: { id: number }) => {
 		</div>
 	);
 };
-
-export default HoverShow;

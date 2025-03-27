@@ -7,7 +7,7 @@ interface Props {
 	size?: number;
 }
 
-const Loading: FC<Props> = ({ loading, error, size = 128 }) => {
+export const Loading: FC<Props> = ({ loading, error, size = 128 }) => {
 	if (error) {
 		return <span>Error: {JSON.stringify(error, null, 2)}</span>;
 	}
@@ -25,5 +25,3 @@ const Loading: FC<Props> = ({ loading, error, size = 128 }) => {
 
 	return null;
 };
-
-export default Loading;

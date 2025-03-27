@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { FaCat } from 'react-icons/fa';
 
-const Header = () => (
+export const Header = () => (
 	<div className="mx-auto flex max-w-5xl items-center gap-4">
 		<Link
 			className="flex items-center gap-1 p-4 text-2xl"
@@ -29,5 +29,3 @@ const Header = () => (
 		</Link>
 	</div>
 );
-
-export default Header;

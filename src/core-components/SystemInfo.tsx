@@ -1,5 +1,5 @@
 import { format, formatDistance } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiOutlineInformationCircle } from 'react-icons/hi2';
 import { supabase } from '~/utils/supabase';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
@@ -33,7 +33,7 @@ const useLog = () => {
 	return { syncRunLog };
 };
 
-const SystemInfo = () => {
+export const SystemInfo = () => {
 	const { syncRunLog } = useLog();
 	if (!syncRunLog) return null;
 
@@ -66,5 +66,3 @@ const SystemInfo = () => {
 		</Popover>
 	);
 };
-
-export default React.memo(SystemInfo);

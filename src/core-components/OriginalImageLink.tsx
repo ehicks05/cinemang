@@ -4,7 +4,7 @@ import { getTmdbImage } from '~/utils/getTmdbImage';
 /**
  * Usage: Nest inside a relative-positioned element, sibling to an img
  */
-const OriginalImageLink = ({ path }: { path?: string }) => {
+export const OriginalImageLink = ({ path }: { path?: string }) => {
 	if (!path) return null;
 	return (
 		<a
@@ -17,5 +17,3 @@ const OriginalImageLink = ({ path }: { path?: string }) => {
 		</a>
 	);
 };
-
-export default OriginalImageLink;

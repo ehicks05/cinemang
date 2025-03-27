@@ -7,7 +7,7 @@ import { getTmdbImage } from '~/utils/getTmdbImage';
 import type { Palette } from '~/utils/palettes/palette';
 import { usePalette } from '~/utils/palettes/usePalettes';
 import { MediaProviders } from './MediaProviders';
-import FilmStats from './MediaStats';
+import { MediaStats } from './MediaStats';
 import { Seasons } from './Seasons';
 import { toStats } from './utils';
 
@@ -44,7 +44,7 @@ const ShowDetail = ({
 						<OriginalImageLink path={show.poster_path} />
 					</div>
 					<div className="mt-4 flex flex-col justify-between gap-4">
-						<FilmStats
+						<MediaStats
 							bgColor={palette.darkVibrant}
 							data={toStats(genres, languages, show)}
 						/>

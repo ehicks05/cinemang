@@ -4,10 +4,10 @@ import { useFetchFilm } from '~/hooks/useFetchFilms';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import { usePalette } from '~/utils/palettes/usePalettes';
 import { FilmCard } from '../../FilmCard';
-import HoverLoading from './HoverLoading';
+import { HoverLoading } from './HoverLoading';
 import { container } from './constants';
 
-const HoverFilm = ({ id }: { id: number }) => {
+export const HoverFilm = ({ id }: { id: number }) => {
 	const { data: film, error, isLoading } = useFetchFilm(id);
 	const path = getTmdbImage({ path: film?.poster_path });
 	const { palette, isLoading: isPaletteLoading } = usePalette({ path });
@@ -31,5 +31,3 @@ const HoverFilm = ({ id }: { id: number }) => {
 		</div>
 	);
 };
-
-export default HoverFilm;

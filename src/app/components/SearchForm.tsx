@@ -17,7 +17,7 @@ import {
 } from '~/utils/searchParams/constants';
 import type { MovieSearchForm, TvSearchForm } from '~/utils/searchParams/types';
 
-const SearchForm = () => (
+export const SearchForm = () => (
 	<Accordion type="single" collapsible>
 		<AccordionItem
 			value="foo"
@@ -308,5 +308,3 @@ const FormFields = () => {
 		</div>
 	);
 };
-
-export default SearchForm;

@@ -21,7 +21,7 @@ const toInitials = (name: string) => {
 const getDefaultProfile = (name: string, color: string) =>
 	`https://via.placeholder.com/300x450/${color}/fff/?text=${toInitials(name)}`;
 
-const PersonCard = ({
+export const PersonCard = ({
 	characters,
 	jobs,
 	name,
@@ -51,5 +51,3 @@ const PersonCard = ({
 		</Link>
 	);
 };
-
-export default PersonCard;

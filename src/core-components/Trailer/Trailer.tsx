@@ -6,18 +6,14 @@ interface Props {
 	trailer: Video;
 }
 
-const Trailer = ({ trailer }: Props) => {
+export const Trailer = ({ trailer }: Props) => {
 	if (!trailer) return null;
 
 	return (
-		// <div>
-			<LiteYouTubeEmbed
-				id={trailer.key}
-				title={trailer.name}
-				wrapperClass="yt-lite rounded-lg"
-			/>
-		// </div>
+		<LiteYouTubeEmbed
+			id={trailer.key}
+			title={trailer.name}
+			wrapperClass="yt-lite rounded-lg"
+		/>
 	);
 };
-
-export default Trailer;

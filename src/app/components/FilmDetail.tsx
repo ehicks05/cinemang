@@ -6,7 +6,7 @@ import type { Film, Video } from '~/types/types';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import { usePalette } from '~/utils/palettes/usePalettes';
 import { MediaProviders } from './MediaProviders';
-import FilmStats from './MediaStats';
+import { MediaStats } from './MediaStats';
 import { toStats } from './utils';
 
 interface Props {
@@ -52,7 +52,7 @@ export const FilmDetail = ({ film, trailer }: Props) => {
 						<OriginalImageLink path={film.poster_path} />
 					</div>
 					<div className="mt-4 flex flex-col justify-between gap-4">
-						<FilmStats
+						<MediaStats
 							bgColor={palette.darkVibrant}
 							data={toStats(genres, languages, film)}
 						/>

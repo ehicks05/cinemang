@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useWindowSize } from 'usehooks-ts';
 
-const MediaLayout = ({ children }: { children: ReactNode }) => {
+export const MediaLayout = ({ children }: { children: ReactNode }) => {
 	const { width } = useWindowSize();
 	const minColumnWidth = width < 400 ? width - 16 - 16 - 16 - 16 : 360;
 	const style = {
@@ -13,5 +13,3 @@ const MediaLayout = ({ children }: { children: ReactNode }) => {
 		</div>
 	);
 };
-
-export default MediaLayout;

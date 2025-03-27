@@ -4,10 +4,10 @@ import { format, parseISO } from 'date-fns';
 import { pick } from 'lodash-es';
 import { useWindowSize } from 'usehooks-ts';
 import type { Credit, Genre, Language } from '~/types/types';
-import FilmStats from '../../MediaStats';
+import { MediaStats } from '../../MediaStats';
 import { toStats } from '../../utils';
-import HoverFilm from './HoverFilm';
-import HoverShow from './HoverShow';
+import { HoverFilm } from './HoverFilm';
+import { HoverShow } from './HoverShow';
 
 interface Props {
 	bgColor: string;
@@ -27,7 +27,7 @@ const getYears = (credit: Credit) => {
 	}
 };
 
-const PersonCredit = ({ bgColor, genres, languages, credit }: Props) => {
+export const PersonCredit = ({ bgColor, genres, languages, credit }: Props) => {
 	const { width } = useWindowSize();
 	const year = getYears(credit);
 	const mediaName = credit.movie ? credit.movie.title : credit.show?.name;
@@ -60,7 +60,7 @@ const PersonCredit = ({ bgColor, genres, languages, credit }: Props) => {
 					</div>
 				</div>
 				<div>
-					<FilmStats
+					<MediaStats
 						autoWidth={width < 640}
 						bgColor={bgColor}
 						data={pick(toStats(genres, languages, credit.movie || credit.show!), [
@@ -81,5 +81,3 @@ const PersonCredit = ({ bgColor, genres, languages, credit }: Props) => {
 		</HoverCard.Root>
 	);
 };
-
-export default PersonCredit;
