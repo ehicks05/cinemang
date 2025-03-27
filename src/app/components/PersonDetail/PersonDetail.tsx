@@ -8,7 +8,7 @@ import { OriginalImageLink } from '~/core-components';
 import { useSystemData } from '~/hooks/useSystemData';
 import type { Credit, Person } from '~/types/types';
 import { getTmdbImage } from '~/utils/getTmdbImage';
-import type { Palette } from '~/utils/palettes/palette';
+import { usePalette } from '~/utils/palettes/usePalettes';
 import { StatChip } from '../StatChip';
 import { Lifespan } from './Lifespan';
 import { PersonCredit } from './PersonCredit';
@@ -94,6 +94,9 @@ export const PersonDetail = ({
 	const bio = truncateBio
 		? truncate(person.biography, { length: BIO_LENGTH_CUTOFF, separator: ' ' })
 		: person.biography;
+
+	const { isLoading, palette } = usePalette({ path: person.profile_path });
+	if (isLoading || !palette) return '';
 
 	return (
 		<div

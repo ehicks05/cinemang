@@ -1,16 +1,11 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import { PersonDetail } from '~/app/components';
 import { getPersonById } from '~/hooks/useFetchPersons';
-import { getTmdbImage } from '~/utils/getTmdbImage';
-import { toPalette } from '~/utils/palettes/palette';
 
 export const Route = createFileRoute('/people/$personId')({
 	loader: async ({ params }) => {
 		const person = await getPersonById(Number(params.personId));
-		const palette = await toPalette(
-			getTmdbImage({ path: person.profile_path, width: 'w500' }),
-		);
-		return { person, palette };
+		return { person };
 	},
 	component: RouteComponent,
 	errorComponent: ErrorComponent,
@@ -18,11 +13,11 @@ export const Route = createFileRoute('/people/$personId')({
 });
 
 function RouteComponent() {
-	const { person, palette } = Route.useLoaderData();
+	const { person } = Route.useLoaderData();
 
 	return (
 		<div>
-			<PersonDetail person={person} palette={palette} />
+			<PersonDetail person={person} />
 		</div>
 	);
 }
