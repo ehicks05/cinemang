@@ -1,23 +1,23 @@
 import { MediaLayout, MediaSkeleton, MediaSkeletons } from '~/core-components';
 import { Paginator } from '~/core-components/Paginator/Paginator';
-import type { Show } from '~/types/types';
+import type { Film, Show } from '~/types/types';
 import { DEFAULT_PALETTE } from '~/utils/palettes/palette';
 import { usePalettes } from '~/utils/palettes/usePalettes';
 import { MediaCard, SearchForm } from './components';
 
-const Shows = ({ shows }: { shows: Show[] }) => {
-	const { isLoading, palettes } = usePalettes({ items: shows });
+const MediaList = ({ medias }: { medias: Film[] | Show[] }) => {
+	const { isLoading, palettes } = usePalettes({ items: medias });
 
 	return (
 		<MediaLayout>
-			{shows.map((show) =>
+			{medias.map((media) =>
 				isLoading ? (
-					<MediaSkeleton key={show.id} />
+					<MediaSkeleton key={media.id} />
 				) : (
 					<MediaCard
-						key={show.id}
-						media={show}
-						palette={palettes?.[show.id].palette || DEFAULT_PALETTE}
+						key={media.id}
+						media={media}
+						palette={palettes?.[media.id].palette || DEFAULT_PALETTE}
 					/>
 				),
 			)}
@@ -25,7 +25,12 @@ const Shows = ({ shows }: { shows: Show[] }) => {
 	);
 };
 
-export const ShowsWrapper = ({ shows, count }: { shows: Show[]; count: number }) => {
+interface Props {
+	media: Film[] | Show[];
+	count: number;
+}
+
+export const MediaWrapper = ({ media, count }: Props) => {
 	const isLoading = false;
 
 	return (
@@ -34,7 +39,7 @@ export const ShowsWrapper = ({ shows, count }: { shows: Show[]; count: number })
 
 			<Paginator count={count} isLoading={isLoading} />
 			{isLoading && <MediaSkeletons />}
-			{!isLoading && <Shows shows={shows || []} />}
+			{!isLoading && <MediaList medias={media || []} />}
 			<Paginator count={count} isLoading={isLoading} />
 		</div>
 	);

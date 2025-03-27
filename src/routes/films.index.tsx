@@ -6,7 +6,7 @@ import {
 	type MovieSearchForm,
 	MovieSearchFormSchema,
 } from '~/utils/searchParams/types';
-import { FilmsWrapper } from '../app/Films';
+import { MediaWrapper } from '../app/MediaList';
 
 export const Route = createFileRoute('/films/')({
 	search: {
@@ -27,5 +27,5 @@ export const Route = createFileRoute('/films/')({
 function RouteComponent() {
 	const { films, count } = Route.useLoaderData();
 
-	return <FilmsWrapper films={films} count={count} />;
+	return <MediaWrapper media={films} count={count} />;
 }
