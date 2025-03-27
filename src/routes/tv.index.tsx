@@ -8,9 +8,7 @@ import { type TvSearchForm, TvSearchFormSchema } from '~/utils/searchParams/type
 export const Route = createFileRoute('/tv/')({
 	search: { middlewares: [stripSearchParams(DEFAULT_TV_SEARCH_FORM)] },
 	validateSearch: zodValidator(TvSearchFormSchema),
-	loaderDeps: ({ search }: { search: TvSearchForm }) => {
-		return { search };
-	},
+	loaderDeps: ({ search }: { search: TvSearchForm }) => ({ search }),
 	loader: async ({ deps: { search } }) => queryShows(search),
 	component: RouteComponent,
 	ssr: false,

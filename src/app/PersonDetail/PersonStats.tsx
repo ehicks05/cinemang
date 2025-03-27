@@ -1,5 +1,5 @@
 import { FaFilm, FaMask, FaStar } from 'react-icons/fa';
-import { StatChip } from '../StatChip';
+import { StatChip } from '~/core-components';
 
 interface Props {
 	autoWidth?: boolean;

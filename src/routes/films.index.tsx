@@ -16,9 +16,7 @@ export const Route = createFileRoute('/films/')({
 		],
 	},
 	validateSearch: zodValidator(MovieSearchFormSchema),
-	loaderDeps: ({ search }: { search: MovieSearchForm }) => {
-		return { search };
-	},
+	loaderDeps: ({ search }: { search: MovieSearchForm }) => ({ search }),
 	loader: async ({ deps: { search } }) => queryFilms(search),
 	component: RouteComponent,
 	ssr: false,
