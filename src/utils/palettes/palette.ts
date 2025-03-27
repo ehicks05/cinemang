@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import { Vibrant } from './vibrant';
 
 export const DEFAULT_PALETTE = {
-	bgStyles: { background: '#282828', filter: 'saturate(0.0)' } as CSSProperties,
+	bgStyles: { background: '#282828', filter: 'saturate(0)' } as CSSProperties,
 	darkMuted: '#333',
 	darkVibrant: '#333',
 };
@@ -29,7 +29,8 @@ export const toPalette = async (url: string) => {
 	const moreMuted = `color-mix(in oklch, ${base.darkVibrant}, #262626 90%)`;
 	const bgStyles = {
 		background: `linear-gradient(45deg, ${moreMuted} 5%, ${moreMuted} 45%, ${lessMuted} 95%)`,
-	};
+		filter: 'saturate(1)',
+	} as CSSProperties;
 
 	return {
 		...base,
