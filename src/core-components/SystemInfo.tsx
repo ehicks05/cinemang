@@ -44,7 +44,7 @@ const SystemInfo = () => {
 	return (
 		<Popover>
 			<PopoverTrigger>
-				<HiOutlineInformationCircle className="text-3xl text-emerald-500 hover:text-emerald-400" />
+				<HiOutlineInformationCircle className="text-3xl cursor-pointer text-emerald-500 hover:text-emerald-400" />
 			</PopoverTrigger>
 			<PopoverContent className="w-48 p-2 rounded-sm bg-neutral-700 text-neutral-200 shadow-2xl border-none">
 				<div className="flex flex-col gap-4 text-sm">

@@ -23,7 +23,7 @@ const SearchForm = () => (
 			value="foo"
 			className="flex w-full flex-col gap-4 bg-neutral-800 p-4 border-none sm:rounded-lg"
 		>
-			<AccordionTrigger className="p-0 text-lg hover:no-underline">
+			<AccordionTrigger className="p-0 text-lg cursor-pointer hover:no-underline">
 				Search
 			</AccordionTrigger>
 			<AccordionContent className="p-0">
