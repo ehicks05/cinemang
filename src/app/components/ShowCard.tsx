@@ -1,16 +1,12 @@
 import { Link } from '@tanstack/react-router';
 import { SCALED_IMAGE } from '~/constants/constants';
-import { useSystemData } from '~/hooks/useSystemData';
 import type { Show } from '~/types/types';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import type { Palette } from '~/utils/palettes/palette';
 import { MediaProviders } from './MediaProviders';
 import { MediaStats } from './MediaStats';
-import { toStats } from './utils';
 
 export const ShowCard = ({ show, palette }: { show: Show; palette: Palette }) => {
-	const { genres, languages } = useSystemData();
-
 	const fontSize = show.name.length > 24 ? 'text-base' : 'text-lg';
 	const posterUrl = getTmdbImage({ path: show.poster_path });
 	const firstYear = show.first_air_date.slice(0, 4);
@@ -50,10 +46,7 @@ export const ShowCard = ({ show, palette }: { show: Show; palette: Palette }) =>
 					</div>
 				</div>
 				<div className="flex h-full flex-col justify-start gap-4">
-					<MediaStats
-						bgColor={palette.darkVibrant}
-						data={toStats(genres, languages, show)}
-					/>
+					<MediaStats bgColor={palette.darkVibrant} object={show} />
 					<div className="line-clamp-3 text-justify text-sm">{show.overview}</div>
 				</div>
 			</div>

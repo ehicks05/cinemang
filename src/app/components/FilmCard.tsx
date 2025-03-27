@@ -1,16 +1,12 @@
 import { Link } from '@tanstack/react-router';
 import { SCALED_IMAGE } from '~/constants/constants';
-import { useSystemData } from '~/hooks/useSystemData';
 import type { Film as IFilm } from '~/types/types';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import type { Palette } from '~/utils/palettes/palette';
 import { MediaProviders } from './MediaProviders';
 import { MediaStats } from './MediaStats';
-import { toStats } from './utils';
 
 export const FilmCard = ({ film, palette }: { film: IFilm; palette: Palette }) => {
-	const { genres, languages } = useSystemData();
-
 	const fontSize = film.title.length > 24 ? 'text-base' : 'text-lg';
 	const posterUrl = getTmdbImage({ path: film.poster_path });
 	const year = film.released_at.slice(0, 4);
@@ -50,10 +46,7 @@ export const FilmCard = ({ film, palette }: { film: IFilm; palette: Palette }) =
 					</div>
 				</div>
 				<div className="flex h-full flex-col justify-start gap-4">
-					<MediaStats
-						bgColor={palette.darkVibrant}
-						data={toStats(genres, languages, film)}
-					/>
+					<MediaStats bgColor={palette.darkVibrant} object={film} />
 					<div className="line-clamp-3 text-justify text-sm">{film.overview}</div>
 				</div>
 			</div>

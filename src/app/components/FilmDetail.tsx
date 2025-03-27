@@ -1,13 +1,11 @@
 import { addMinutes, format, intervalToDuration, parseISO } from 'date-fns';
 import { useDocumentTitle } from 'usehooks-ts';
 import { Credits, OriginalImageLink, Trailer } from '~/core-components';
-import { useSystemData } from '~/hooks/useSystemData';
 import type { Film, Video } from '~/types/types';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import { usePalette } from '~/utils/palettes/usePalettes';
 import { MediaProviders } from './MediaProviders';
 import { MediaStats } from './MediaStats';
-import { toStats } from './utils';
 
 interface Props {
 	film: Film;
@@ -16,8 +14,6 @@ interface Props {
 
 export const FilmDetail = ({ film, trailer }: Props) => {
 	useDocumentTitle(film.title);
-	const { genres, languages } = useSystemData();
-
 	const { isLoading, palette } = usePalette({ path: film.poster_path });
 	if (isLoading || !palette) return '';
 
@@ -52,10 +48,7 @@ export const FilmDetail = ({ film, trailer }: Props) => {
 						<OriginalImageLink path={film.poster_path} />
 					</div>
 					<div className="mt-4 flex flex-col justify-between gap-4">
-						<MediaStats
-							bgColor={palette.darkVibrant}
-							data={toStats(genres, languages, film)}
-						/>
+						<MediaStats bgColor={palette.darkVibrant} object={film} />
 					</div>
 				</div>
 				<div className="flex flex-col gap-4">

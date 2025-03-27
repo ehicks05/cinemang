@@ -5,7 +5,6 @@ import type { IconType } from 'react-icons';
 import { FaCalendar, FaHeart, FaStar } from 'react-icons/fa';
 import { useDocumentTitle } from 'usehooks-ts';
 import { OriginalImageLink } from '~/core-components';
-import { useSystemData } from '~/hooks/useSystemData';
 import type { Credit, Person } from '~/types/types';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import { usePalette } from '~/utils/palettes/usePalettes';
@@ -66,11 +65,7 @@ const toSortValue = (credit: Credit, sort: SortKey) => {
 	}
 };
 
-export const PersonDetail = ({
-	person,
-	palette,
-}: { person: Person; palette: Palette }) => {
-	const { genres, languages } = useSystemData();
+export const PersonDetail = ({ person }: { person: Person }) => {
 	useDocumentTitle(person.name);
 	const profileUrl = getTmdbImage({
 		path: person.profile_path,
@@ -150,13 +145,7 @@ export const PersonDetail = ({
 					</h1>
 
 					{castCredits.map((c) => (
-						<PersonCredit
-							bgColor={palette.darkMuted}
-							credit={c}
-							genres={genres}
-							key={c.credit_id}
-							languages={languages}
-						/>
+						<PersonCredit bgColor={palette.darkMuted} credit={c} key={c.credit_id} />
 					))}
 				</>
 			)}
@@ -171,13 +160,7 @@ export const PersonDetail = ({
 						/>
 					</h1>
 					{crewCredits.map((c) => (
-						<PersonCredit
-							bgColor={palette.darkMuted}
-							credit={c}
-							genres={genres}
-							key={c.credit_id}
-							languages={languages}
-						/>
+						<PersonCredit bgColor={palette.darkMuted} credit={c} key={c.credit_id} />
 					))}
 				</>
 			)}

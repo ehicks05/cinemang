@@ -1,19 +1,14 @@
 import * as HoverCard from '@radix-ui/react-hover-card';
 import { Link } from '@tanstack/react-router';
 import { format, parseISO } from 'date-fns';
-import { pick } from 'lodash-es';
 import { useWindowSize } from 'usehooks-ts';
-import type { Credit, Genre, Language } from '~/types/types';
-import { MediaStats } from '../../MediaStats';
-import { toStats } from '../../utils';
-import { HoverFilm } from './HoverFilm';
-import { HoverShow } from './HoverShow';
+import { MediaStats } from '~/app/components';
+import type { Credit } from '~/types/types';
+import { HoverMedia } from './HoverMedia';
 
 interface Props {
 	bgColor: string;
 	credit: Credit;
-	genres: Genre[];
-	languages: Language[];
 }
 
 const getYears = (credit: Credit) => {
@@ -27,7 +22,7 @@ const getYears = (credit: Credit) => {
 	}
 };
 
-export const PersonCredit = ({ bgColor, genres, languages, credit }: Props) => {
+export const PersonCredit = ({ bgColor, credit }: Props) => {
 	const { width } = useWindowSize();
 	const year = getYears(credit);
 	const mediaName = credit.movie ? credit.movie.title : credit.show?.name;
@@ -63,18 +58,15 @@ export const PersonCredit = ({ bgColor, genres, languages, credit }: Props) => {
 					<MediaStats
 						autoWidth={width < 640}
 						bgColor={bgColor}
-						data={pick(toStats(genres, languages, credit.movie || credit.show!), [
-							'voteAverage',
-							'voteCount',
-						])}
+						// biome-ignore lint/style/noNonNullAssertion: <explanation>
+						object={credit.movie || credit.show!}
 					/>
 				</div>
 			</div>
 			<HoverCard.Portal>
 				<HoverCard.Content>
-					{credit.movie_id && <HoverFilm id={credit.movie_id} />}
-					{credit.show_id && <HoverShow id={credit.show_id} />}
-
+					{credit.movie_id && <HoverMedia id={credit.movie_id} mediaType="film" />}
+					{credit.show_id && <HoverMedia id={credit.show_id} mediaType="tv" />}
 					<HoverCard.Arrow className="text-neutral-700" />
 				</HoverCard.Content>
 			</HoverCard.Portal>

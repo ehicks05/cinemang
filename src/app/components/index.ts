@@ -1,6 +1,7 @@
 import { FilmCard } from './FilmCard';
 import { FilmDetail } from './FilmDetail';
 import { MediaProviders } from './MediaProviders';
+import { MediaStats } from './MediaStats';
 import { PersonDetail } from './PersonDetail';
 import { SearchForm } from './SearchForm';
 import { ShowCard } from './ShowCard';
@@ -10,6 +11,7 @@ export {
 	FilmCard,
 	FilmDetail,
 	MediaProviders,
+	MediaStats,
 	PersonDetail,
 	SearchForm,
 	ShowCard,

@@ -1,7 +1,6 @@
 import { format, parseISO } from 'date-fns';
 import { useDocumentTitle } from 'usehooks-ts';
 import { Credits, OriginalImageLink, Trailer } from '~/core-components';
-import { useSystemData } from '~/hooks/useSystemData';
 import type { Show, Video } from '~/types/types';
 import { getTmdbImage } from '~/utils/getTmdbImage';
 import type { Palette } from '~/utils/palettes/palette';
@@ -9,16 +8,15 @@ import { usePalette } from '~/utils/palettes/usePalettes';
 import { MediaProviders } from './MediaProviders';
 import { MediaStats } from './MediaStats';
 import { Seasons } from './Seasons';
-import { toStats } from './utils';
 
-const ShowDetail = ({
-	show,
-	palette,
-	trailer,
-}: { show: Show; palette: Palette; trailer: Video }) => {
+interface Props {
+	show: Show;
+	palette: Palette;
+	trailer: Video;
+}
+
+const ShowDetail = ({ show, palette, trailer }: Props) => {
 	useDocumentTitle(show.name);
-	const { genres, languages } = useSystemData();
-
 	const posterUrl = getTmdbImage({ path: show.poster_path, width: 'w500' });
 	const firstYear = format(parseISO(show.first_air_date), 'yyyy');
 	const lastYear = format(parseISO(show.last_air_date), 'yyyy');
@@ -44,10 +42,7 @@ const ShowDetail = ({
 						<OriginalImageLink path={show.poster_path} />
 					</div>
 					<div className="mt-4 flex flex-col justify-between gap-4">
-						<MediaStats
-							bgColor={palette.darkVibrant}
-							data={toStats(genres, languages, show)}
-						/>
+						<MediaStats bgColor={palette.darkVibrant} object={show} />
 					</div>
 				</div>
 				<div className="flex w-full flex-col gap-4 sm:w-3/5">
