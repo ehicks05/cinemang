@@ -14,9 +14,10 @@ interface Props {
 
 export const Paginator = ({ count = 0, isLoading }: Props) => {
 	const { pathname } = useLocation();
-	const from = pathname === '/tv' ? '/tv/' : '/films/';
-	const search = useSearch({ from });
-	const { page: currentPage } = search;
+	// todo: investigate why using `strict: false` instead of `from` briefly shows an error
+	// const from = pathname === '/tv' ? '/tv/' : '/films/';
+	const search = useSearch({ strict: false });
+	const { page: currentPage = 0 } = search;
 
 	const {
 		firstPageIndex,
