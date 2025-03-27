@@ -1,7 +1,6 @@
 import { useLocation, useSearch } from '@tanstack/react-router';
 import { range } from 'lodash-es';
 import { FastForward, Play } from 'lucide-react';
-import { PAGE_SIZE } from '~/constants/constants';
 import { PageLink } from './PageLink';
 import { usePagination } from './usePagination';
 
@@ -13,7 +12,7 @@ interface Props {
 	pageSize?: number;
 }
 
-export const Paginator = ({ count = 0, isLoading, pageSize = PAGE_SIZE }: Props) => {
+export const Paginator = ({ count = 0, isLoading }: Props) => {
 	const { pathname } = useLocation();
 	const from = pathname === '/tv' ? '/tv/' : '/films/';
 	const search = useSearch({ from });
@@ -29,12 +28,7 @@ export const Paginator = ({ count = 0, isLoading, pageSize = PAGE_SIZE }: Props)
 		nextPage,
 		previousPage,
 		totalPages,
-	} = usePagination({
-		currentPage,
-		linkCount: 5,
-		pageSize,
-		totalItems: count,
-	});
+	} = usePagination({ currentPage, linkCount: 5, count });
 
 	const currentlyShowing = `Showing ${nf.format(firstResultIndex + 1)}-${nf.format(
 		lastResultIndex + 1,

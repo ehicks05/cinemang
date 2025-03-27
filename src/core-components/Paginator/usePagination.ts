@@ -1,17 +1,19 @@
+import { PAGE_SIZE } from '~/constants/constants';
+
 interface Params {
 	currentPage: number;
 	linkCount: number;
-	pageSize: number;
-	totalItems: number;
+	pageSize?: number;
+	count: number;
 }
 
 export const usePagination = ({
 	currentPage,
 	linkCount,
-	pageSize,
-	totalItems,
+	pageSize = PAGE_SIZE,
+	count,
 }: Params) => {
-	const totalPages = Math.ceil(totalItems / pageSize);
+	const totalPages = Math.ceil(count / pageSize);
 
 	const previousPage = currentPage - 1;
 	const nextPage = currentPage + 1;
@@ -32,10 +34,7 @@ export const usePagination = ({
 	const lastPageIndex = Math.min(currentPage + forwardDelta - 1, totalPages - 1);
 
 	const firstResultIndex = currentPage * pageSize;
-	const lastResultIndex = Math.min(
-		currentPage * pageSize + pageSize - 1,
-		totalItems - 1,
-	);
+	const lastResultIndex = Math.min(currentPage * pageSize + pageSize - 1, count - 1);
 
 	return {
 		firstPageIndex,
