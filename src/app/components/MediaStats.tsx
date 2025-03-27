@@ -42,8 +42,8 @@ export interface Stats {
 export const toStats = (genres: Genre[], media: Stats) => ({
 	genre: getGenreName(findGenre(genres, media.genre_id)?.name || '?'),
 	language: media.language_id,
-	voteAverage: media.vote_average || 0,
-	voteCount: media.vote_count || 0,
+	voteAverage: media.vote_average,
+	voteCount: media.vote_count,
 });
 
 interface Props {
@@ -59,28 +59,28 @@ export const MediaStats = ({ autoWidth = true, bgColor, object }: Props) => {
 
 	const stats = [
 		{
-			key: 'voteAverage',
-			label: nf.format(voteAverage),
+			key: 'Vote Average',
+			label: voteAverage ? nf.format(voteAverage) : null,
 			color: heartColor(voteAverage),
 			icon: FaHeart,
 			width: 'w-20',
 		},
 		{
-			key: 'voteCount',
-			label: toShort(voteCount),
+			key: 'Vote Count',
+			label: voteCount ? toShort(voteCount) : null,
 			color: starColor(voteCount),
 			icon: FaStar,
 			width: 'w-20',
 		},
 		{
-			key: 'genre',
+			key: 'Genre',
 			label: genre,
 			color: 'text-blue-400',
 			icon: undefined,
 			width: 'w-32',
 		},
 		{
-			key: 'language',
+			key: 'Language',
 			label: language,
 			color: 'text-emerald-500',
 			icon: undefined,
@@ -97,6 +97,7 @@ export const MediaStats = ({ autoWidth = true, bgColor, object }: Props) => {
 					color={stat.color}
 					icon={stat.icon}
 					label={stat.label || ''}
+					title={stat.key}
 					width={autoWidth ? undefined : stat.width}
 				/>
 			))}
