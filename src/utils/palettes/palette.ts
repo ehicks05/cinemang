@@ -1,13 +1,14 @@
+import type { CSSProperties } from 'react';
 import { Vibrant } from './vibrant';
 
 export const DEFAULT_PALETTE = {
-	bgStyles: { background: '#333' },
+	bgStyles: { background: '#282828', filter: 'saturate(0.0)' } as CSSProperties,
 	darkMuted: '#333',
 	darkVibrant: '#333',
 };
 
 export interface PaletteWithGradient {
-	bgStyles: { background: string };
+	bgStyles: CSSProperties;
 	darkMuted: string;
 	darkVibrant: string;
 }

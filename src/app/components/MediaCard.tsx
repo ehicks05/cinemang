@@ -27,7 +27,7 @@ export const MediaCard = ({ media, palette }: Props) => {
 	return (
 		<Link to={linkTo} params={linkParams}>
 			<div
-				className="flex h-full flex-col gap-4 p-4 sm:rounded-lg"
+				className="flex h-full flex-col gap-4 p-4 sm:rounded-lg transition-all duration-1000"
 				style={palette?.bgStyles}
 			>
 				<div className="flex gap-4">
