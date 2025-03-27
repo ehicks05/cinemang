@@ -1,12 +1,12 @@
 import { Link } from '@tanstack/react-router';
 import { TmdbImage } from '~/core-components/TmdbImage';
-import type { Palette } from '~/utils/palettes/palette';
+import type { PaletteWithGradient } from '~/utils/palettes/palette';
 
 interface Props {
 	characters?: string[];
 	jobs?: string[];
 	name: string;
-	palette: Palette;
+	palette: PaletteWithGradient;
 	personId: number;
 	profilePath?: string;
 }

@@ -1,9 +1,9 @@
 import { intervalToDuration, parseISO } from 'date-fns';
 import type { Person } from '~/types/types';
-import type { Palette } from '~/utils/palettes/palette';
+import type { PaletteWithGradient } from '~/utils/palettes/palette';
 
 interface Props {
-	palette: Palette;
+	palette: PaletteWithGradient;
 	person: Person;
 }
 

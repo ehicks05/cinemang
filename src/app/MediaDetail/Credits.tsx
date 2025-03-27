@@ -1,12 +1,12 @@
 import { groupBy } from 'lodash-es';
 
 import type { Credit } from '~/types/types';
-import type { Palette } from '~/utils/palettes/palette';
+import type { PaletteWithGradient } from '~/utils/palettes/palette';
 import { PersonCard } from './PersonCard';
 
 interface Props {
 	credits: Credit[];
-	palette: Palette;
+	palette: PaletteWithGradient;
 }
 
 export const Credits = ({ credits, palette }: Props) => {
