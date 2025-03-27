@@ -2,7 +2,6 @@ import { createFileRoute, stripSearchParams } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
 import { MediaList } from '~/app/MediaList';
 import { queryFilms } from '~/hooks/useFetchFilms';
-import { usePalettes } from '~/utils/palettes/usePalettes';
 import { DEFAULT_MOVIE_SEARCH_FORM } from '~/utils/searchParams/constants';
 import {
 	type MovieSearchForm,
@@ -20,8 +19,5 @@ export const Route = createFileRoute('/films/')({
 function RouteComponent() {
 	const { films, count } = Route.useLoaderData();
 
-	const { palettes } = usePalettes({ paths: films.map((film) => film.poster_path) });
-	if (!palettes) return null;
-
-	return <MediaList media={films} count={count} palettes={palettes} />;
+	return <MediaList media={films} count={count} />;
 }

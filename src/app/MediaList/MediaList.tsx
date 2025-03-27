@@ -1,16 +1,20 @@
 import { MediaLayout, Paginator } from '~/core-components';
 import type { Film, Show } from '~/types/types';
-import { DEFAULT_PALETTE, type PaletteWithGradient } from '~/utils/palettes/palette';
+import { DEFAULT_PALETTE } from '~/utils/palettes/palette';
+import { usePalettes } from '~/utils/palettes/usePalettes';
 import { MediaCard } from '../components';
 import { SearchForm } from './SearchForm';
 
 interface Props {
 	media: Film[] | Show[];
 	count: number;
-	palettes: PaletteWithGradient[];
 }
 
-export const MediaList = ({ media, count, palettes }: Props) => {
+export const MediaList = ({ media, count }: Props) => {
+	const { palettes } = usePalettes({
+		paths: media.map((film) => film.poster_path),
+	});
+
 	return (
 		<div className="flex flex-col sm:gap-4">
 			<SearchForm />
@@ -21,7 +25,7 @@ export const MediaList = ({ media, count, palettes }: Props) => {
 					<MediaCard
 						key={media.id}
 						media={media}
-						palette={palettes[i] || DEFAULT_PALETTE}
+						palette={palettes?.[i] || DEFAULT_PALETTE}
 					/>
 				))}
 			</MediaLayout>
