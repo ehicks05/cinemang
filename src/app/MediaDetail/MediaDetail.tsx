@@ -1,3 +1,4 @@
+import { SiThemoviedatabase } from 'react-icons/si';
 import { OriginalImageLink, TmdbImage, Trailer } from '~/core-components';
 import type { Film, Person, Show, Video } from '~/types/types';
 import type { PaletteWithGradient } from '~/utils/palettes/palette';
@@ -54,6 +55,15 @@ export const MediaDetail = ({ media, palette, trailer }: Props) => {
 							<div className="flex gap-1">
 								<MediaStats bgColor={palette.darkVibrant} object={media} />
 								<MediaProviders selectedIds={media.providers} />
+								<a
+									href={`https://www.themoviedb.org/${'title' in media ? 'movie' : 'tv'}/${media.id}`}
+									className="flex items-center justify-center h-10 w-10 rounded-lg"
+									style={{ backgroundColor: palette.darkVibrant }}
+									target="_blank"
+									rel="noreferrer"
+								>
+									<SiThemoviedatabase size={26} />
+								</a>
 							</div>
 						)}
 						<GeneralInfo media={media} palette={palette} />
