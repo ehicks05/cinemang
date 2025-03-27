@@ -1,5 +1,5 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
-import { PersonDetail } from '~/app/components';
+import { PersonDetail } from '~/app/PersonDetail';
 import { getPersonById } from '~/hooks/useFetchPersons';
 
 export const Route = createFileRoute('/people/$personId')({
