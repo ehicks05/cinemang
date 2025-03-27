@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
-import { getTmdbImage } from '~/utils/getTmdbImage';
 import type { Palette } from '~/utils/palettes/palette';
+import { TmdbImage } from './TmdbImage';
 
 interface Props {
 	characters?: string[];
@@ -11,16 +11,6 @@ interface Props {
 	profilePath?: string;
 }
 
-const toInitials = (name: string) => {
-	const parts = name.split(' ');
-	return [parts.at(0), parts.at(-1)]
-		.map((part) => (part || '').slice(0, 1))
-		.join('');
-};
-
-const getDefaultProfile = (name: string, color: string) =>
-	`https://via.placeholder.com/300x450/${color}/fff/?text=${toInitials(name)}`;
-
 export const PersonCard = ({
 	characters,
 	jobs,
@@ -29,11 +19,6 @@ export const PersonCard = ({
 	personId,
 	profilePath,
 }: Props) => {
-	const profile = getTmdbImage({
-		defaultImage: getDefaultProfile(name, palette.darkMuted.slice(1)),
-		path: profilePath,
-	});
-
 	return (
 		<Link
 			className="flex w-full flex-col rounded-lg p-0.5"
@@ -41,7 +26,11 @@ export const PersonCard = ({
 			to={'/people/$personId'}
 			params={{ personId: String(personId) }}
 		>
-			<img alt="cast" className="rounded-t-lg" src={profile} />
+			<TmdbImage
+				alt="cast"
+				className="w-full rounded-t-lg"
+				path={profilePath || ''}
+			/>
 
 			<div className="grow p-1.5">
 				<div>{name}</div>

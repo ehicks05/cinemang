@@ -1,13 +1,14 @@
+import { TmdbImage } from '~/core-components/TmdbImage';
 import { useSystemData } from '~/hooks/useSystemData';
 import type { Provider } from '~/types/types';
-import { getTmdbImage } from '~/utils/getTmdbImage';
 
 const MediaProvider = ({
 	provider: { name, logo_path },
 }: { provider: Provider }) => (
-	<img
+	<TmdbImage
 		className="h-10 w-10 rounded-lg"
-		src={getTmdbImage({ path: logo_path, width: 'original' })}
+		path={logo_path}
+		width={'original'}
 		title={name}
 		alt={name}
 	/>

@@ -10,7 +10,6 @@ import {
 	AccordionTrigger,
 } from '~/core-components/accordion';
 import { useSystemData } from '~/hooks/useSystemData';
-import { getTmdbImage } from '~/utils/getTmdbImage';
 import {
 	DEFAULT_MOVIE_SEARCH_FORM,
 	DEFAULT_TV_SEARCH_FORM,
@@ -132,7 +131,7 @@ const FormFields = () => {
 								.map((p) => ({
 									id: p.id,
 									label: p.name,
-									imageUrl: getTmdbImage({ path: p.logo_path, width: 'original' }),
+									imagePath: p.logo_path,
 								}))}
 							selectedOptions={form.providers}
 							handleChange={(providers) => handleChange({ providers })}

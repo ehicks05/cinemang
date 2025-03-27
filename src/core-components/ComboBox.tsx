@@ -14,11 +14,12 @@ import {
 } from '~/core-components/command';
 import { Popover, PopoverContent, PopoverTrigger } from '~/core-components/popover';
 import { cn } from '~/utils/cn';
+import { TmdbImage } from './TmdbImage';
 
 interface Option {
 	id: number;
 	label: string;
-	imageUrl: string;
+	imagePath: string;
 }
 
 interface Props {
@@ -32,12 +33,13 @@ export function ComboBox({ options, selectedOptions, handleChange }: Props) {
 
 	const triggerIcons = selectedOptions
 		.slice(0, 6)
-		.map((selected) => options.find((option) => selected === option.id)?.imageUrl)
-		.map((imageUrl) => (
-			<img
-				key={imageUrl}
+		.map((selected) => options.find((option) => selected === option.id)?.imagePath)
+		.map((imagePath) => (
+			<TmdbImage
+				key={imagePath}
 				alt="provider"
-				src={imageUrl}
+				path={imagePath || ''}
+				width="original"
 				className="h-8 w-8 rounded-sm"
 			/>
 		));
@@ -74,11 +76,12 @@ export function ComboBox({ options, selectedOptions, handleChange }: Props) {
 										setOpen(false);
 									}}
 								>
-									<img
+									<TmdbImage
 										className="h-8 w-8"
 										key={option.id}
 										alt="provider"
-										src={option.imageUrl}
+										path={option.imagePath}
+										width="original"
 									/>
 									{option.label}
 									<Check

@@ -24,7 +24,7 @@ export const usePalettes = ({
 	return { palettes: query.data, ...query, data: undefined };
 };
 
-export const usePalette = ({ path }: { path: string }) => {
+export const usePalette = ({ path }: { path?: string }) => {
 	const query = useQuery({
 		queryKey: ['palette', path],
 		queryFn: () => {

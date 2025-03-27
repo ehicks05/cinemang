@@ -3,7 +3,6 @@ import { useTimeout } from 'usehooks-ts';
 import { MediaCard } from '~/app/components';
 import { useFetchFilm } from '~/hooks/useFetchFilms';
 import { useFetchShow } from '~/hooks/useFetchShows';
-import { getTmdbImage } from '~/utils/getTmdbImage';
 import { usePalette } from '~/utils/palettes/usePalettes';
 import { HoverLoading } from './HoverLoading';
 import { container } from './constants';
@@ -20,18 +19,17 @@ export const HoverMedia = ({ id, mediaType }: Props) => {
 		isLoading,
 	} = mediaType === 'film' ? useFetchFilm(id) : useFetchShow(id);
 
-	const path = getTmdbImage({ path: media?.poster_path });
-	const { palette, isLoading: isPaletteLoading } = usePalette({ path });
+	const { palette } = usePalette({ path: media?.poster_path });
 
 	const [isReady, setIsReady] = useState(false);
 	useTimeout(() => setIsReady(true), 1000);
 
-	if (isReady && (error || isLoading || isPaletteLoading)) {
+	if (isReady && (error || isLoading)) {
 		return (
 			<HoverLoading
 				background={palette?.bgStyles.background || '#333'}
 				error={error}
-				isLoading={isLoading || isPaletteLoading}
+				isLoading={isLoading}
 			/>
 		);
 	}

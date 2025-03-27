@@ -2,8 +2,8 @@ import { addMinutes, format, intervalToDuration, parseISO } from 'date-fns';
 import { Clapperboard, Lightbulb } from 'lucide-react';
 import { useDocumentTitle } from 'usehooks-ts';
 import { Credits, OriginalImageLink, Trailer } from '~/core-components';
+import { TmdbImage } from '~/core-components/TmdbImage';
 import type { Film, Show, Video } from '~/types/types';
-import { getTmdbImage } from '~/utils/getTmdbImage';
 import { usePalette } from '~/utils/palettes/usePalettes';
 import { MediaProviders } from './MediaProviders';
 import { MediaStats } from './MediaStats';
@@ -68,8 +68,6 @@ export const MediaDetail = ({ media, trailer }: Props) => {
 	const { isLoading, palette } = usePalette({ path: media.poster_path });
 	if (isLoading || !palette) return '';
 
-	const posterUrl = getTmdbImage({ path: media.poster_path, width: 'w500' });
-
 	return (
 		<div
 			className="m-auto flex max-w-5xl flex-col gap-4 p-4 sm:rounded-lg"
@@ -84,7 +82,12 @@ export const MediaDetail = ({ media, trailer }: Props) => {
 			<div className="flex flex-col gap-4 sm:flex-row">
 				<div className="w-full sm:w-2/5">
 					<div className="relative w-full">
-						<img alt="poster" className="w-full rounded-lg" src={posterUrl} />
+						<TmdbImage
+							className="w-full rounded-lg"
+							path={media.poster_path}
+							width={500}
+						/>
+
 						<OriginalImageLink path={media.poster_path} />
 					</div>
 					<div className="mt-4 flex flex-col justify-between gap-4">

@@ -1,21 +1,19 @@
 import { sortBy } from 'lodash-es';
 import { FaHeart } from 'react-icons/fa';
 import { OriginalImageLink } from '~/core-components';
+import { TmdbImage } from '~/core-components/TmdbImage';
 import type { Season } from '~/types/types';
-import { getTmdbImage } from '~/utils/getTmdbImage';
 import { StatChip } from './StatChip';
 
 const SeasonCard = ({ season }: { season: Season }) => (
 	<div className="flex w-full flex-col gap-2 rounded-lg bg-neutral-900 p-4">
 		<div className="flex w-full flex-col gap-2 rounded-lg bg-neutral-900 sm:flex-row">
 			<div className="relative w-full shrink-0 sm:w-40">
-				<img
+				<TmdbImage
 					alt="poster"
 					className="w-full rounded-lg"
-					src={getTmdbImage({
-						path: season.poster_path || undefined,
-						width: 'w500',
-					})}
+					path={season.poster_path || ''}
+					width={500}
 				/>
 				<OriginalImageLink path={season.poster_path || undefined} />
 			</div>

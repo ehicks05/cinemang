@@ -5,8 +5,8 @@ import type { IconType } from 'react-icons';
 import { FaCalendar, FaHeart, FaStar } from 'react-icons/fa';
 import { useDocumentTitle } from 'usehooks-ts';
 import { OriginalImageLink } from '~/core-components';
+import { TmdbImage } from '~/core-components/TmdbImage';
 import type { Credit, Person } from '~/types/types';
-import { getTmdbImage } from '~/utils/getTmdbImage';
 import { usePalette } from '~/utils/palettes/usePalettes';
 import { StatChip } from '../StatChip';
 import { Lifespan } from './Lifespan';
@@ -67,10 +67,6 @@ const toSortValue = (credit: Credit, sort: SortKey) => {
 
 export const PersonDetail = ({ person }: { person: Person }) => {
 	useDocumentTitle(person.name);
-	const profileUrl = getTmdbImage({
-		path: person.profile_path,
-		width: 'w500',
-	});
 
 	const [sort, setSort] = useState<SortKey>('released_at');
 
@@ -99,19 +95,19 @@ export const PersonDetail = ({ person }: { person: Person }) => {
 			style={palette.bgStyles}
 		>
 			<div className="flex flex-col gap-4 sm:flex-row">
-				<div className="flex shrink-0 flex-col gap-4">
+				<div className="flex flex-col gap-4 sm:w-2/5">
 					<div className="relative">
-						<img
-							alt="poster"
+						<TmdbImage
 							className="w-full rounded-lg sm:w-80 md:w-96"
-							src={profileUrl}
+							path={person.profile_path}
+							width={500}
 						/>
 						<OriginalImageLink path={person.profile_path} />
 					</div>
 					<PersonStats bgColor={palette.darkMuted || ''} data={toStats(person)} />
 				</div>
 
-				<div className="flex flex-col gap-4">
+				<div className="flex flex-col gap-4 sm:w-3/5">
 					<div className="flex flex-col gap-1">
 						<div className="text-2xl font-semibold">{person.name}</div>
 						<button

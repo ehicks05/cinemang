@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router';
-import { SCALED_IMAGE } from '~/constants/constants';
+import { TmdbImage } from '~/core-components/TmdbImage';
 import type { Film, Show } from '~/types/types';
-import { getTmdbImage } from '~/utils/getTmdbImage';
 import type { Palette } from '~/utils/palettes/palette';
 import { SubHeading, TopCrew } from './MediaDetail';
 import { MediaProviders } from './MediaProviders';
@@ -33,12 +32,7 @@ export const MediaCard = ({
 			>
 				<div className="flex gap-4">
 					<div className="shrink-0">
-						<img
-							alt="poster"
-							height={SCALED_IMAGE.h}
-							src={getTmdbImage({ path: media.poster_path })}
-							width={SCALED_IMAGE.w}
-						/>
+						<TmdbImage className="rounded-sm" path={media.poster_path} />
 					</div>
 					<div className="flex flex-col gap-1">
 						<div>
