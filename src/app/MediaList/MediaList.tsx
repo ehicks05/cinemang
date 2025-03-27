@@ -1,4 +1,4 @@
-import { MediaLayout, MediaSkeleton, MediaSkeletons } from '~/core-components';
+import { MediaLayout, MediaSkeleton } from '~/core-components';
 import { Paginator } from '~/core-components/Paginator/Paginator';
 import type { Film, Show } from '~/types/types';
 import { DEFAULT_PALETTE } from '~/utils/palettes/palette';
@@ -19,22 +19,19 @@ export const MediaList = ({ media, count }: Props) => {
 			<SearchForm />
 
 			<Paginator count={count} isLoading={isLoading} />
-			{isLoading && <MediaSkeletons />}
-			{!isLoading && (
-				<MediaLayout>
-					{media.map((media) =>
-						isLoading ? (
-							<MediaSkeleton key={media.id} />
-						) : (
-							<MediaCard
-								key={media.id}
-								media={media}
-								palette={palettes?.[media.id].palette || DEFAULT_PALETTE}
-							/>
-						),
-					)}
-				</MediaLayout>
-			)}
+			<MediaLayout>
+				{media.map((media) =>
+					isLoading ? (
+						<MediaSkeleton key={media.id} />
+					) : (
+						<MediaCard
+							key={media.id}
+							media={media}
+							palette={palettes?.[media.id].palette || DEFAULT_PALETTE}
+						/>
+					),
+				)}
+			</MediaLayout>
 			<Paginator count={count} isLoading={isLoading} />
 		</div>
 	);
