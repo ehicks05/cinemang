@@ -3,7 +3,6 @@ import type React from 'react';
 import { useState } from 'react';
 import type { IconType } from 'react-icons';
 import { FaCalendar, FaHeart, FaStar } from 'react-icons/fa';
-import { useDocumentTitle } from 'usehooks-ts';
 import { StatChip } from '~/core-components';
 import type { Credit, Person } from '~/types/types';
 import type { PaletteWithGradient } from '~/utils/palettes/palette';
@@ -57,8 +56,6 @@ interface Props {
 }
 
 export const PersonCredits = ({ person, palette }: Props) => {
-	useDocumentTitle(person.name);
-
 	const [sort, setSort] = useState<SortKey>('released_at');
 	const sortOptions = (
 		<SortOptions darkVibrant={palette.darkMuted} setSort={setSort} sort={sort} />

@@ -1,1 +1,0 @@
-export { PersonDetail } from './PersonDetail';

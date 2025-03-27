@@ -4,8 +4,8 @@ import { OriginalImageLink, StatChip, TmdbImage } from '~/core-components';
 import type { Season } from '~/types/types';
 
 const SeasonCard = ({ season }: { season: Season }) => (
-	<div className="flex w-full flex-col gap-2 rounded-lg bg-neutral-900 p-4">
-		<div className="flex w-full flex-col gap-2 rounded-lg bg-neutral-900 sm:flex-row">
+	<div className="flex w-full flex-col gap-2">
+		<div className="flex w-full flex-col gap-2 sm:flex-row">
 			<div className="relative w-full shrink-0 sm:w-40">
 				<TmdbImage
 					alt="poster"
@@ -16,12 +16,20 @@ const SeasonCard = ({ season }: { season: Season }) => (
 				<OriginalImageLink path={season.poster_path || undefined} />
 			</div>
 
-			<div className="flex flex-col">
-				<div className="flex items-center gap-2">
-					<span className="font-semibold">{season.name}</span>
-					<span className="text-sm opacity-75">{season.air_date}</span>
+			<div className="flex flex-col justify-between w-full p-4 rounded-lg bg-neutral-900">
+				<div>
+					<div className="flex items-center gap-2">
+						<span className="font-semibold">{season.name}</span>
+						{season.air_date && (
+							<span className="text-sm opacity-75">
+								{new Date(season.air_date).toLocaleDateString()}
+							</span>
+						)}
+					</div>
+					<div className="text-justify pr-1 text-sm lg:text-base overflow-y-auto max-h-32">
+						{season.overview}
+					</div>
 				</div>
-				<div>{season.overview}</div>
 				<span className="mt-2 flex w-full items-center gap-2">
 					<StatChip
 						icon={FaHeart}
@@ -45,11 +53,12 @@ const SeasonCard = ({ season }: { season: Season }) => (
 export const Seasons = ({ seasons }: { seasons: Season[] }) => (
 	<div className="flex flex-col gap-4">
 		<div className="text-xl font-bold">
-			{seasons.length} Season
-			{seasons.length > 1 && 's'}
+			Season{seasons.length > 1 && 's'} ({seasons.length})
 		</div>
-		{sortBy(seasons, (o) => o.season_number).map((season) => (
-			<SeasonCard key={season.id} season={season} />
-		))}
+		<div className="grid gap-4 sm:gap-2">
+			{sortBy(seasons, (o) => o.season_number).map((season) => (
+				<SeasonCard key={season.id} season={season} />
+			))}
+		</div>
 	</div>
 );

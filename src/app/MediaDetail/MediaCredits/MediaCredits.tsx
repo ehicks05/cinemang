@@ -9,7 +9,7 @@ interface Props {
 	palette: PaletteWithGradient;
 }
 
-export const Credits = ({ credits, palette }: Props) => {
+export const MediaCredits = ({ credits, palette }: Props) => {
 	const cast = credits.filter((c) => c.character);
 	const crew = credits.filter((c) => c.job);
 	const groupedCast = groupBy(cast, (c) => c.person_id);
@@ -35,7 +35,7 @@ export const Credits = ({ credits, palette }: Props) => {
 			<h1 className="text-xl font-bold">Crew</h1>
 			<div className="grid grid-cols-2 justify-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 				{Object.values(groupedCrew)
-					.sort((c1, c2) => c2[0].person.popularity - c1[0].person.popularity)
+					.sort((c1, c2) => c1[0].person.id - c2[0].person.id)
 					.map((c) => (
 						<PersonCard
 							jobs={c.map((c) => c.job || '')}

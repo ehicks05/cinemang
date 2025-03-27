@@ -1,0 +1,1 @@
+export { MediaCredits } from './MediaCredits';

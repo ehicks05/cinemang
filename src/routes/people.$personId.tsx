@@ -1,5 +1,5 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
-import { PersonDetail } from '~/app/PersonDetail';
+import { MediaDetail } from '~/app/MediaDetail';
 import { getPersonById } from '~/hooks/useFetchPersons';
 import { usePalette } from '~/utils/palettes/usePalettes';
 
@@ -17,7 +17,7 @@ function RouteComponent() {
 
 	return (
 		<div>
-			<PersonDetail person={person} palette={palette} />
+			<MediaDetail media={person} palette={palette} />
 		</div>
 	);
 }

@@ -2,18 +2,6 @@ import { TmdbImage } from '~/core-components';
 import { useSystemData } from '~/hooks/useSystemData';
 import type { Provider } from '~/types/types';
 
-const MediaProvider = ({
-	provider: { name, logo_path },
-}: { provider: Provider }) => (
-	<TmdbImage
-		className="h-10 w-10 rounded-lg"
-		path={logo_path}
-		width={'original'}
-		title={name}
-		alt={name}
-	/>
-);
-
 interface Props {
 	selectedIds: { id: number }[];
 }
@@ -30,9 +18,16 @@ export const MediaProviders = ({ selectedIds }: Props) => {
 
 	if (filteredProviders.length === 0) return null;
 	return (
-		<div className="flex flex-wrap gap-0.5">
+		<div className="flex flex-wrap gap-1">
 			{filteredProviders.map((provider) => (
-				<MediaProvider key={provider.id} provider={provider} />
+				<TmdbImage
+					key={provider.id}
+					className="h-10 w-10 rounded-lg"
+					path={provider.logo_path}
+					width={'original'}
+					title={provider.name}
+					alt={provider.name}
+				/>
 			))}
 		</div>
 	);

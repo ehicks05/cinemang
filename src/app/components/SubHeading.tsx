@@ -1,8 +1,8 @@
 import { addMinutes, format, intervalToDuration, parseISO } from 'date-fns';
-import type { Film, Show } from '~/types/types';
+import type { Film, Person, Show } from '~/types/types';
 
 interface Props {
-	media: Film | Show;
+	media: Film | Show | Person;
 }
 
 export const SubHeading = ({ media }: Props) => {
@@ -24,13 +24,25 @@ export const SubHeading = ({ media }: Props) => {
 		);
 	}
 
-	const firstYear = format(parseISO(media.first_air_date), 'yyyy');
-	const lastYear = format(parseISO(media.last_air_date), 'yyyy');
-	const years = firstYear === lastYear ? firstYear : `${firstYear}-${lastYear}`;
+	if ('first_air_date' in media) {
+		const firstYear = format(parseISO(media.first_air_date), 'yyyy');
+		const lastYear = format(parseISO(media.last_air_date), 'yyyy');
+		const years = firstYear === lastYear ? firstYear : `${firstYear}-${lastYear}`;
 
-	return (
-		<span>
-			{years} ({media.status})
-		</span>
-	);
+		return (
+			<span>
+				{years} ({media.status})
+			</span>
+		);
+	}
+
+	if ('known_for_department' in media) {
+		return (
+			<span>
+				{media.known_for_department}
+				{' • '}
+				{media.credits.length} Credits
+			</span>
+		);
+	}
 };

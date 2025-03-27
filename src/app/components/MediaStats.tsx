@@ -1,8 +1,9 @@
 import { FaHeart, FaStar } from 'react-icons/fa';
-import { GENRE_NAMES } from '~/constants/constants';
 import { StatChip } from '~/core-components';
 import { useSystemData } from '~/hooks/useSystemData';
 import type { Genre } from '~/types/types';
+
+const GENRE_NAMES = { 'Science Fiction': 'Sci-Fi' } as Record<string, string>;
 
 const nf = Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
 
@@ -89,7 +90,7 @@ export const MediaStats = ({ autoWidth = true, bgColor, object }: Props) => {
 	].filter((o) => o.label && !['?', 'en'].includes(o.label));
 
 	return (
-		<span className={`flex ${autoWidth ? 'flex-wrap' : ''} gap-2`}>
+		<span className={`flex ${autoWidth ? 'flex-wrap' : ''} gap-1`}>
 			{stats.map((stat) => (
 				<StatChip
 					key={stat.key}
