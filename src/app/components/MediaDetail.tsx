@@ -44,7 +44,10 @@ export const SubHeading = ({ media }: { media: Film | Show }) => {
 	);
 };
 
-export const TopCrew = ({ media }: { media: Film | Show }) => {
+export const TopCrew = ({
+	media,
+	showAllCreators = false,
+}: { media: Film | Show; showAllCreators?: boolean }) => {
 	if ('director' in media) {
 		return (
 			<div className="flex items-center gap-1" title="Director">
@@ -56,7 +59,7 @@ export const TopCrew = ({ media }: { media: Film | Show }) => {
 		return (
 			<div className="flex items-center gap-1" title="Created by">
 				<Lightbulb size={16} className="text-neutral-400 shrink-0" />{' '}
-				{media.created_by}
+				{showAllCreators ? media.created_by : media.created_by.split(',')[0]}
 			</div>
 		);
 	}
@@ -101,7 +104,7 @@ export const MediaDetail = ({ media, trailer }: Props) => {
 							<MediaProviders selectedIds={media.providers} />
 						)}
 						<div className="flex flex-col gap-2 rounded-lg bg-neutral-900 p-4">
-							<TopCrew media={media} />
+							<TopCrew media={media} showAllCreators />
 							<div>Starring: {media.cast}</div>
 							<div className=" sm:max-h-24 md:max-h-32 lg:max-h-48 overflow-x-auto text-justify text-sm md:text-base">
 								{media.overview}
