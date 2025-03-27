@@ -1,9 +1,7 @@
 import { sortBy } from 'lodash-es';
 import { FaHeart } from 'react-icons/fa';
-import { OriginalImageLink } from '~/core-components';
-import { TmdbImage } from '~/core-components/TmdbImage';
+import { OriginalImageLink, StatChip, TmdbImage } from '~/core-components';
 import type { Season } from '~/types/types';
-import { StatChip } from './StatChip';
 
 const SeasonCard = ({ season }: { season: Season }) => (
 	<div className="flex w-full flex-col gap-2 rounded-lg bg-neutral-900 p-4">

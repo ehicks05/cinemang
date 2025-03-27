@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
+import { TmdbImage } from '~/core-components/TmdbImage';
 import type { Palette } from '~/utils/palettes/palette';
-import { TmdbImage } from './TmdbImage';
 
 interface Props {
 	characters?: string[];

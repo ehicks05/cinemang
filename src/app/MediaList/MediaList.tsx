@@ -3,35 +3,16 @@ import { Paginator } from '~/core-components/Paginator/Paginator';
 import type { Film, Show } from '~/types/types';
 import { DEFAULT_PALETTE } from '~/utils/palettes/palette';
 import { usePalettes } from '~/utils/palettes/usePalettes';
-import { MediaCard, SearchForm } from './components';
-
-const MediaList = ({ medias }: { medias: Film[] | Show[] }) => {
-	const { isLoading, palettes } = usePalettes({ items: medias });
-
-	return (
-		<MediaLayout>
-			{medias.map((media) =>
-				isLoading ? (
-					<MediaSkeleton key={media.id} />
-				) : (
-					<MediaCard
-						key={media.id}
-						media={media}
-						palette={palettes?.[media.id].palette || DEFAULT_PALETTE}
-					/>
-				),
-			)}
-		</MediaLayout>
-	);
-};
+import { MediaCard } from '../components';
+import { SearchForm } from './SearchForm';
 
 interface Props {
 	media: Film[] | Show[];
 	count: number;
 }
 
-export const MediaWrapper = ({ media, count }: Props) => {
-	const isLoading = false;
+export const MediaList = ({ media, count }: Props) => {
+	const { isLoading, palettes } = usePalettes({ items: media });
 
 	return (
 		<div className="flex flex-col sm:gap-4">
@@ -39,7 +20,21 @@ export const MediaWrapper = ({ media, count }: Props) => {
 
 			<Paginator count={count} isLoading={isLoading} />
 			{isLoading && <MediaSkeletons />}
-			{!isLoading && <MediaList medias={media || []} />}
+			{!isLoading && (
+				<MediaLayout>
+					{media.map((media) =>
+						isLoading ? (
+							<MediaSkeleton key={media.id} />
+						) : (
+							<MediaCard
+								key={media.id}
+								media={media}
+								palette={palettes?.[media.id].palette || DEFAULT_PALETTE}
+							/>
+						),
+					)}
+				</MediaLayout>
+			)}
 			<Paginator count={count} isLoading={isLoading} />
 		</div>
 	);

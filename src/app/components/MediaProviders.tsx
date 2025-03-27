@@ -1,4 +1,4 @@
-import { TmdbImage } from '~/core-components/TmdbImage';
+import { TmdbImage } from '~/core-components';
 import { useSystemData } from '~/hooks/useSystemData';
 import type { Provider } from '~/types/types';
 

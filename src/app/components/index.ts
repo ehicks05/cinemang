@@ -1,7 +1,7 @@
 import { MediaCard } from './MediaCard';
-import { MediaDetail } from './MediaDetail';
 import { MediaProviders } from './MediaProviders';
 import { MediaStats } from './MediaStats';
-import { SearchForm } from './SearchForm';
+import { SubHeading } from './SubHeading';
+import { TopCrew } from './TopCrew';
 
-export { MediaCard, MediaDetail, MediaProviders, MediaStats, SearchForm };
+export { MediaCard, MediaProviders, MediaStats, SubHeading, TopCrew };

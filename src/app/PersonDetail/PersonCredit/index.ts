@@ -1,3 +1,1 @@
-import { PersonCredit } from './PersonCredit';
-
-export { PersonCredit };
+export { PersonCredit } from './PersonCredit';

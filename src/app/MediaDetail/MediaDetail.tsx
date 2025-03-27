@@ -1,69 +1,15 @@
-import { addMinutes, format, intervalToDuration, parseISO } from 'date-fns';
-import { Clapperboard, Lightbulb } from 'lucide-react';
 import { useDocumentTitle } from 'usehooks-ts';
-import { Credits, OriginalImageLink, Trailer } from '~/core-components';
-import { TmdbImage } from '~/core-components/TmdbImage';
+import { OriginalImageLink, TmdbImage, Trailer } from '~/core-components';
 import type { Film, Show, Video } from '~/types/types';
 import { usePalette } from '~/utils/palettes/usePalettes';
-import { MediaProviders } from './MediaProviders';
-import { MediaStats } from './MediaStats';
+import { MediaProviders, MediaStats, SubHeading, TopCrew } from '../components';
+import { Credits } from './Credits';
 import { Seasons } from './Seasons';
 
 interface Props {
 	media: Film | Show;
 	trailer: Video;
 }
-
-export const SubHeading = ({ media }: { media: Film | Show }) => {
-	if ('released_at' in media) {
-		const year = format(parseISO(media.released_at), 'yyyy');
-		const runtime = intervalToDuration({
-			end: addMinutes(new Date(), Number(media.runtime)),
-			start: new Date(),
-		});
-
-		return (
-			<>
-				<span className="font-semibold" title={media.released_at}>
-					{year}
-				</span>
-				{' • '}
-				<span className="whitespace-nowrap">{`${runtime.hours || 0}h ${runtime.minutes}m`}</span>
-			</>
-		);
-	}
-
-	const firstYear = format(parseISO(media.first_air_date), 'yyyy');
-	const lastYear = format(parseISO(media.last_air_date), 'yyyy');
-	const years = firstYear === lastYear ? firstYear : `${firstYear}-${lastYear}`;
-
-	return (
-		<span>
-			{years} ({media.status})
-		</span>
-	);
-};
-
-export const TopCrew = ({
-	media,
-	showAllCreators = false,
-}: { media: Film | Show; showAllCreators?: boolean }) => {
-	if ('director' in media) {
-		return (
-			<div className="flex items-center gap-1" title="Director">
-				<Clapperboard size={16} className="text-neutral-400" /> {media.director}
-			</div>
-		);
-	}
-	if (media.created_by) {
-		return (
-			<div className="flex items-center gap-1" title="Created by">
-				<Lightbulb size={16} className="text-neutral-400 shrink-0" />{' '}
-				{showAllCreators ? media.created_by : media.created_by.split(',')[0]}
-			</div>
-		);
-	}
-};
 
 export const MediaDetail = ({ media, trailer }: Props) => {
 	const title = 'title' in media ? media.title : media.name;

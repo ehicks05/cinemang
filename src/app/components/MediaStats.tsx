@@ -1,8 +1,8 @@
 import { FaHeart, FaStar } from 'react-icons/fa';
 import { GENRE_NAMES } from '~/constants/constants';
+import { StatChip } from '~/core-components';
 import { useSystemData } from '~/hooks/useSystemData';
 import type { Genre } from '~/types/types';
-import { StatChip } from './StatChip';
 
 const nf = Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
 

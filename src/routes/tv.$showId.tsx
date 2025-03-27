@@ -1,5 +1,5 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
-import { MediaDetail } from '~/app/components';
+import { MediaDetail } from '~/app/MediaDetail';
 import { fetchTrailer } from '~/core-components/Trailer/useFetchVideos';
 import { getShowById } from '~/hooks/useFetchShows';
 

@@ -1,10 +1,8 @@
 import { Link } from '@tanstack/react-router';
-import { TmdbImage } from '~/core-components/TmdbImage';
+import { TmdbImage } from '~/core-components';
 import type { Film, Show } from '~/types/types';
 import type { Palette } from '~/utils/palettes/palette';
-import { SubHeading, TopCrew } from './MediaDetail';
-import { MediaProviders } from './MediaProviders';
-import { MediaStats } from './MediaStats';
+import { MediaProviders, MediaStats, SubHeading, TopCrew } from './';
 
 export const MediaCard = ({
 	media,
