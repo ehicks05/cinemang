@@ -14,10 +14,8 @@ export interface PaletteWithGradient {
 }
 
 export const toPalette = async (url: string) => {
-	const img = new Image();
-	img.crossOrigin = 'Anonymous';
-	img.src = url;
-	const p = await new Vibrant(img).getPalette();
+	await fetch(url, { mode: 'cors', cache: 'no-cache' });
+	const p = await new Vibrant(url).getPalette();
 
 	const base = {
 		darkMuted: p.DarkMuted?.hex || DEFAULT_PALETTE.darkMuted,
