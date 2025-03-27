@@ -1,19 +1,17 @@
 import { FilmCard } from './FilmCard';
-import { FilmDetail } from './FilmDetail';
+import { MediaDetail } from './MediaDetail';
 import { MediaProviders } from './MediaProviders';
 import { MediaStats } from './MediaStats';
 import { PersonDetail } from './PersonDetail';
 import { SearchForm } from './SearchForm';
 import { ShowCard } from './ShowCard';
-import { ShowDetailWrapper } from './ShowDetail';
 
 export {
 	FilmCard,
-	FilmDetail,
+	MediaDetail,
 	MediaProviders,
 	MediaStats,
 	PersonDetail,
 	SearchForm,
 	ShowCard,
-	ShowDetailWrapper,
 };

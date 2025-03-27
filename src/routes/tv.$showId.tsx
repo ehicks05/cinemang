@@ -1,5 +1,5 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
-import { ShowDetailWrapper } from '~/app/components';
+import { MediaDetail } from '~/app/components';
 import { fetchTrailer } from '~/core-components/Trailer/useFetchVideos';
 import { getShowById } from '~/hooks/useFetchShows';
 
@@ -17,5 +17,5 @@ export const Route = createFileRoute('/tv/$showId')({
 function RouteComponent() {
 	const { show, trailer } = Route.useLoaderData();
 
-	return <ShowDetailWrapper show={show} trailer={trailer} />;
+	return <MediaDetail media={show} trailer={trailer} />;
 }
