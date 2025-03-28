@@ -52,7 +52,7 @@ export const MediaCard = ({ media, palette }: Props) => {
 					<div className="flex flex-col gap-1">
 						<TopCrew media={media} />
 						<div>
-							{media.cast.split(', ').map((name) => (
+							{media.cast.split('|').map((name) => (
 								<div key={name}>{name}</div>
 							))}
 						</div>

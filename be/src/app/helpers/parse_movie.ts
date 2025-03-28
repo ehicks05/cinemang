@@ -6,7 +6,7 @@ const parseTopNCredits = (credits: MovieResponse['credits']['cast'], n = 3) =>
 	credits
 		.slice(0, n)
 		.map((c) => c.name)
-		.join(', ');
+		.join('|');
 
 export const parseMovie = (data: MovieResponse) => {
 	// ignore movies missing required data
