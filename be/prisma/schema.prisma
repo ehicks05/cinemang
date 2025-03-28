@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+  extensions      = [pg_trgm]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DIRECT_DATABASE_URL")
 }
 
 model Movie {
@@ -29,7 +31,7 @@ model Movie {
 
   @@index([languageId])
   @@index([releasedAt])
-  @@index([title])
+  @@index([title(ops: raw("gin_trgm_ops"))], type: Gin)
   @@index([voteAverage])
   @@index([voteCount])
   @@map("movie")
@@ -67,7 +69,7 @@ model Show {
   @@index([firstAirDate])
   @@index([languageId])
   @@index([lastAirDate])
-  @@index([name])
+  @@index([name(ops: raw("gin_trgm_ops"))], type: Gin)
   @@index([voteAverage])
   @@index([voteCount])
   @@map("show")
@@ -104,7 +106,7 @@ model Person {
 
   credits Credit[]
 
-  @@index([name])
+  @@index([name(ops: raw("gin_trgm_ops"))], type: Gin)
   @@map("person")
 }
 
