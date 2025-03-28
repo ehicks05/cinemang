@@ -22,15 +22,21 @@ export const MediaCard = ({ media, palette }: Props) => {
 					linkTo: '/tv/$showId',
 					linkParams: { showId: String(media.id) },
 				};
-	const fontSize = title.length > 24 ? 'text-base' : 'text-lg';
+
+	const fontSize =
+		title.length > 36
+			? 'font-semibold'
+			: title.length > 24
+				? 'text-base'
+				: 'text-lg';
 
 	return (
 		<Link to={linkTo} params={linkParams}>
 			<div
-				className="flex h-full flex-col gap-4 p-4 sm:rounded-lg transition-all duration-1000"
+				className="flex h-full flex-col justify-between gap-4 p-4 sm:rounded-lg transition-all duration-1000"
 				style={palette.bgStyles}
 			>
-				<div className="flex justify-between">
+				<div className="flex justify-between gap-0.5">
 					<div>
 						<span className={`${fontSize} font-bold`}>{title}</span>
 						<span className="flex gap-1 text-xs text-neutral-300">
