@@ -8,7 +8,7 @@ export const toShort = (voteCount: number) =>
 
 const heartColor = (voteAverage: number) =>
 	voteAverage >= 8
-		? 'text-red-600'
+		? 'text-red-500'
 		: voteAverage >= 7
 			? 'text-red-600'
 			: voteAverage >= 6
@@ -22,7 +22,7 @@ const starColor = (voteCount: number) =>
 			? 'text-yellow-400'
 			: voteCount >= 1000
 				? 'text-yellow-500'
-				: 'text-yellow-700';
+				: 'text-yellow-600';
 
 export interface Stats {
 	vote_average: number;
