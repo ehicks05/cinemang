@@ -18,11 +18,11 @@ export const MediaProviders = ({ selectedIds }: Props) => {
 
 	if (filteredProviders.length === 0) return null;
 	return (
-		<div className="flex flex-wrap gap-1">
+		<div className="flex flex-wrap justify-end gap-1">
 			{filteredProviders.map((provider) => (
 				<TmdbImage
 					key={provider.id}
-					className="h-10 w-10 rounded-lg"
+					className="h-10 w-10 rounded-full"
 					path={provider.logo_path}
 					width={'original'}
 					title={provider.name}

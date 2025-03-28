@@ -11,8 +11,8 @@ interface Props {
 
 const StatChip = ({ bgColor, color, icon: Icon, label, title, width }: Props) => (
 	<div
-		className={`flex ${width} items-center justify-center gap-1 rounded-lg bg-neutral-700 px-3 py-2 sm:px-4`}
-		style={{ backgroundColor: bgColor }}
+		className={`flex ${width} items-center justify-center gap-1 px-3 py-1 sm:px-3 rounded text-sm`}
+		style={{ background: bgColor }}
 		title={title}
 	>
 		{Icon && <Icon className={color} />}

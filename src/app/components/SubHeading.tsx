@@ -1,4 +1,5 @@
 import { addMinutes, format, intervalToDuration, parseISO } from 'date-fns';
+import { useSystemData } from '~/hooks/useSystemData';
 import type { Film, Person, Show } from '~/types/types';
 
 interface Props {
@@ -6,6 +7,8 @@ interface Props {
 }
 
 export const SubHeading = ({ media }: Props) => {
+	const { genres } = useSystemData();
+
 	if ('released_at' in media) {
 		const year = format(parseISO(media.released_at), 'yyyy');
 		const runtime = intervalToDuration({
@@ -16,10 +19,17 @@ export const SubHeading = ({ media }: Props) => {
 		return (
 			<>
 				<span className="font-semibold" title={media.released_at}>
-					{year}
+					{year} {genres.find((genre) => genre.id === media.genre_id)?.name}
 				</span>
 				{' • '}
 				<span className="whitespace-nowrap">{`${runtime.hours || 0}h ${runtime.minutes}m`}</span>
+
+				{media.language_id !== 'en' && (
+					<span>
+						{' • '}
+						{media.language_id}
+					</span>
+				)}
 			</>
 		);
 	}
@@ -30,9 +40,12 @@ export const SubHeading = ({ media }: Props) => {
 		const years = firstYear === lastYear ? firstYear : `${firstYear}-${lastYear}`;
 
 		return (
-			<span>
-				{years} ({media.status})
-			</span>
+			<>
+				<span className="font-semibold">
+					{years} {genres.find((genre) => genre.id === media.genre_id)?.name} {' • '}
+				</span>
+				<span>{media.status.replace(' Series', '')}</span>
+			</>
 		);
 	}
 

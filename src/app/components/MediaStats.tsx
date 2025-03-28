@@ -1,16 +1,7 @@
 import { FaHeart, FaStar } from 'react-icons/fa';
 import { StatChip } from '~/core-components';
-import { useSystemData } from '~/hooks/useSystemData';
-import type { Genre } from '~/types/types';
-
-const GENRE_NAMES = { 'Science Fiction': 'Sci-Fi' } as Record<string, string>;
 
 const nf = Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
-
-const findGenre = (genres: Genre[], genreId: number) =>
-	genres.find((genre) => genre.id === genreId);
-
-const getGenreName = (genreName: string) => GENRE_NAMES[genreName] || genreName;
 
 export const toShort = (voteCount: number) =>
 	Number(voteCount) > 1000 ? `${Math.round(voteCount / 1000)}k` : String(voteCount);
@@ -34,15 +25,11 @@ const starColor = (voteCount: number) =>
 				: 'text-yellow-700';
 
 export interface Stats {
-	genre_id: number;
-	language_id: string;
 	vote_average: number;
 	vote_count: number;
 }
 
-export const toStats = (genres: Genre[], media: Stats) => ({
-	genre: getGenreName(findGenre(genres, media.genre_id)?.name || '?'),
-	language: media.language_id,
+export const toStats = (media: Stats) => ({
 	voteAverage: media.vote_average,
 	voteCount: media.vote_count,
 });
@@ -54,9 +41,7 @@ interface Props {
 }
 
 export const MediaStats = ({ autoWidth = true, bgColor, object }: Props) => {
-	const { genres } = useSystemData();
-
-	const { genre, language, voteAverage, voteCount } = toStats(genres, object);
+	const { voteAverage, voteCount } = toStats(object);
 
 	const stats = [
 		{
@@ -72,20 +57,6 @@ export const MediaStats = ({ autoWidth = true, bgColor, object }: Props) => {
 			color: starColor(voteCount),
 			icon: FaStar,
 			width: 'w-20',
-		},
-		{
-			key: 'Genre',
-			label: genre,
-			color: 'text-blue-400',
-			icon: undefined,
-			width: 'w-32',
-		},
-		{
-			key: 'Language',
-			label: language,
-			color: 'text-emerald-500',
-			icon: undefined,
-			width: 'w-32',
 		},
 	].filter((o) => o.label && !['?', 'en'].includes(o.label));
 
