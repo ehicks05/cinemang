@@ -15,7 +15,7 @@ export const GeneralInfo = ({ media, palette }: Props) => {
 				<TopCrew media={media} showAllCreators />
 			)}
 			{/* STARRING */}
-			{'cast' in media && <div>Starring: {media.cast}</div>}
+			{'cast' in media && <div>Starring: {media.cast.replaceAll('|', ', ')}</div>}
 			{/* OVERVIEW */}
 			{'overview' in media && (
 				<div className="sm:max-h-24 md:max-h-32 lg:max-h-48 overflow-x-auto text-justify text-sm">
