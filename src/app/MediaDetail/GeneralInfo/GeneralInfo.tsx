@@ -24,7 +24,7 @@ export const GeneralInfo = ({ media, palette }: Props) => {
 			)}
 			{/* BIO */}
 			{'biography' in media && (
-				<div className="flex flex-col gap-2 text-justify">
+				<div className="flex flex-col gap-2 pr-1 sm:max-h-72 md:max-h-80 lg:max-h-96 overflow-x-auto text-justify text-sm">
 					{media.biography
 						.split('\n')
 						.filter(Boolean)

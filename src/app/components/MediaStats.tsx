@@ -24,53 +24,43 @@ const starColor = (voteCount: number) =>
 				? 'text-yellow-500'
 				: 'text-yellow-600';
 
-export interface Stats {
-	vote_average: number;
-	vote_count: number;
-}
-
-export const toStats = (media: Stats) => ({
-	voteAverage: media.vote_average,
-	voteCount: media.vote_count,
-});
-
 interface Props {
-	autoWidth?: boolean;
 	bgColor: string;
-	object: Stats;
+	object: {
+		vote_average: number;
+		vote_count: number;
+	};
+	classname?: string;
 }
 
-export const MediaStats = ({ autoWidth = true, bgColor, object }: Props) => {
-	const { voteAverage, voteCount } = toStats(object);
+export const MediaStats = ({ bgColor, object, classname }: Props) => {
+	const { vote_average: voteAverage, vote_count: voteCount } = object;
 
 	const stats = [
 		{
 			key: 'Vote Average',
-			label: voteAverage ? nf.format(voteAverage) : null,
+			label: voteAverage ? nf.format(voteAverage) : '',
 			color: heartColor(voteAverage),
 			icon: FaHeart,
-			width: 'w-20',
 		},
 		{
 			key: 'Vote Count',
-			label: voteCount ? toShort(voteCount) : null,
+			label: voteCount ? toShort(voteCount) : '',
 			color: starColor(voteCount),
 			icon: FaStar,
-			width: 'w-20',
 		},
 	].filter((o) => o.label && !['?', 'en'].includes(o.label));
 
 	return (
-		<span className={`flex ${autoWidth ? 'flex-wrap' : ''} gap-1`}>
+		<span className={`flex gap-1 ${classname || ''}`}>
 			{stats.map((stat) => (
 				<StatChip
 					key={stat.key}
+					title={stat.key}
+					label={stat.label}
+					icon={stat.icon}
 					bgColor={bgColor}
 					color={stat.color}
-					icon={stat.icon}
-					label={stat.label || ''}
-					title={stat.key}
-					width={autoWidth ? undefined : stat.width}
 				/>
 			))}
 		</span>

@@ -3,15 +3,16 @@ import type { IconType } from 'react-icons';
 interface Props {
 	bgColor: string;
 	color: string;
-	icon?: IconType;
-	label?: string | number;
-	title?: string;
-	width?: string;
+	icon: IconType;
+	label: string | number;
+	title: string;
 }
 
-const StatChip = ({ bgColor, color, icon: Icon, label, title, width }: Props) => (
+const StatChip = ({ bgColor, color, icon: Icon, label, title }: Props) => (
 	<div
-		className={`flex ${width} items-center justify-center gap-1 px-3 py-1 sm:px-3 rounded text-sm`}
+		className={
+			'flex w-full items-center justify-center gap-1 px-3 py-1 sm:px-3 rounded text-sm'
+		}
 		style={{ background: bgColor }}
 		title={title}
 	>

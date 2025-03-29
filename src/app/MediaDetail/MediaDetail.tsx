@@ -52,17 +52,17 @@ export const MediaDetail = ({ media, palette, trailer }: Props) => {
 						{trailer && <Trailer trailer={trailer} />}
 
 						{!('birthday' in media) && (
-							<div className="flex gap-1">
+							<div className="flex gap-1 items-center">
 								<MediaStats bgColor={palette.darkVibrant} object={media} />
 								<MediaProviders selectedIds={media.providers} />
 								<a
 									href={`https://www.themoviedb.org/${'title' in media ? 'movie' : 'tv'}/${media.id}`}
-									className="flex items-center justify-center h-10 w-10 rounded-lg"
+									className="flex items-center justify-center h-8 w-8 rounded-full"
 									style={{ backgroundColor: palette.darkVibrant }}
 									target="_blank"
 									rel="noreferrer"
 								>
-									<SiThemoviedatabase size={26} />
+									<SiThemoviedatabase size={22} />
 								</a>
 							</div>
 						)}

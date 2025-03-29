@@ -58,9 +58,11 @@ export const MediaCard = ({ media, palette }: Props) => {
 						</div>
 						<div className="line-clamp-5 text-xs">{media.overview}</div>
 						<div className="grow" />
-						<div className="flex flex-col justify-start gap-4">
-							<MediaStats bgColor={palette.darkVibrant} object={media} />
-						</div>
+						<MediaStats
+							bgColor={palette.darkVibrant}
+							object={media}
+							classname="w-full"
+						/>
 					</div>
 				</div>
 			</div>

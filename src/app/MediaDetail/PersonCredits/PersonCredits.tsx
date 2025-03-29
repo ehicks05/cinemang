@@ -3,19 +3,18 @@ import type React from 'react';
 import { useState } from 'react';
 import type { IconType } from 'react-icons';
 import { FaCalendar, FaHeart, FaStar } from 'react-icons/fa';
-import { StatChip } from '~/core-components';
 import type { Credit, Person } from '~/types/types';
 import type { PaletteWithGradient } from '~/utils/palettes/palette';
 import { PersonCredit } from './PersonCredit';
 
 type SortKey = 'released_at' | 'vote_average' | 'vote_count';
 const SORT_OPTIONS: { color: string; icon: IconType; sort: SortKey }[] = [
-	{ color: 'text-sky-500', icon: FaCalendar, sort: 'released_at' },
+	{ color: 'text-white', icon: FaCalendar, sort: 'released_at' },
 	{ color: 'text-red-600', icon: FaHeart, sort: 'vote_average' },
 	{ color: 'text-yellow-300', icon: FaStar, sort: 'vote_count' },
 ];
 
-const SortOptions = ({
+const SortButtons = ({
 	darkVibrant,
 	setSort,
 	sort,
@@ -24,17 +23,16 @@ const SortOptions = ({
 	setSort: React.Dispatch<React.SetStateAction<SortKey>>;
 	sort: SortKey;
 }) => (
-	<div
-		className="flex w-fit gap-2 self-end rounded-sm p-2"
-		style={{ borderColor: darkVibrant }}
-	>
+	<div className="flex gap-2 py-2" style={{ borderColor: darkVibrant }}>
 		{SORT_OPTIONS.map((o) => (
-			<button type="button" key={o.sort} onClick={() => setSort(o.sort)}>
-				<StatChip
-					bgColor={darkVibrant}
-					color={sort === o.sort ? o.color : ''}
-					icon={o.icon}
-				/>
+			<button
+				key={o.sort}
+				type="button"
+				className={`p-2 rounded ${sort === o.sort ? o.color : 'text-neutral-400'}`}
+				style={{ background: darkVibrant }}
+				onClick={() => setSort(o.sort)}
+			>
+				<o.icon size={14} />
 			</button>
 		))}
 	</div>
@@ -58,7 +56,7 @@ interface Props {
 export const PersonCredits = ({ person, palette }: Props) => {
 	const [sort, setSort] = useState<SortKey>('released_at');
 	const sortOptions = (
-		<SortOptions darkVibrant={palette.darkMuted} setSort={setSort} sort={sort} />
+		<SortButtons darkVibrant={palette.darkMuted} setSort={setSort} sort={sort} />
 	);
 
 	const castCredits = orderBy(
@@ -72,31 +70,31 @@ export const PersonCredits = ({ person, palette }: Props) => {
 		'desc',
 	);
 
+	const creditSections = [
+		{ label: 'Cast', credits: castCredits },
+		{ label: 'Crew', credits: crewCredits },
+	];
+
 	return (
 		<div className="flex flex-col gap-4">
-			{castCredits.length !== 0 && (
-				<>
+			{creditSections.map(({ label, credits }) => (
+				<div key={label}>
 					<h1 className="flex items-end justify-between text-xl font-bold">
-						Cast
+						{label}
 						{sortOptions}
 					</h1>
 
-					{castCredits.map((c) => (
-						<PersonCredit bgColor={palette.darkMuted} credit={c} key={c.credit_id} />
-					))}
-				</>
-			)}
-			{crewCredits.length !== 0 && (
-				<>
-					<h1 className="flex items-center justify-between text-xl font-bold">
-						Crew
-						{sortOptions}
-					</h1>
-					{crewCredits.map((c) => (
-						<PersonCredit bgColor={palette.darkMuted} credit={c} key={c.credit_id} />
-					))}
-				</>
-			)}
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+						{credits.map((c) => (
+							<PersonCredit
+								bgColor={palette.darkMuted}
+								credit={c}
+								key={c.credit_id}
+							/>
+						))}
+					</div>
+				</div>
+			))}
 		</div>
 	);
 };
