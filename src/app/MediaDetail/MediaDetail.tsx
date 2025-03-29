@@ -32,6 +32,21 @@ const Image = ({ media }: { media: Film | Show | Person }) => {
 	);
 };
 
+const TmdbLink = ({
+	media,
+	palette,
+}: { media: Film | Show | Person; palette: PaletteWithGradient }) => (
+	<a
+		href={`https://www.themoviedb.org/${'birthday' in media ? 'person' : 'title' in media ? 'movie' : 'tv'}/${media.id}`}
+		className="flex items-center justify-center h-8 w-8 rounded-full"
+		style={{ backgroundColor: palette.darkVibrant }}
+		target="_blank"
+		rel="noreferrer"
+	>
+		<SiThemoviedatabase size={22} />
+	</a>
+);
+
 interface Props {
 	media: Film | Show | Person;
 	palette: PaletteWithGradient;
@@ -51,21 +66,15 @@ export const MediaDetail = ({ media, palette, trailer }: Props) => {
 					<div className="flex flex-col grow gap-2">
 						{trailer && <Trailer trailer={trailer} />}
 
-						{!('birthday' in media) && (
-							<div className="flex gap-1 items-center">
-								<MediaStats bgColor={palette.darkVibrant} object={media} />
-								<MediaProviders selectedIds={media.providers} />
-								<a
-									href={`https://www.themoviedb.org/${'title' in media ? 'movie' : 'tv'}/${media.id}`}
-									className="flex items-center justify-center h-8 w-8 rounded-full"
-									style={{ backgroundColor: palette.darkVibrant }}
-									target="_blank"
-									rel="noreferrer"
-								>
-									<SiThemoviedatabase size={22} />
-								</a>
-							</div>
-						)}
+						<div className="flex gap-1 items-center">
+							{'providers' in media && (
+								<>
+									<MediaStats bgColor={palette.darkVibrant} object={media} />
+									<MediaProviders selectedIds={media.providers} />
+								</>
+							)}
+							<TmdbLink media={media} palette={palette} />
+						</div>
 						<GeneralInfo media={media} palette={palette} />
 					</div>
 				</div>
