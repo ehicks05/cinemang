@@ -71,8 +71,8 @@ export const PersonCredits = ({ person, palette }: Props) => {
 	);
 
 	const creditSections = [
-		{ label: 'Cast', credits: castCredits },
-		{ label: 'Crew', credits: crewCredits },
+		...(castCredits.length > 0 ? [{ label: 'Cast', credits: castCredits }] : []),
+		...(crewCredits.length > 0 ? [{ label: 'Crew', credits: crewCredits }] : []),
 	];
 
 	return (

@@ -31,6 +31,7 @@ export const GeneralInfo = ({ media, palette }: Props) => {
 						.map((b) => (
 							<div key={b}>{b}</div>
 						))}
+					{!media.biography && 'No biography has been added yet.'}
 				</div>
 			)}
 			{'birthday' in media && <Lifespan palette={palette} person={media} />}
