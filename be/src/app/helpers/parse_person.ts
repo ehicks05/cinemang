@@ -11,7 +11,7 @@ export const parsePerson = (data?: PersonResponse) => {
 
 	const create: Prisma.PersonCreateInput = {
 		...pick(data, ['id', 'biography', 'name', 'popularity']),
-		birthday: new Date(data.birthday),
+		birthday: data.birthday ? new Date(data.birthday) : null,
 		deathday: data.deathday ? new Date(data.deathday) : null,
 		gender: Number(data.gender),
 		imdbId: data.imdb_id,
