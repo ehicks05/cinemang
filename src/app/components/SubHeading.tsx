@@ -45,6 +45,13 @@ export const SubHeading = ({ media }: Props) => {
 					{years} {genres.find((genre) => genre.id === media.genre_id)?.name} {' • '}
 				</span>
 				<span>{media.status.replace(' Series', '')}</span>
+
+				{media.language_id !== 'en' && (
+					<span>
+						{' • '}
+						{media.language_id}
+					</span>
+				)}
 			</>
 		);
 	}

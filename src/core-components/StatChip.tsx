@@ -3,7 +3,7 @@ import type { IconType } from 'react-icons';
 interface Props {
 	bgColor: string;
 	color: string;
-	icon: IconType;
+	icon?: IconType;
 	label: string | number;
 	title: string;
 }
