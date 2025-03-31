@@ -19,5 +19,5 @@ export const Route = createFileRoute('/films/')({
 function RouteComponent() {
 	const { films, count } = Route.useLoaderData();
 
-	return <MediaList media={films} count={count} />;
+	return <MediaList media={films || []} count={count || 0} />;
 }

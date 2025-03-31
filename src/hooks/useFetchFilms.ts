@@ -16,7 +16,7 @@ const queryPersonIdsByName = async (name: string) => {
 };
 
 export const queryFilms = async (form: MovieSearchForm) => {
-	const creditPersonIds: number[] =
+	const creditPersonIds =
 		form.creditName.length > 2 ? await queryPersonIdsByName(form.creditName) : [];
 
 	// filtered providers for a movie, for searching
@@ -74,7 +74,10 @@ export const queryFilms = async (form: MovieSearchForm) => {
 		.order('id', { ascending: true })
 		.range(form.page * PAGE_SIZE, (form.page + 1) * PAGE_SIZE - 1);
 
-	return { films: result.data as unknown as Film[], count: result.count || 0 };
+	return {
+		films: result.data as unknown as Film[],
+		count: result.count || 0,
+	};
 };
 
 export const getFilmById = async (id: number) => {
