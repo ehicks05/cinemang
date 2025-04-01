@@ -21,6 +21,7 @@ import {
 	getSeason,
 	getShow,
 } from '~/services/tmdb/index.js';
+import tmdb from '~/services/tmdb/tmdb.js';
 import type { SeasonSummary } from '~/services/tmdb/types/base.js';
 import type {
 	MovieResponse,
@@ -303,13 +304,29 @@ const reportDbLatency = async () => {
 	await prisma.$executeRaw`select 1`;
 	const end = Date.now();
 	const dur = (end - start) / 3;
-	logger.info(`test query 'select 1' took ${dur} ms`);
+	logger.info(`test query 'select 1' averaged ${dur} ms`);
+};
+
+const reportTmdbLatency = async () => {
+	// warm
+	await tmdb.get('/movie/2');
+	await tmdb.get('/movie/2');
+	await tmdb.get('/movie/2');
+	// measure
+	const start = Date.now();
+	await tmdb.get('/movie/2');
+	await tmdb.get('/movie/2');
+	await tmdb.get('/movie/2');
+	const end = Date.now();
+	const dur = (end - start) / 3;
+	logger.info(`test query '/movie/2' averaged ${dur} ms`);
 };
 
 // mostly housekeeping
 const wrapper = async () => {
 	try {
 		await reportDbLatency();
+		await reportTmdbLatency();
 
 		logger.info('starting tmdb_loader script');
 		const { id: logId } = await prisma.syncRunLog.create({ data: {} });
