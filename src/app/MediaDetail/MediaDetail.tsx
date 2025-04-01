@@ -1,6 +1,13 @@
 import { SiThemoviedatabase } from 'react-icons/si';
 import { OriginalImageLink, TmdbImage, Trailer } from '~/core-components';
-import type { Film, Person, Show, Video } from '~/types/types';
+import type {
+	Film,
+	FilmDetail,
+	Person,
+	Show,
+	ShowDetail,
+	Video,
+} from '~/types/types';
 import type { PaletteWithGradient } from '~/utils/palettes/palette';
 import { MediaProviders, MediaStats, SubHeading } from '../components';
 import { GeneralInfo } from './GeneralInfo';
@@ -48,7 +55,7 @@ const TmdbLink = ({
 );
 
 interface Props {
-	media: Film | Show | Person;
+	media: FilmDetail | ShowDetail | Person;
 	palette: PaletteWithGradient;
 	trailer?: Video;
 }

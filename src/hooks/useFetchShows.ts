@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { PAGE_SIZE } from '~/constants/constants';
-import type { Show } from '~/types/types';
+import type { Show, ShowDetail } from '~/types/types';
 import type { TvSearchForm } from '~/utils/searchParams/types';
 import { supabase } from '~/utils/supabase';
 import { CREDIT_PERSON_JOIN, PROVIDER_JOIN } from './constants';
@@ -83,7 +83,7 @@ export const getShowById = async (id: number) => {
 	);
 
 	const result = await supabase.from('show').select(select).eq('id', id).single();
-	return result.data as unknown as Show;
+	return result.data as unknown as ShowDetail;
 };
 
 export const useFetchShow = (id: number) =>

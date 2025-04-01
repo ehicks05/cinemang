@@ -17,11 +17,19 @@ export interface Credit extends TCredit {
 }
 
 export interface Film extends TMovie {
+	providers: { id: number }[];
+}
+
+export interface FilmDetail extends TMovie {
 	credits: Credit[];
 	providers: Provider[];
 }
 
 export interface Show extends TShow {
+	providers: { id: number }[];
+}
+
+export interface ShowDetail extends TShow {
 	credits: Credit[];
 	providers: Provider[];
 	seasons: Season[];

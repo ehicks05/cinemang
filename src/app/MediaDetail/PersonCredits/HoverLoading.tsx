@@ -1,8 +1,9 @@
+import type { CSSProperties } from 'react';
 import { Loading } from '~/core-components';
 import { container } from './constants';
 
 interface Props {
-	background: string;
+	background: CSSProperties['background'];
 	error: Error | null;
 	isLoading: boolean;
 }

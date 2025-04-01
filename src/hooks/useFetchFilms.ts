@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { PAGE_SIZE } from '~/constants/constants';
-import type { Film } from '~/types/types';
+import type { Film, FilmDetail } from '~/types/types';
 import type { MovieSearchForm } from '~/utils/searchParams/types';
 import { supabase } from '~/utils/supabase';
 import { CREDIT_PERSON_JOIN, PROVIDER_JOIN } from './constants';
@@ -75,7 +75,7 @@ export const queryFilms = async (form: MovieSearchForm) => {
 		.range(form.page * PAGE_SIZE, (form.page + 1) * PAGE_SIZE - 1);
 
 	return {
-		films: result.data as unknown as Film[],
+		films: result.data as Film[],
 		count: result.count || 0,
 	};
 };
@@ -84,7 +84,7 @@ export const getFilmById = async (id: number) => {
 	const select = ['*', PROVIDER_JOIN, CREDIT_PERSON_JOIN].join(',');
 
 	const result = await supabase.from('movie').select(select).eq('id', id).single();
-	return result.data as unknown as Film;
+	return result.data as unknown as FilmDetail;
 };
 
 export const useFetchFilm = (id: number) =>
