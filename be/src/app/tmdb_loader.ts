@@ -21,7 +21,6 @@ import {
 	getSeason,
 	getShow,
 } from '~/services/tmdb/index.js';
-import tmdb from '~/services/tmdb/tmdb.js';
 import type { SeasonSummary } from '~/services/tmdb/types/base.js';
 import type {
 	MovieResponse,
@@ -34,6 +33,7 @@ import {
 	updateLanguages,
 	updateProviders,
 } from './helpers/helpers.js';
+import { reportDbLatency, reportTmdbLatency } from './helpers/latency_test.js';
 import { createPersons, updatePersons } from './helpers/load_persons.js';
 import { parseMovie } from './helpers/parse_movie.js';
 import { parseShow } from './helpers/parse_show.js';
@@ -290,36 +290,6 @@ const runLoader = async (fullMode: boolean) => {
 	} catch (err) {
 		logger.error(err);
 	}
-};
-
-const reportDbLatency = async () => {
-	// warm
-	await prisma.$executeRaw`select 1`;
-	await prisma.$executeRaw`select 1`;
-	await prisma.$executeRaw`select 1`;
-	// measure
-	const start = Date.now();
-	await prisma.$executeRaw`select 1`;
-	await prisma.$executeRaw`select 1`;
-	await prisma.$executeRaw`select 1`;
-	const end = Date.now();
-	const dur = (end - start) / 3;
-	logger.info(`test query 'select 1' averaged ${dur} ms`);
-};
-
-const reportTmdbLatency = async () => {
-	// warm
-	await tmdb.get('/movie/2');
-	await tmdb.get('/movie/2');
-	await tmdb.get('/movie/2');
-	// measure
-	const start = Date.now();
-	await tmdb.get('/movie/2');
-	await tmdb.get('/movie/2');
-	await tmdb.get('/movie/2');
-	const end = Date.now();
-	const dur = (end - start) / 3;
-	logger.info(`test query '/movie/2' averaged ${dur} ms`);
 };
 
 // mostly housekeeping
