@@ -41,6 +41,10 @@ const getIdsForInterval = async (media: 'movie' | 'tv', interval: Interval) => {
 	return ids.flat();
 };
 
+/**
+ * If `isFullMode`, grab all yearly intervals back to the oldest movie (from 1874)
+ * If not, grab one interval covering the last 3 months
+ */
 export const discoverMediaIds = async (
 	media: 'movie' | 'tv',
 	isFullMode = false,
