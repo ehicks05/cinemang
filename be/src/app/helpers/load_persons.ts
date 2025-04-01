@@ -24,13 +24,11 @@ export const createPersons = async (personIds: number[]) => {
 		.filter((o): o is Prisma.PersonCreateInput => !!o);
 
 	try {
-		const createResult = await prisma.person.createMany({
-			data: parsed,
-		});
+		const createResult = await prisma.person.createMany({ data: parsed });
 
 		logger.info('person', {
 			ids: personIds.length,
-			created: createResult?.count,
+			created: createResult.count,
 			invalid: personIds.length - parsed.length,
 		});
 
@@ -54,9 +52,7 @@ export const updatePersons = async () => {
 	};
 
 	const localPersonIds = (
-		await prisma.person.findMany({
-			select: { id: true },
-		})
+		await prisma.person.findMany({ select: { id: true } })
 	).map(toId);
 	logger.info(`fetched ${localPersonIds.length} personIds from db`);
 
