@@ -12,21 +12,25 @@ const queryPersonIdsByName = async (name: string) => {
 		.ilike('name', `%${name}%`)
 		.order('popularity', { ascending: false })
 		.range(0, 100);
-	return (await query).data?.map((o) => o.id) || [];
+	const result = await query;
+	if (result.error) return result.error;
+	if (result.data.length === 0) return new Error('No credits found by that name');
+	return result.data?.map((o) => o.id);
 };
 
 export const queryFilms = async (form: MovieSearchForm) => {
 	const creditPersonIds =
 		form.creditName.length > 2 ? await queryPersonIdsByName(form.creditName) : [];
 
-	// filtered providers for a movie, for searching
-	const providerSearch =
-		form.providers.length > 0 ? ['wp: media_provider!inner(provider_id)'] : [];
+	if ('message' in creditPersonIds) {
+		throw creditPersonIds;
+	}
 
-	const creditSearch =
-		form.creditName.length > 0 ? ['credit: credit!inner(person_id)'] : [];
-
-	const select = ['*', PROVIDER_JOIN, ...providerSearch, ...creditSearch].join(', ');
+	// providers: for showing providers linked to the film
+	// providerSearch: for filtering by provider
+	// creditSearch: for filtering by credit
+	const select =
+		'*, providers: media_provider(id: provider_id), providerSearch: media_provider!inner(provider_id), creditSearch: credit!inner(person_id)';
 
 	const query = supabase.from('movie').select(select, { count: 'exact' });
 
@@ -62,7 +66,7 @@ export const queryFilms = async (form: MovieSearchForm) => {
 	}
 
 	if (form.providers.length > 0) {
-		query.in('wp.provider_id', form.providers);
+		query.in('providerSearch.provider_id', form.providers);
 	}
 
 	if (creditPersonIds.length > 0) {
