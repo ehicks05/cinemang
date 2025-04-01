@@ -298,8 +298,6 @@ const wrapper = async () => {
 		await reportDbLatency();
 		await reportTmdbLatency();
 
-		if (true) return;
-
 		logger.info('starting tmdb_loader script');
 		const { id: logId } = await prisma.syncRunLog.create({ data: {} });
 
