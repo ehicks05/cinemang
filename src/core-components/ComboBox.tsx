@@ -48,8 +48,6 @@ export function ComboBox({ options, selectedOptions, handleChange }: Props) {
 		<Popover open={open} onOpenChange={setOpen} modal>
 			<PopoverTrigger asChild>
 				<Button
-					// role="combobox"
-					// variant="ghost"
 					aria-expanded={open}
 					className="w-full justify-between h-10 pl-1 bg-neutral-700 rounded-none border border-neutral-500"
 				>
@@ -57,7 +55,7 @@ export function ComboBox({ options, selectedOptions, handleChange }: Props) {
 					<ChevronsUpDown className="opacity-50" />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-[260px] p-0 bg-neutral-800 text-neutral-200">
+			<PopoverContent className="w-full p-0 bg-neutral-800 text-neutral-200">
 				<Command>
 					<CommandInput placeholder="Search providers..." className="h-9" />
 					<CommandList>
