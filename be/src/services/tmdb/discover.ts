@@ -15,7 +15,7 @@ const DEFAULT_START_DATE = new Date('1874-01-01');
 
 const RECENCY_CLAUSE_KEY = {
 	movie: 'primary_release_date',
-	tv: 'air_date',
+	tv: 'first_air_date',
 };
 
 const getIdsForInterval = async (media: 'movie' | 'tv', interval: Interval) => {
