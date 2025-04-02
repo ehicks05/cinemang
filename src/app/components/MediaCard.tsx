@@ -43,7 +43,7 @@ export const MediaCard = ({ media, palette }: Props) => {
 							<SubHeading media={media} />
 						</span>
 					</div>
-					{media.providers && <MediaProviders selectedIds={media.providers} />}
+					{media.providers && <MediaProviders ids={media.providers} />}
 				</div>
 				<div className="flex gap-4">
 					<div className="shrink-0">

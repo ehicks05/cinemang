@@ -77,7 +77,7 @@ export const MediaDetail = ({ media, palette, trailer }: Props) => {
 							{'providers' in media && (
 								<>
 									<MediaStats bgColor={palette.darkVibrant} object={media} />
-									<MediaProviders selectedIds={media.providers} />
+									<MediaProviders ids={media.providers} />
 								</>
 							)}
 							<TmdbLink media={media} palette={palette} />

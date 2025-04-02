@@ -3,13 +3,13 @@ import { useSystemData } from '~/hooks/useSystemData';
 import type { Provider } from '~/types/types';
 
 interface Props {
-	selectedIds: { id: number }[];
+	ids: { id: number }[];
 }
 
-export const MediaProviders = ({ selectedIds }: Props) => {
+export const MediaProviders = ({ ids }: Props) => {
 	const { providers } = useSystemData();
 
-	const filteredProviders = selectedIds
+	const filteredProviders = ids
 		.map((id) => providers.find((p) => p.id === id.id))
 		.filter((p): p is Provider => p !== null && p !== undefined)
 		.filter((p) => p.display_priority <= 22)
