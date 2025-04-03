@@ -21,7 +21,7 @@ const toSeasonCreateInput = (
 });
 
 // hack, need to handle upstream
-type ModdedSeason = SeasonResponse & {
+export type ModdedSeason = SeasonResponse & {
 	showId: number;
 	episode_count: number;
 };

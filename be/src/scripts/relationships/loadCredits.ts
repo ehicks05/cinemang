@@ -1,34 +1,79 @@
-import type { Prisma } from '@prisma/client';
+import { uniqBy } from 'lodash-es';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
-import type { MediaResponse } from '~/services/tmdb/types/responses.js';
+import type { ShowResponse } from '~/services/tmdb/types/responses.js';
 import { processLines } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
+import type { ModdedSeason } from './loadSeasons.js';
+import { toCreditCreateInput } from './toCreateCreditInput.js';
 
-const toMediaKey = (media: MediaResponse) => {
-	if ('title' in media) return { movieId: media.id };
-	if ('name' in media) return { showId: media.id };
-	throw new Error('unrecognized media object');
+const handleMovieChunk = async (chunk: string[]) => {
+	const data = chunk
+		.map((line) => JSON.parse(line))
+		.flatMap(toCreditCreateInput)
+		.filter((o) => !!o);
+
+	// DEBUG
+	const persons = await prisma.person.findMany({
+		where: { id: { in: data.map((o) => o.personId) } },
+	});
+	const personIds = persons.map((o) => o.id);
+
+	const creditsWithNonexistantPerson = data.filter(
+		(credit) => !personIds.includes(credit.personId),
+	);
+
+	creditsWithNonexistantPerson.map((c) =>
+		console.log(`movieId: ${c.movieId}, missing person: ${c.personId}`),
+	);
+	// DEBUG
+
+	return data;
 };
 
-const toCreditCreateInput = (
-	media: MediaResponse,
-): Prisma.CreditUncheckedCreateInput[] => [
-	...media.credits.cast.map((c) => ({
-		...toMediaKey(media),
-		personId: c.id,
-		creditId: c.credit_id,
-		character: c.character,
-		order: c.order,
-	})),
-	...media.credits.crew.map((c) => ({
-		...toMediaKey(media),
-		personId: c.id,
-		creditId: c.credit_id,
-		department: c.department,
-		job: c.job,
-	})),
-];
+const mergeSeasonCreditsIntoShow = (show: ShowResponse, seasons: ModdedSeason[]) => {
+	const showSeasons = seasons.filter((season) => season.showId === show.id);
+	const seasonsCasts = showSeasons.flatMap((season) => season.credits.cast);
+	const seasonsCrews = showSeasons.flatMap((season) => season.credits.crew);
+
+	const combinedCast = [...show.credits.cast, ...seasonsCasts];
+	const combinedCrew = [...show.credits.crew, ...seasonsCrews];
+
+	const showWithSeasonCredits = {
+		...show,
+		credits: {
+			cast: uniqBy(combinedCast, 'creditId'),
+			crew: uniqBy(combinedCrew, 'creditId'),
+		},
+	};
+	return showWithSeasonCredits;
+};
+
+const handleShowChunk = async (chunk: string[]) => {
+	const shows: ShowResponse[] = chunk.map((line) => JSON.parse(line));
+	const showIds = shows.map((show) => show.id);
+	// all seasons belonging any of the shows above
+	const seasons: ModdedSeason[] = [];
+
+	await processLines(
+		getPath('season'),
+		async (chunk) => {
+			const showSeasons: ModdedSeason[] = chunk
+				.map((line) => JSON.parse(line))
+				.filter((season) => showIds.includes(season.showId));
+
+			seasons.push(...showSeasons);
+		},
+		500,
+	);
+
+	const data = shows
+		.map((show) => mergeSeasonCreditsIntoShow(show, seasons))
+		.flatMap(toCreditCreateInput)
+		.filter((o) => !!o);
+
+	return data;
+};
 
 export const loadCredits = async (type: 'movie' | 'tv') => {
 	logger.info(`droploading ${type} credits`);
@@ -42,23 +87,10 @@ export const loadCredits = async (type: 'movie' | 'tv') => {
 	await processLines(
 		getPath(type),
 		async (chunk) => {
-			const data = chunk
-				.map((line) => JSON.parse(line))
-				.flatMap(toCreditCreateInput)
-				.filter((o) => !!o);
-
-			const persons = await prisma.person.findMany({
-				where: { id: { in: data.map((o) => o.personId) } },
-			});
-			const personIds = persons.map((o) => o.id);
-
-			const creditsWithNonexistantPerson = data.filter(
-				(credit) => !personIds.includes(credit.personId),
-			);
-
-			creditsWithNonexistantPerson.map((c) =>
-				console.log(`movieId: ${c.movieId}, missing person: ${c.personId}`),
-			);
+			const data =
+				type === 'movie'
+					? await handleMovieChunk(chunk)
+					: await handleShowChunk(chunk);
 
 			try {
 				await prisma.credit.createMany({ data });
