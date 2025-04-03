@@ -12,28 +12,28 @@ import { filterCredits, trimCredits } from './utils.js';
 
 interface ShowIdSeasonId {
 	showId: number;
-	seasonId: number;
+	seasonNumber: number;
 }
 
 // kinda wasteful
-const collectShowIdSeasonIdPairs = async (chunkIds: number[]) => {
-	const showIdSeasonIdPairs: ShowIdSeasonId[] = [];
+const collectShowIdSeasonNumberPairs = async (chunkIds: number[]) => {
+	const showIdSeasonNumberPairs: ShowIdSeasonId[] = [];
 
 	await processLineByLine(getPath('tv'), (line) => {
 		const media: ShowResponse = JSON.parse(line);
 		const pairs = media.seasons.map((season) => ({
 			showId: media.id,
-			seasonId: season.id,
+			seasonNumber: season.season_number,
 		}));
 
-		showIdSeasonIdPairs.push(...pairs);
+		showIdSeasonNumberPairs.push(...pairs);
 	});
 
-	return showIdSeasonIdPairs.filter((ids) => chunkIds.includes(ids.showId));
+	return showIdSeasonNumberPairs.filter((ids) => chunkIds.includes(ids.showId));
 };
 
-const toSeason = async ({ showId, seasonId }: ShowIdSeasonId) =>
-	getSeason(showId, seasonId);
+const toSeason = async ({ showId, seasonNumber }: ShowIdSeasonId) =>
+	getSeason(showId, seasonNumber);
 
 const trim = (season: SeasonResponse) => ({
 	...season,
@@ -49,9 +49,9 @@ export const handleSeasonChunk = async (
 ) => {
 	const path = getPath(type);
 
-	const showIdSeasonIdPairs = await collectShowIdSeasonIdPairs(ids);
+	const showIdSeasonNumberPairs = await collectShowIdSeasonNumberPairs(ids);
 
-	const _seasons = await pMap(showIdSeasonIdPairs, toSeason, TMDB_OPTIONS);
+	const _seasons = await pMap(showIdSeasonNumberPairs, toSeason, TMDB_OPTIONS);
 	const seasons = _seasons
 		.filter((season): season is SeasonResponse => season !== undefined)
 		.map((season) => ({ ...season, credits: filterCredits(season.credits) }))
