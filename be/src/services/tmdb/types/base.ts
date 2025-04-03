@@ -66,17 +66,17 @@ export interface Person {
 	adult: boolean;
 	also_known_as: string[];
 	biography: string;
-	birthday: string;
-	deathday?: string;
+	birthday: string | null;
+	deathday: string | null;
 	gender: 0 | 1 | 2 | 3;
-	homepage?: string;
+	homepage: string | null;
 	id: number;
-	imdb_id: string;
+	imdb_id: string | null;
 	known_for_department: string;
 	name: string;
-	place_of_birth?: string;
+	place_of_birth: string | null;
 	popularity: number;
-	profile_path?: string;
+	profile_path: string | null;
 }
 
 export type ProductionCompany = Pick<
