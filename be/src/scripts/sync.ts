@@ -24,6 +24,8 @@ const run = async () => {
 	// await loadMediaProviders('tv');
 
 	await loadSeasons();
+
+	// todo: season credits?
 };
 
 run();

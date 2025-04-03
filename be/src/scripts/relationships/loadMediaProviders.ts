@@ -30,7 +30,7 @@ const toMediaProviderCreateInput = (
 	}));
 };
 
-export const loadMediaProviders = async (type: 'movie' | 'tv' | 'person') => {
+export const loadMediaProviders = async (type: 'movie' | 'tv') => {
 	logger.info(`droploading ${type} mediaProviders`);
 	const providersById = await getProvidersById();
 

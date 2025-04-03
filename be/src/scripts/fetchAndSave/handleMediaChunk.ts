@@ -7,44 +7,21 @@ import {
 	getShow,
 } from '../../services/tmdb/simple_endpoints.js';
 import type { MediaResponse } from '../../services/tmdb/types/responses.js';
+import { MIN_VOTES } from '../constants.js';
 import { getPath } from '../utils.js';
+import {
+	filterCredits,
+	trimCredits,
+	trimSeasons,
+	trimWatchProviders,
+} from './utils.js';
 
-const filterCredits = (media: MediaResponse) => ({
-	...media,
-	credits: {
-		cast: media.credits.cast.filter((credit) => credit.profile_path !== null),
-		crew: media.credits.crew.filter((credit) => credit.profile_path !== null),
-	},
-});
-
-/**
- * Remove unused fields
- */
 const trim = (media: MediaResponse) => ({
 	...media,
-	credits: {
-		cast: media.credits.cast.map((credit) => {
-			const { id, character, order, credit_id, name, ...rest } = credit;
-			return { id, character, order, credit_id, name };
-		}),
-		crew: media.credits.crew.map((credit) => {
-			const { id, job, department, credit_id, name, ...rest } = credit;
-			return { id, job, department, credit_id, name };
-		}),
-	},
-	'watch/providers': {
-		results: {
-			US: {
-				flatrate:
-					media['watch/providers'].results.US?.flatrate?.map((provider) => ({
-						provider_id: provider.provider_id,
-					})) || [],
-			},
-		},
-	},
+	credits: trimCredits(media.credits),
+	'watch/providers': trimWatchProviders(media),
+	seasons: trimSeasons(media),
 });
-
-const MIN_VOTES = 64;
 
 const isValid = (m: MediaResponse) => {
 	const isValidGeneral =
@@ -69,7 +46,7 @@ const isValid = (m: MediaResponse) => {
 export const handleMediaChunk = async (
 	ids: number[],
 	i: number,
-	type: 'movie' | 'tv' | 'person',
+	type: 'movie' | 'tv',
 ) => {
 	const path = getPath(type);
 	const handleId = async (id: number) => {
@@ -83,7 +60,7 @@ export const handleMediaChunk = async (
 	const _media = await pMap(ids, handleId, TMDB_OPTIONS);
 	const media = _media
 		.filter((media): media is MediaResponse => media !== undefined)
-		.map(filterCredits) // removed credits may affect isValid check below
+		.map((media) => ({ ...media, credits: filterCredits(media.credits) })) // removed credits may affect isValid check below
 		.filter(isValid)
 		.map(trim)
 		.map((media) => JSON.stringify(media));

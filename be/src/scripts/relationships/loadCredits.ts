@@ -69,5 +69,5 @@ export const loadCredits = async (type: 'movie' | 'tv') => {
 		500,
 	);
 
-	logger.info(`finished loading ${type} credits`);
+	logger.info(`finished droploading ${type} credits`);
 };

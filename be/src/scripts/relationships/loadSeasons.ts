@@ -2,7 +2,7 @@ import type { Prisma } from '@prisma/client';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
 import type { SeasonSummary } from '~/services/tmdb/types/base.js';
-import type { ShowResponse } from '~/services/tmdb/types/responses.js';
+import type { SeasonResponse } from '~/services/tmdb/types/responses.js';
 import { processLines } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 
@@ -20,25 +20,25 @@ const toSeasonCreateInput = (
 	voteAverage: o.vote_average,
 });
 
+// hack, need to handle upstream
+type ModdedSeason = SeasonResponse & {
+	showId: number;
+	episode_count: number;
+};
+
 export const loadSeasons = async () => {
-	const type = 'tv';
+	const type = 'season';
 	logger.info(`droploading ${type} seasons`);
 
 	const deleteResult = await prisma.season.deleteMany({});
-
 	logger.info(`dropped ${deleteResult.count} rows`);
 
 	await processLines(
 		getPath(type),
 		async (chunk) => {
 			const data = chunk
-				.map((line) => JSON.parse(line) as ShowResponse)
-				.flatMap((show) =>
-					show.seasons
-						.filter((season) => season.season_number !== 0)
-						.map((season) => ({ ...season, showId: show.id })),
-				)
-				.flatMap(toSeasonCreateInput);
+				.map((line) => JSON.parse(line) as ModdedSeason)
+				.map(toSeasonCreateInput);
 
 			try {
 				await prisma.season.createMany({ data });
@@ -49,5 +49,5 @@ export const loadSeasons = async () => {
 		500,
 	);
 
-	logger.info(`finished loading ${type} seasons`);
+	logger.info(`finished droploading ${type} seasons`);
 };

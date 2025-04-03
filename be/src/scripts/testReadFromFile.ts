@@ -6,7 +6,7 @@ import type {
 import { processLineByLine } from './processLineByLine.js';
 import { getPath } from './utils.js';
 
-const loadMediaFromFile = async (type: 'movie' | 'tv' | 'person') => {
+const testReadFromFile = async (type: 'movie' | 'tv' | 'person') => {
 	console.time('foo');
 	const path = getPath(type);
 
@@ -19,4 +19,4 @@ const loadMediaFromFile = async (type: 'movie' | 'tv' | 'person') => {
 	console.timeEnd('foo');
 };
 
-loadMediaFromFile('movie');
+testReadFromFile('movie');

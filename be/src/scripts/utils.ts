@@ -1,5 +1,6 @@
-export const getPath = (type: 'movie' | 'tv' | 'person') =>
-	`./scripts-data/${type}.txt`;
+import type { FileType } from './types.js';
+
+export const getPath = (type: FileType) => `./scripts-data/${type}.txt`;
 
 export const consoleLogInPlace = (input: string) => {
 	process.stdout.clearLine(0);

@@ -7,22 +7,22 @@ import pMap from 'p-map';
 import logger from '~/services/logger.js';
 import { discoverMediaIds } from '../../services/tmdb/discover.js';
 import { isFullMode } from '../constants.js';
+import type { FileType } from '../types.js';
 import { consoleLogInPlace, getPath } from '../utils.js';
 import { collectPersonIds } from './collectPersonIds.js';
+import { collectShowIds } from './collectShowIds.js';
 import { handleMediaChunk } from './handleMediaChunk.js';
 import { handlePersonChunk } from './handlePersonChunk.js';
+import { handleSeasonChunk } from './handleSeasonChunk.js';
 
-const fetchAndSaveByType = async (
-	reuseFile: boolean,
-	type: 'movie' | 'tv' | 'person',
-) => {
+const fetchAndSaveByType = async (reuseFile: boolean, type: FileType) => {
 	logger.info(`fetching all ${type}s`);
 	const path = getPath(type);
 	const exists = existsSync(path);
 
 	if (exists) {
 		const stats = await stat(path);
-		const isFresh = stats.mtime >= subHours(new Date(), 6);
+		const isFresh = stats.mtime >= subHours(new Date(), 24);
 		if (isFresh && reuseFile) {
 			logger.info('skipping due to fresh file or reuseFile=true');
 			return;
@@ -36,18 +36,23 @@ const fetchAndSaveByType = async (
 	const ids =
 		type === 'person'
 			? await collectPersonIds()
-			: await discoverMediaIds(type, isFullMode);
+			: type === 'season'
+				? await collectShowIds()
+				: await discoverMediaIds(type, isFullMode);
 	const chunks = chunk(ids, 500);
-
-	const handler = type === 'person' ? handlePersonChunk : handleMediaChunk;
 
 	await pMap(
 		chunks,
 		async (chunk, i) => {
 			consoleLogInPlace(`chunk ${i + 1} of ${chunks.length}`);
-			await handler(chunk, i, type);
+
+			type === 'person'
+				? await handlePersonChunk(chunk, i, type)
+				: type === 'season'
+					? await handleSeasonChunk(chunk, i, type)
+					: await handleMediaChunk(chunk, i, type);
 		},
-		{ concurrency: 1 },
+		{ concurrency: 500 },
 	);
 
 	process.stdout.write('\n'); // end the line
@@ -57,5 +62,6 @@ const fetchAndSaveByType = async (
 export const fetchAndSave = async (reuseFile: boolean) => {
 	await fetchAndSaveByType(reuseFile, 'movie');
 	await fetchAndSaveByType(reuseFile, 'tv');
-	await fetchAndSaveByType(reuseFile, 'person');
+	await fetchAndSaveByType(reuseFile, 'season'); // depends on tv
+	await fetchAndSaveByType(reuseFile, 'person'); // depends on movie, tv, and season
 };

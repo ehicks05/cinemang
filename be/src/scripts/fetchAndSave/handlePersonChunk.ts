@@ -8,7 +8,7 @@ import { getPath } from '../utils.js';
 export const handlePersonChunk = async (
 	ids: number[],
 	i: number,
-	type: 'movie' | 'tv' | 'person',
+	type: 'person',
 ) => {
 	const path = getPath(type);
 	const handleId = async (id: number) => {
@@ -20,16 +20,16 @@ export const handlePersonChunk = async (
 		credits: undefined,
 	});
 
-	const _person = await pMap(ids, handleId, TMDB_OPTIONS);
-	const media = _person
+	const _persons = await pMap(ids, handleId, TMDB_OPTIONS);
+	const persons = _persons
 		.filter((person): person is PersonResponse => person !== undefined)
 		.map(trim)
 		.map((person) => JSON.stringify(person));
 
-	if (media.length > 0) {
+	if (persons.length > 0) {
 		if (i !== 0) {
 			await appendFile(path, '\n');
 		}
-		await appendFile(path, media.join('\n'));
+		await appendFile(path, persons.join('\n'));
 	}
 };
