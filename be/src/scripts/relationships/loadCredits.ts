@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import { uniqBy } from 'lodash-es';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
@@ -12,21 +13,6 @@ const handleMovieChunk = async (chunk: string[]) => {
 		.map((line) => JSON.parse(line))
 		.flatMap(toCreditCreateInput)
 		.filter((o) => !!o);
-
-	// DEBUG
-	const persons = await prisma.person.findMany({
-		where: { id: { in: data.map((o) => o.personId) } },
-	});
-	const personIds = persons.map((o) => o.id);
-
-	const creditsWithNonexistantPerson = data.filter(
-		(credit) => !personIds.includes(credit.personId),
-	);
-
-	creditsWithNonexistantPerson.map((c) =>
-		console.log(`movieId: ${c.movieId}, missing person: ${c.personId}`),
-	);
-	// DEBUG
 
 	return data;
 };
@@ -75,6 +61,28 @@ const handleShowChunk = async (chunk: string[]) => {
 	return data;
 };
 
+const detectCreditsWithMissingPerson = async (
+	credits: Prisma.CreditUncheckedCreateInput[],
+) => {
+	const persons = await prisma.person.findMany({
+		where: { id: { in: credits.map((o) => o.personId) } },
+	});
+	const personIds = persons.map((o) => o.id);
+
+	const creditsWithMissingPerson = credits.filter(
+		(credit) => !personIds.includes(credit.personId),
+	);
+
+	creditsWithMissingPerson.map((c) =>
+		logger.warn(
+			`movieId: ${c.movieId}, showId: ${c.showId}, missing person: ${c.personId}`,
+		),
+	);
+
+	const creditIdsToRemove = creditsWithMissingPerson.map((c) => c.creditId);
+	return credits.filter((c) => !creditIdsToRemove.includes(c.creditId));
+};
+
 export const loadCredits = async (type: 'movie' | 'tv') => {
 	logger.info(`droploading ${type} credits`);
 
@@ -87,10 +95,12 @@ export const loadCredits = async (type: 'movie' | 'tv') => {
 	await processLines(
 		getPath(type),
 		async (chunk) => {
-			const data =
+			const _data =
 				type === 'movie'
 					? await handleMovieChunk(chunk)
 					: await handleShowChunk(chunk);
+
+			const data = await detectCreditsWithMissingPerson(_data);
 
 			try {
 				await prisma.credit.createMany({ data });
