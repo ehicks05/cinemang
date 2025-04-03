@@ -7,7 +7,8 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"performance": { "noAccumulatingSpread": "off" }
+			"performance": { "noAccumulatingSpread": "off" },
+			"complexity": { "noForEach": "off" }
 		}
 	},
 	"formatter": {

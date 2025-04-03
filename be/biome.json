@@ -7,7 +7,8 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"suspicious": { "noExplicitAny": "warn" }
+			"suspicious": { "noExplicitAny": "warn" },
+			"complexity": { "noForEach": "off" }
 		}
 	},
 	"formatter": {
