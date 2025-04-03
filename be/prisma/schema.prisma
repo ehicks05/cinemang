@@ -87,7 +87,7 @@ model Season {
   seasonNumber Int       @map("season_number")
   voteAverage  Float     @map("vote_average")
 
-  show Show @relation(fields: [showId], references: [id])
+  show Show @relation(fields: [showId], references: [id], onDelete: Cascade)
 
   @@map("season")
 }
