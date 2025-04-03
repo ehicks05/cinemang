@@ -28,7 +28,7 @@ export type ModdedSeason = SeasonResponse & {
 
 export const loadSeasons = async () => {
 	const type = 'season';
-	logger.info(`droploading ${type} seasons`);
+	logger.info('droploading seasons');
 
 	const deleteResult = await prisma.season.deleteMany({});
 	logger.info(`dropped ${deleteResult.count} rows`);
@@ -49,5 +49,5 @@ export const loadSeasons = async () => {
 		500,
 	);
 
-	logger.info(`finished droploading ${type} seasons`);
+	logger.info('finished droploading seasons');
 };
