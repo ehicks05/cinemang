@@ -1,6 +1,5 @@
 import { appendFile } from 'node:fs/promises';
-import pMap from 'p-map';
-import { TMDB_OPTIONS } from '../../services/tmdb/constants.js';
+import pThrottle from 'p-throttle';
 import { getSeason } from '../../services/tmdb/simple_endpoints.js';
 import type {
 	SeasonResponse,
@@ -10,14 +9,14 @@ import { processLineByLine } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 import { filterCredits, trimCredits } from './utils.js';
 
-interface ShowIdSeasonId {
+interface ShowIdSeasonNumber {
 	showId: number;
 	seasonNumber: number;
 }
 
 // kinda wasteful
 const collectShowIdSeasonNumberPairs = async (chunkIds: number[]) => {
-	const showIdSeasonNumberPairs: ShowIdSeasonId[] = [];
+	const showIdSeasonNumberPairs: ShowIdSeasonNumber[] = [];
 
 	await processLineByLine(getPath('tv'), (line) => {
 		const media: ShowResponse = JSON.parse(line);
@@ -32,8 +31,10 @@ const collectShowIdSeasonNumberPairs = async (chunkIds: number[]) => {
 	return showIdSeasonNumberPairs.filter((ids) => chunkIds.includes(ids.showId));
 };
 
-const toSeason = async ({ showId, seasonNumber }: ShowIdSeasonId) =>
-	getSeason(showId, seasonNumber);
+const throttle = pThrottle({
+	limit: 40,
+	interval: 1000,
+});
 
 const trim = (season: SeasonResponse) => ({
 	...season,
@@ -41,6 +42,8 @@ const trim = (season: SeasonResponse) => ({
 	'watch/providers': undefined,
 	credits: trimCredits(season.credits),
 });
+
+type ModdedSeason = SeasonResponse & { showId: number };
 
 export const handleSeasonChunk = async (
 	ids: number[],
@@ -51,9 +54,17 @@ export const handleSeasonChunk = async (
 
 	const showIdSeasonNumberPairs = await collectShowIdSeasonNumberPairs(ids);
 
-	const _seasons = await pMap(showIdSeasonNumberPairs, toSeason, TMDB_OPTIONS);
+	const handler = throttle(async ({ showId, seasonNumber }: ShowIdSeasonNumber) => {
+		const season = await getSeason(showId, seasonNumber);
+		return { ...season, showId };
+	});
+
+	const _seasons = await Promise.all(
+		showIdSeasonNumberPairs.map(async (pair) => await handler(pair)),
+	);
+
 	const seasons = _seasons
-		.filter((season): season is SeasonResponse => season !== undefined)
+		.filter((season): season is ModdedSeason => season !== undefined)
 		.map((season) => ({ ...season, credits: filterCredits(season.credits) }))
 		.map((season) => ({ ...season, episode_count: season.episodes.length }))
 		.map(trim)

@@ -52,7 +52,7 @@ const fetchAndSaveByType = async (reuseFile: boolean, type: FileType) => {
 					? await handleSeasonChunk(chunk, i, type)
 					: await handleMediaChunk(chunk, i, type);
 		},
-		{ concurrency: 500 },
+		{ concurrency: 1 },
 	);
 
 	process.stdout.write('\n'); // end the line

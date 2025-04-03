@@ -13,19 +13,17 @@ const run = async () => {
 	// by now all movies, shows, and persons should be stored on disk
 
 	// dropload core tables
-	// await dropLoadTable('movie');
-	// await dropLoadTable('tv');
-	// await dropLoadTable('person');
+	await dropLoadTable('movie');
+	await dropLoadTable('tv');
+	await dropLoadTable('person');
 
 	// create relations for credits and mediaProviders
-	// await loadCredits('movie');
-	// await loadMediaProviders('movie');
-	// await loadCredits('tv');
-	// await loadMediaProviders('tv');
+	await loadCredits('movie');
+	await loadMediaProviders('movie');
+	await loadCredits('tv');
+	await loadMediaProviders('tv');
 
 	await loadSeasons();
-
-	// todo: season credits?
 };
 
 run();
