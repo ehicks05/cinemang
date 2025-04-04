@@ -1,163 +1,199 @@
-import type { CastCredit, CrewCredit } from './appends.js';
-import type { TmdbMovieStatus, TmdbTvStatus } from './enums.js';
+import { z } from 'zod';
+import { CastCreditSchema, CrewCreditSchema } from './appends.js';
+import {
+	GenderEnum,
+	MediaStatusEnum,
+	MovieStatusEnum,
+	ShowStatusEnum,
+	ShowTypeEnum,
+} from './enums.js';
 
-export interface Company {
-	description: string;
-	headquarters: string;
-	homepage: string;
-	id: number;
-	logo_path?: string;
-	name: string;
-	origin_country: string;
-	parent_company?: string;
-}
+const CompanySchema = z.object({
+	description: z.string(),
+	headquarters: z.string(),
+	homepage: z.string(),
+	id: z.number(),
+	logo_path: z.string().nullable(),
+	name: z.string(),
+	origin_country: z.string().nullable(),
+	parent_company: z.string().nullable(),
+});
+export type Company = z.infer<typeof CompanySchema>;
 
-export interface Genre {
-	id: number;
-	name: string;
-}
+const GenreSchema = z.object({
+	id: z.number(),
+	name: z.string(),
+});
+export type Genre = z.infer<typeof GenreSchema>;
 
-export interface Language {
-	iso_639_1: string;
-	english_name: string;
-	name: string;
-}
+const LanguageSchema = z.object({
+	iso_639_1: z.string(),
+	english_name: z.string(),
+	name: z.string(),
+});
+export type Language = z.infer<typeof LanguageSchema>;
 
-export interface Media {
-	adult: boolean;
-	backdrop_path?: string;
-	genres: Genre[];
-	homepage?: string;
-	id: number;
-	original_language: string;
-	overview?: string;
-	popularity: number;
-	poster_path?: string;
-	production_companies: ProductionCompany[];
-	production_countries: ProductionCountry[];
-	spoken_languages: Language[];
-	status: string;
-	tagline?: string;
-	vote_average: number;
-	vote_count: number;
-}
+const ProductionCompanySchema = CompanySchema.pick({
+	id: true,
+	logo_path: true,
+	name: true,
+	origin_country: true,
+});
+export type ProductionCompany = z.infer<typeof ProductionCompanySchema>;
 
-export interface Collection {
-	id: number;
-	name: string;
-	poster_path?: string;
-	backdrop_path?: string;
-}
+const ProductionCountrySchema = z.object({
+	iso_639_1: z.string(),
+	name: z.string(),
+});
+export type ProductionCountry = z.infer<typeof ProductionCountrySchema>;
 
-export interface Movie extends Media {
-	belongs_to_collection?: Collection;
-	budget: number;
-	imdb_id?: string;
-	original_title: string;
-	release_date: string;
-	revenue: number;
-	runtime?: number;
-	status: TmdbMovieStatus;
-	title: string;
-	video: boolean;
-}
+export const PersonSchema = z.object({
+	adult: z.boolean(),
+	also_known_as: z.array(z.string()),
+	biography: z.string(),
+	birthday: z.string().nullable(),
+	deathday: z.string().nullable(),
+	gender: GenderEnum,
+	homepage: z.string().nullable(),
+	id: z.number(),
+	imdb_id: z.string().nullable(),
+	known_for_department: z.string(),
+	name: z.string(),
+	place_of_birth: z.string().nullable(),
+	popularity: z.number(),
+	profile_path: z.string().nullable(),
+});
+export type Person = z.infer<typeof PersonSchema>;
 
-export interface Person {
-	adult: boolean;
-	also_known_as: string[];
-	biography: string;
-	birthday: string | null;
-	deathday: string | null;
-	gender: 0 | 1 | 2 | 3;
-	homepage: string | null;
-	id: number;
-	imdb_id: string | null;
-	known_for_department: string;
-	name: string;
-	place_of_birth: string | null;
-	popularity: number;
-	profile_path: string | null;
-}
+const MediaSchema = z.object({
+	adult: z.boolean(),
+	backdrop_path: z.string().nullable(),
+	genres: z.array(GenreSchema),
+	homepage: z.string().nullable(),
+	id: z.number(),
+	original_language: z.string(),
+	overview: z.string(),
+	popularity: z.number(),
+	poster_path: z.string().nullable(),
+	production_companies: z.array(ProductionCompanySchema),
+	production_countries: z.array(ProductionCountrySchema),
+	spoken_languages: z.array(LanguageSchema),
+	status: MediaStatusEnum,
+	tagline: z.string().nullable(),
+	vote_average: z.number(),
+	vote_count: z.number(),
+});
+export type Media = z.infer<typeof MediaSchema>;
 
-export type ProductionCompany = Pick<
-	Company,
-	'id' | 'logo_path' | 'name' | 'origin_country'
->;
+const CollectionSchema = z.object({
+	id: z.number(),
+	name: z.string(),
+	overview: z.string().nullable(),
+	poster_path: z.string().nullable(),
+	backdrop_path: z.string().nullable(),
+});
+export type Collection = z.infer<typeof CollectionSchema>;
 
-export interface ProductionCountry {
-	iso_3166_1: string;
-	name: string;
-}
+export const MovieSchema = MediaSchema.extend({
+	belongs_to_collection: CollectionSchema.nullable(),
+	budget: z.number(),
+	imdb_id: z.string().nullable(),
+	original_title: z.string(),
+	release_date: z.string(),
+	revenue: z.number(),
+	runtime: z.number().nullable(),
+	status: MovieStatusEnum,
+	title: z.string(),
+	video: z.boolean(),
+});
+export type Movie = z.infer<typeof MovieSchema>;
 
-export interface RecentChange {
-	id: number;
-	adult: boolean;
-}
+export const RecentChangeSchema = z.object({
+	id: z.number(),
+	adult: z.boolean(),
+});
+export type RecentChange = z.infer<typeof RecentChangeSchema>;
 
-export interface Network {
-	id: number;
-	logo_path?: string;
-	name: string;
-	origin_country: string;
-}
+export const NetworkSchema = z.object({
+	headquarters: z.string(),
+	homepage: z.string(),
+	id: z.number(),
+	logo_path: z.string().nullable(),
+	name: z.string(),
+	origin_country: z.string(),
+});
+export type Network = z.infer<typeof NetworkSchema>;
 
-export interface Show extends Media {
-	created_by: Pick<Person, 'id' | 'name' | 'gender' | 'profile_path'>[];
-	episode_run_time: number[];
-	first_air_date: string;
-	in_production: boolean;
-	languages: string[];
-	last_air_date: string;
-	last_episode_to_air: Partial<Episode>;
-	name: string;
-	next_episode_to_air: Partial<Episode>;
-	networks: Network[];
-	number_of_episodes: number;
-	number_of_seasons: number;
-	origin_country: string[];
-	original_name: string;
-	seasons: SeasonSummary[];
-	spoken_languages: Language[];
-	status: TmdbTvStatus;
-	type: string;
-}
+export const EpisodeSchema = z.object({
+	air_date: z.string(),
+	crew: z.array(CrewCreditSchema),
+	episode_number: z.number(),
+	guest_stars: z.array(CastCreditSchema),
+	id: z.number(),
+	name: z.string(),
+	overview: z.string(),
+	production_code: z.string().nullable(),
+	runtime: z.number().nullable(),
+	season_number: z.number(),
+	still_path: z.string().nullable(),
+	vote_average: z.number(),
+	vote_count: z.number(),
+});
+export type Episode = z.infer<typeof EpisodeSchema>;
 
-export type SeasonSummary = Omit<Season, 'episodes' | '_id'> & {
-	episode_count: number;
-};
+export const SeasonSchema = z.object({
+	_id: z.string(),
+	air_date: z.string(),
+	episodes: z.array(EpisodeSchema),
+	name: z.string(),
+	overview: z.string(),
+	id: z.number(),
+	poster_path: z.string().nullable(),
+	season_number: z.number(),
+	vote_average: z.number(),
+});
+export type Season = z.infer<typeof SeasonSchema>;
 
-export interface Season {
-	_id: string;
-	air_date: string;
-	episodes: Episode[];
-	name: string;
-	overview: string;
-	id: number;
-	poster_path?: string;
-	season_number: number;
-	vote_average: number;
-}
+export const SeasonSummarySchema = SeasonSchema.omit({
+	episodes: true,
+	_id: true,
+}).extend({ episode_count: z.number() });
+export type SeasonSummary = z.infer<typeof SeasonSummarySchema>;
 
-export interface Episode {
-	air_date: string;
-	crew: CrewCredit[];
-	episode_number: number;
-	guest_stars: CastCredit[];
-	id: number;
-	name: string;
-	overview: string;
-	production_code?: string;
-	runtime?: number;
-	season_number: number;
-	still_path?: string;
-	vote_average: number;
-	vote_count: number;
-}
+export const ShowSchema = MediaSchema.extend({
+	created_by: z.array(
+		PersonSchema.pick({
+			id: true,
+			name: true,
+			gender: true,
+			profile_path: true,
+		}),
+	),
+	episode_run_time: z.array(z.number()),
+	first_air_date: z.string(),
+	in_production: z.boolean(),
+	languages: z.array(LanguageSchema),
+	last_air_date: z.string(),
+	last_episode_to_air: EpisodeSchema.partial(),
+	name: z.string(),
+	next_episode_to_air: EpisodeSchema.partial(),
+	networks: z.array(NetworkSchema),
+	number_of_episodes: z.number(),
+	number_of_seasons: z.number(),
+	origin_country: z.array(z.string()),
+	original_name: z.string(),
+	seasons: z.array(SeasonSummarySchema),
+	spoken_languages: z.array(LanguageSchema),
+	status: ShowStatusEnum,
+	type: ShowTypeEnum,
+});
+export type Show = z.infer<typeof ShowSchema>;
 
-export interface Provider {
-	display_priorities: Record<string, number>;
-	display_priority: number;
-	logo_path: string;
-	provider_name: string;
-	provider_id: number;
-}
+export const ProviderSchema = z.object({
+	display_priorities: z.record(z.string(), z.number()),
+	display_priority: z.number(),
+	logo_path: z.string(),
+	provider_name: z.string(),
+	provider_id: z.number(),
+});
+export type Provider = z.infer<typeof ProviderSchema>;

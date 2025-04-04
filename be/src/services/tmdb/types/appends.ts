@@ -1,36 +1,40 @@
-import type { Person, Provider } from './base.js';
+import { z } from 'zod';
+import { PersonSchema, type Provider } from './base.js';
 
 /**
  * Variations of the base types that generally omit a few fields
  */
 
-export type AppendedPerson = Pick<
-	Person,
-	| 'adult'
-	| 'gender'
-	| 'id'
-	| 'known_for_department'
-	| 'name'
-	| 'popularity'
-	| 'profile_path'
->;
+export const AppendedPersonSchema = PersonSchema.pick({
+	adult: true,
+	gender: true,
+	id: true,
+	known_for_department: true,
+	name: true,
+	popularity: true,
+	profile_path: true,
+});
+export type AppendedPerson = z.infer<typeof AppendedPersonSchema>;
 
-export interface CastCredit extends AppendedPerson {
-	original_name: string;
-	cast_id: number;
-	character: string;
-	credit_id: string;
-	order: number;
-}
+export const CastCreditSchema = AppendedPersonSchema.extend({
+	original_name: z.string(),
+	cast_id: z.number(),
+	character: z.string(),
+	credit_id: z.string(),
+	order: z.number(),
+});
+export type CastCredit = z.infer<typeof CastCreditSchema>;
 
-export interface CrewCredit extends AppendedPerson {
-	original_name: string;
-	credit_id: string;
-	department: string;
-	job: string;
-}
+export const CrewCreditSchema = AppendedPersonSchema.extend({
+	original_name: z.string(),
+	credit_id: z.string(),
+	department: z.string(),
+	job: z.string(),
+});
+export type CrewCredit = z.infer<typeof CrewCreditSchema>;
 
-export type Credit = CastCredit | CrewCredit;
+export const CreditSchema = z.union([CastCreditSchema, CrewCreditSchema]);
+export type Credit = z.infer<typeof CreditSchema>;
 
 export interface AppendedImage {
 	aspect_ratio: number;
