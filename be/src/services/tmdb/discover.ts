@@ -7,8 +7,8 @@ import {
 	lastDayOfYear,
 	subMonths,
 } from 'date-fns';
+import { tmdb } from '../client/index.js';
 import { TMDB_OPTIONS } from './constants.js';
-import tmdb from './tmdb.js';
 
 const MIN_VOTES = '64';
 const DEFAULT_START_DATE = new Date('1874-01-01');
@@ -26,7 +26,7 @@ const getIdsForInterval = async (media: 'movie' | 'tv', interval: Interval) => {
 	});
 
 	const path = `/discover/${media}?${params.toString()}`;
-	const { data } = await tmdb.get(path);
+	const { data } = await tmdb(path);
 
 	const ids: number[] = data.results.map((o: { id: number }) => o.id);
 	const pages = data.total_pages;
@@ -34,7 +34,7 @@ const getIdsForInterval = async (media: 'movie' | 'tv', interval: Interval) => {
 	let page = 1;
 	while (page < pages) {
 		page += 1;
-		const { data } = await tmdb.get(`${path}&page=${page}`);
+		const { data } = await tmdb(`${path}&page=${page}`);
 		ids.push(data.results.map((o: { id: number }) => o.id));
 	}
 
