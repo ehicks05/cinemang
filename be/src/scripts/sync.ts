@@ -12,7 +12,7 @@ const REUSE_FILE = true;
 const run = async () => {
 	await fetchAndSave(REUSE_FILE);
 
-	// by now all movies, shows, and persons should be stored on disk
+	// all movies, shows, and persons are now stored on disk
 
 	// dropload 'system' tables
 	await droploadSystemTables();

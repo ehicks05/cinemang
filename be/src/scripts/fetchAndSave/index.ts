@@ -5,7 +5,7 @@ import { subHours } from 'date-fns';
 import { chunk } from 'lodash-es';
 import pMap from 'p-map';
 import logger from '~/services/logger.js';
-import { discoverMediaIds } from '../../services/tmdb/discover.js';
+import { tmdb } from '../../services/tmdb/index.js';
 import { isFullMode } from '../constants.js';
 import type { FileType } from '../types.js';
 import { consoleLogInPlace, getPath } from '../utils.js';
@@ -38,7 +38,7 @@ const fetchAndSaveByType = async (reuseFile: boolean, type: FileType) => {
 			? await collectPersonIds()
 			: type === 'season'
 				? await collectShowIds()
-				: await discoverMediaIds(type, isFullMode);
+				: await tmdb.discoverMediaIds(type, isFullMode);
 	const chunks = chunk(ids, 500);
 
 	await pMap(

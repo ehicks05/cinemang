@@ -1,11 +1,7 @@
 import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
 import { TMDB_OPTIONS } from '../../services/tmdb/constants.js';
-import {
-	getMovie,
-	getPerson,
-	getShow,
-} from '../../services/tmdb/simple_endpoints.js';
+import { tmdb } from '../../services/tmdb/index.js';
 import type { MediaResponse } from '../../services/tmdb/types/responses.js';
 import { MIN_VOTES } from '../constants.js';
 import { getPath } from '../utils.js';
@@ -51,10 +47,10 @@ export const handleMediaChunk = async (
 	const path = getPath(type);
 	const handleId = async (id: number) => {
 		return type === 'movie'
-			? getMovie(id)
+			? tmdb.getMovie(id)
 			: type === 'tv'
-				? getShow(id)
-				: getPerson(id);
+				? tmdb.getShow(id)
+				: tmdb.getPerson(id);
 	};
 
 	const _media = await pMap(ids, handleId, TMDB_OPTIONS);

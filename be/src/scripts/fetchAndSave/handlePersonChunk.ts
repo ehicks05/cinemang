@@ -1,7 +1,7 @@
 import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
 import { TMDB_OPTIONS } from '../../services/tmdb/constants.js';
-import { getPerson } from '../../services/tmdb/simple_endpoints.js';
+import { tmdb } from '../../services/tmdb/index.js';
 import type { PersonResponse } from '../../services/tmdb/types/responses.js';
 import { getPath } from '../utils.js';
 
@@ -12,7 +12,7 @@ export const handlePersonChunk = async (
 ) => {
 	const path = getPath(type);
 	const handleId = async (id: number) => {
-		return getPerson(id);
+		return tmdb.getPerson(id);
 	};
 
 	const trim = (p: PersonResponse) => ({

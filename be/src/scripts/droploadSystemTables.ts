@@ -1,15 +1,11 @@
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
-import {
-	getGenres,
-	getLanguages,
-	getProviders,
-} from '~/services/tmdb/simple_endpoints.js';
+import { tmdb } from '../services/tmdb/index.js';
 
 export const updateGenres = async () => {
 	await prisma.genre.deleteMany({});
 
-	const genres = await getGenres();
+	const genres = await tmdb.getGenres();
 
 	await prisma.genre.createMany({ data: genres });
 };
@@ -17,7 +13,7 @@ export const updateGenres = async () => {
 export const updateLanguages = async () => {
 	await prisma.language.deleteMany({});
 
-	const _languages = await getLanguages();
+	const _languages = await tmdb.getLanguages();
 	const languages = _languages.map((o) => ({
 		id: o.iso_639_1,
 		name: o.english_name,
@@ -29,7 +25,7 @@ export const updateLanguages = async () => {
 export const updateProviders = async () => {
 	await prisma.provider.deleteMany({});
 
-	const _providers = await getProviders();
+	const _providers = await tmdb.getProviders();
 	const providers = _providers.map((o) => ({
 		displayPriority: o.display_priorities.US,
 		id: o.provider_id,

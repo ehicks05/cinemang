@@ -1,6 +1,6 @@
 import { appendFile } from 'node:fs/promises';
 import pThrottle from 'p-throttle';
-import { getSeason } from '../../services/tmdb/simple_endpoints.js';
+import { tmdb } from '../../services/tmdb/index.js';
 import type {
 	SeasonResponse,
 	ShowResponse,
@@ -55,7 +55,7 @@ export const handleSeasonChunk = async (
 	const showIdSeasonNumberPairs = await collectShowIdSeasonNumberPairs(ids);
 
 	const handler = throttle(async ({ showId, seasonNumber }: ShowIdSeasonNumber) => {
-		const season = await getSeason(showId, seasonNumber);
+		const season = await tmdb.getSeason(showId, seasonNumber);
 		return { ...season, showId };
 	});
 
