@@ -21,15 +21,6 @@ import type {
  * These types account for the way some api responses are packaged
  */
 
-export type DailyFileMovie = Pick<
-	Movie,
-	'adult' | 'id' | 'original_title' | 'popularity' | 'video'
->;
-
-export type DailyFilePerson = Pick<Person, 'adult' | 'id' | 'name' | 'popularity'>;
-
-export type DailyFileRow = DailyFileMovie | DailyFilePerson;
-
 export interface GenreResponse {
 	genres: Genre[];
 }
