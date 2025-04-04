@@ -24,7 +24,7 @@ export const parseShow = (data: ShowResponse) => {
 		genreId: data.genres[0].id,
 		firstAirDate: new Date(data.first_air_date),
 		languageId: data.original_language,
-		lastAirDate: new Date(data.last_air_date),
+		lastAirDate: data.last_air_date ? new Date(data.last_air_date) : '',
 		name: data.name,
 		overview: data.overview || '',
 		popularity: data.popularity,
