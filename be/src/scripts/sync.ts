@@ -10,7 +10,7 @@ import { updateCounts } from './updateCounts.js';
 
 const REUSE_FILE = true;
 
-const run = async () => {
+export const runSync = async () => {
 	await runLatencyReports();
 	// await fetchAndSave(REUSE_FILE); // save movies, shows, and persons to disk
 
@@ -30,5 +30,3 @@ const run = async () => {
 
 	// await updateCounts();
 };
-
-run();
