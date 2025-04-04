@@ -1,8 +1,8 @@
 import { subDays } from 'date-fns';
 import 'dotenv/config';
-import { getRecentlyChangedIds } from '~/app/tmdb_api.js';
+import { tmdb } from '~/services/tmdb/index.js';
 
-const ids = await getRecentlyChangedIds('person', {
+const ids = await tmdb.getRecentlyChangedIds('person', {
 	start: subDays(new Date(), 7),
 	end: new Date(),
 });
