@@ -6,10 +6,10 @@ import {
 	getProviders,
 	getSeason,
 	getShow,
-} from './simple_endpoints.js';
+} from './endpoints/simple_endpoints.js';
 
-import { getRecentlyChangedIds } from './changes.js';
-import { discoverMediaIds } from './discover.js';
+import { getRecentlyChangedIds } from './endpoints/changes.js';
+import { discoverMediaIds } from './endpoints/discover.js';
 
 const tmdb = {
 	discoverMediaIds,

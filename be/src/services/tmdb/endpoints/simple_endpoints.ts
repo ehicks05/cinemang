@@ -2,15 +2,15 @@ import { GenreType } from '@prisma/client';
 import axios, { type AxiosError } from 'axios';
 import { groupBy } from 'lodash-es';
 import logger from '~/services/logger.js';
-import { tmdb } from './client/index.js';
-import type { GenreResponse } from './types/genre.js';
-import type { Language } from './types/media.js';
-import type { MovieResponse } from './types/movie.js';
-import type { PersonResponse } from './types/person.js';
-import type { ProviderResponse } from './types/provider.js';
-import type { SeasonResponse } from './types/season.js';
-import type { ShowResponse } from './types/show.js';
-import { logAxiosError } from './utils.js';
+import { tmdbClient } from '../client/throttledClient.js';
+import type { GenreResponse } from '../types/genre.js';
+import type { Language } from '../types/media.js';
+import type { MovieResponse } from '../types/movie.js';
+import type { PersonResponse } from '../types/person.js';
+import type { ProviderResponse } from '../types/provider.js';
+import type { SeasonResponse } from '../types/season.js';
+import type { ShowResponse } from '../types/show.js';
+import { logAxiosError } from '../utils.js';
 
 export const getMovie = async (id: number) => {
 	try {
@@ -18,7 +18,7 @@ export const getMovie = async (id: number) => {
 		const config = {
 			params: { append_to_response: append.join(',') },
 		};
-		const result = await tmdb<MovieResponse>(`/movie/${id}`, config);
+		const result = await tmdbClient<MovieResponse>(`/movie/${id}`, config);
 		return result.data;
 	} catch (e) {
 		logAxiosError(e as AxiosError);
@@ -31,7 +31,7 @@ export const getShow = async (id: number) => {
 		const config = {
 			params: { append_to_response: append.join(',') },
 		};
-		const result = await tmdb<ShowResponse>(`/tv/${id}`, config);
+		const result = await tmdbClient<ShowResponse>(`/tv/${id}`, config);
 		return result.data;
 	} catch (e) {
 		logAxiosError(e as AxiosError);
@@ -45,7 +45,7 @@ export const getSeason = async (showId: number, season: number) => {
 			params: { append_to_response: append.join(',') },
 		};
 		const path = `/tv/${showId}/season/${season}`;
-		const result = await tmdb<SeasonResponse>(path, config);
+		const result = await tmdbClient<SeasonResponse>(path, config);
 		return result.data;
 	} catch (e) {
 		logAxiosError(e as AxiosError);
@@ -58,7 +58,7 @@ export const getPerson = async (id: number) => {
 		const config = {
 			params: { append_to_response: append.join(',') },
 		};
-		const result = await tmdb<PersonResponse>(`/person/${id}`, config);
+		const result = await tmdbClient<PersonResponse>(`/person/${id}`, config);
 		return result.data;
 	} catch (e) {
 		if (axios.isAxiosError(e)) {
@@ -72,12 +72,12 @@ export const getPerson = async (id: number) => {
 };
 
 const getMovieGenres = async () => {
-	const result = await tmdb<GenreResponse>('/genre/movie/list');
+	const result = await tmdbClient<GenreResponse>('/genre/movie/list');
 	return result.data.genres;
 };
 
 const getShowGenres = async () => {
-	const result = await tmdb<GenreResponse>('/genre/tv/list');
+	const result = await tmdbClient<GenreResponse>('/genre/tv/list');
 	return result.data.genres;
 };
 
@@ -100,13 +100,13 @@ export const getGenres = async () => {
 };
 
 export const getLanguages = async () => {
-	const result = await tmdb<Language[]>('/configuration/languages');
+	const result = await tmdbClient<Language[]>('/configuration/languages');
 	return result.data;
 };
 
 export const getProviders = async () => {
 	const url = '/watch/providers/movie';
 	const config = { params: { watch_region: 'US' } };
-	const result = await tmdb<ProviderResponse>(url, config);
+	const result = await tmdbClient<ProviderResponse>(url, config);
 	return result.data.results;
 };

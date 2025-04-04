@@ -6,8 +6,9 @@ import {
 	lastDayOfYear,
 	subMonths,
 } from 'date-fns';
-import { tmdb } from './client/index.js';
-import { MIN_VOTES } from './constants.js';
+import { tmdbClient } from '../client/throttledClient.js';
+
+export const MIN_VOTES = '64';
 
 const RECENCY_CLAUSE_KEY = {
 	movie: 'primary_release_date',
@@ -22,7 +23,7 @@ const getIdsForInterval = async (media: 'movie' | 'tv', interval: Interval) => {
 	});
 
 	const path = `/discover/${media}?${params.toString()}`;
-	const { data } = await tmdb(path);
+	const { data } = await tmdbClient(path);
 
 	const ids: number[] = data.results.map((o: { id: number }) => o.id);
 	const pages = data.total_pages;
@@ -30,7 +31,7 @@ const getIdsForInterval = async (media: 'movie' | 'tv', interval: Interval) => {
 	let page = 1;
 	while (page < pages) {
 		page += 1;
-		const { data } = await tmdb(`${path}&page=${page}`);
+		const { data } = await tmdbClient(`${path}&page=${page}`);
 		ids.push(data.results.map((o: { id: number }) => o.id));
 	}
 

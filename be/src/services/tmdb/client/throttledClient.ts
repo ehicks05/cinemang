@@ -20,6 +20,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 const throttle = pThrottle({ limit: LIMIT, interval: 1000 });
 
-const tmdb = throttle(_tmdb.get);
+const tmdbClient = throttle(_tmdb.get);
 
-export { tmdb };
+export { tmdbClient };
