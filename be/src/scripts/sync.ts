@@ -5,6 +5,7 @@ import { fetchAndSave } from './fetchAndSave/index.js';
 import { loadCredits } from './relationships/loadCredits.js';
 import { loadMediaProviders } from './relationships/loadMediaProviders.js';
 import { loadSeasons } from './relationships/loadSeasons.js';
+import { updateCounts } from './updateCounts.js';
 
 const REUSE_FILE = true;
 
@@ -31,6 +32,9 @@ const run = async () => {
 
 	// dropload seasons
 	await loadSeasons();
+
+	// update counts
+	updateCounts();
 };
 
 run();
