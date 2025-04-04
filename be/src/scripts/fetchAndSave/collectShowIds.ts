@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import logger from '~/services/logger.js';
-import type { ShowResponse } from '~/services/tmdb/types/responses.js';
+import type { ShowResponse } from '~/services/tmdb/types/show.js';
 import { processLineByLine } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 

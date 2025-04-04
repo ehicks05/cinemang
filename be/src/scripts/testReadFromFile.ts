@@ -1,8 +1,7 @@
 import 'dotenv/config';
-import type {
-	MediaResponse,
-	PersonResponse,
-} from '~/services/tmdb/types/responses.js';
+
+import type { MediaResponse } from '~/services/tmdb/types/media.js';
+import type { PersonResponse } from '~/services/tmdb/types/person.js';
 import { processLineByLine } from './processLineByLine.js';
 import { getPath } from './utils.js';
 

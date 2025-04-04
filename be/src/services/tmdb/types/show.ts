@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { NetworkSchema } from './company.js';
-import { CreditsSchema } from './credits.js';
+import { CreditsMergeSchema } from './credits.js';
 import { MediaImagesSchema } from './images.js';
 import { MediaSchema } from './media.js';
 import { CreatorSchema } from './person.js';
@@ -64,6 +64,6 @@ export type ContentRatings = z.infer<typeof ContentRatingsSchema>;
 
 export const ShowResponseSchema = ShowSchema.merge(MediaImagesSchema)
 	.merge(AppendedProvidersSchema)
-	.merge(CreditsSchema)
+	.merge(CreditsMergeSchema)
 	.merge(ContentRatingsSchema);
 export type ShowResponse = z.infer<typeof ShowResponseSchema>;

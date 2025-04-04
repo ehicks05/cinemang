@@ -1,9 +1,6 @@
-import type {
-	AppendedProviders,
-	CastCredit,
-	CrewCredit,
-} from '~/services/tmdb/types/appends.js';
-import type { MediaResponse } from '~/services/tmdb/types/responses.js';
+import type { CastCredit, CrewCredit } from '~/services/tmdb/types/credits.js';
+import type { MediaResponse } from '~/services/tmdb/types/media.js';
+import type { AppendedProviders } from '~/services/tmdb/types/provider.js';
 
 interface Credits {
 	cast: CastCredit[];

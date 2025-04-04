@@ -1,4 +1,4 @@
-import type { MediaResponse } from '~/services/tmdb/types/responses.js';
+import type { MediaResponse } from '~/services/tmdb/types/media.js';
 import { MIN_VOTES } from '../constants.js';
 
 export const isValid = (m: MediaResponse) => {

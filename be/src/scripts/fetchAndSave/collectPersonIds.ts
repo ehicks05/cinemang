@@ -1,14 +1,11 @@
 import 'dotenv/config';
 import logger from '~/services/logger.js';
-import type {
-	MediaResponse,
-	SeasonResponse,
-} from '~/services/tmdb/types/responses.js';
+import type { Credits } from '~/services/tmdb/types/credits.js';
 import { processLineByLine } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 
 const mediaToPersonIds = (line: string) => {
-	const media: MediaResponse | SeasonResponse = JSON.parse(line);
+	const media: { credits: Credits } = JSON.parse(line);
 	const castPersonIds = media.credits.cast.map((credit) => credit.id);
 	const crewPersonIds = media.credits.crew.map((credit) => credit.id);
 	return castPersonIds.concat(crewPersonIds);

@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client';
-import type { MovieResponse } from '~/services/tmdb/types/responses.js';
+import type { MovieResponse } from '~/services/tmdb/types/movie.js';
 import { isValid } from './utils.js';
 
 export const parseMovie = (data: MovieResponse) => {

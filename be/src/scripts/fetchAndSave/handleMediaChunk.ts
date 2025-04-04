@@ -1,7 +1,7 @@
 import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
+import type { MediaResponse } from '~/services/tmdb/types/media.js';
 import { tmdb } from '../../services/tmdb/index.js';
-import type { MediaResponse } from '../../services/tmdb/types/responses.js';
 import { MIN_VOTES } from '../constants.js';
 import { getPath } from '../utils.js';
 import {

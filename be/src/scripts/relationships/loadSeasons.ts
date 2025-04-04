@@ -1,8 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
-import type { SeasonSummary } from '~/services/tmdb/types/base.js';
-import type { SeasonResponse } from '~/services/tmdb/types/responses.js';
+import type { SeasonResponse, SeasonSummary } from '~/services/tmdb/types/season.js';
 import { processLines } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 

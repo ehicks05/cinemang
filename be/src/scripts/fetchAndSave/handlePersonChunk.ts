@@ -1,7 +1,7 @@
 import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
+import type { PersonResponse } from '~/services/tmdb/types/person.js';
 import { tmdb } from '../../services/tmdb/index.js';
-import type { PersonResponse } from '../../services/tmdb/types/responses.js';
 import { getPath } from '../utils.js';
 
 export const handlePersonChunk = async (

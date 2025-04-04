@@ -13,7 +13,6 @@ const CreditBaseSchema = PersonSchema.pick({
 	credit_id: z.string(),
 	original_name: z.string(),
 });
-type CreditBase = z.infer<typeof CreditBaseSchema>;
 
 export const CastCreditSchema = CreditBaseSchema.extend({
 	cast_id: z.number(),
@@ -32,9 +31,12 @@ export const CreditSchema = z.union([CastCreditSchema, CrewCreditSchema]);
 export type Credit = z.infer<typeof CreditSchema>;
 
 export const CreditsSchema = z.object({
-	credits: z.object({
-		cast: z.array(CastCreditSchema),
-		crew: z.array(CrewCreditSchema),
-	}),
+	cast: z.array(CastCreditSchema),
+	crew: z.array(CrewCreditSchema),
 });
 export type Credits = z.infer<typeof CreditsSchema>;
+
+export const CreditsMergeSchema = z.object({
+	credits: CreditsSchema,
+});
+export type CreditsMerge = z.infer<typeof CreditsMergeSchema>;

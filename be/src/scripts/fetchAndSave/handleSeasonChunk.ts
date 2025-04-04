@@ -1,10 +1,8 @@
 import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
+import type { SeasonResponse } from '~/services/tmdb/types/season.js';
+import type { ShowResponse } from '~/services/tmdb/types/show.js';
 import { tmdb } from '../../services/tmdb/index.js';
-import type {
-	SeasonResponse,
-	ShowResponse,
-} from '../../services/tmdb/types/responses.js';
 import { processLineByLine } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 import { filterCredits, trimCredits } from './utils.js';

@@ -2,7 +2,7 @@ import type { Prisma } from '@prisma/client';
 import { keyBy } from 'lodash-es';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
-import type { MediaResponse } from '~/services/tmdb/types/responses.js';
+import type { MediaResponse } from '~/services/tmdb/types/media.js';
 import { processLines } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 

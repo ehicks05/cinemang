@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client';
-import type { PersonResponse } from '~/services/tmdb/types/responses.js';
+import type { PersonResponse } from '~/services/tmdb/types/person.js';
 
 const isValidPerson = (person: PersonResponse) => person.profile_path;
 

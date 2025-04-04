@@ -2,7 +2,7 @@ import { type Interval, format, subDays } from 'date-fns';
 import { intersection, range } from 'lodash-es';
 import { tmdb } from '../client/index.js';
 import { discoverMediaIds } from './discover.js';
-import type { RecentChangesResponse } from './types/responses.js';
+import type { RecentChangesResponse } from './types/changes.js';
 
 export type Resource = 'movie' | 'tv' | 'person';
 

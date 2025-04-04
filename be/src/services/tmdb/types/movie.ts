@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CreditsSchema } from './credits.js';
+import { CreditsMergeSchema } from './credits.js';
 import { MediaImagesSchema } from './images.js';
 import { MediaSchema } from './media.js';
 import { AppendedProvidersSchema } from './provider.js';
@@ -53,6 +53,6 @@ export type Releases = z.infer<typeof ReleasesSchema>;
 
 export const MovieResponseSchema = MovieSchema.merge(MediaImagesSchema)
 	.merge(AppendedProvidersSchema)
-	.merge(CreditsSchema)
+	.merge(CreditsMergeSchema)
 	.merge(ReleasesSchema);
 export type MovieResponse = z.infer<typeof MovieResponseSchema>;

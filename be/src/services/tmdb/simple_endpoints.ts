@@ -3,15 +3,13 @@ import axios, { type AxiosError } from 'axios';
 import { groupBy } from 'lodash-es';
 import logger from '~/services/logger.js';
 import { tmdb } from '../client/index.js';
-import type { Language } from './types/base.js';
-import type {
-	GenreResponse,
-	MovieResponse,
-	PersonResponse,
-	ProviderResponse,
-	SeasonResponse,
-	ShowResponse,
-} from './types/responses.js';
+import type { GenreResponse } from './types/genre.js';
+import type { Language } from './types/media.js';
+import type { MovieResponse } from './types/movie.js';
+import type { PersonResponse } from './types/person.js';
+import type { ProviderResponse } from './types/provider.js';
+import type { SeasonResponse } from './types/season.js';
+import type { ShowResponse } from './types/show.js';
 import { logAxiosError } from './utils.js';
 
 export const getMovie = async (id: number) => {
