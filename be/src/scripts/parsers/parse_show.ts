@@ -1,14 +1,10 @@
 import type { Prisma } from '@prisma/client';
 import type { ShowResponse } from '~/services/tmdb/types/responses.js';
-
-const MIN_VOTES = 64;
+import { MIN_VOTES } from '../constants.js';
 
 export const isValid = (show: ShowResponse) =>
 	!!(
-		show.credits?.cast
-			.slice(0, 3)
-			.map((c) => c.name)
-			.join(', ')?.length &&
+		show.credits?.cast.length &&
 		show.genres[0] &&
 		show.overview &&
 		show.poster_path &&

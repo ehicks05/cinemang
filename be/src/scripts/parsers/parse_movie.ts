@@ -2,18 +2,12 @@ import type { Prisma } from '@prisma/client';
 import { pick } from 'lodash-es';
 import type { MovieResponse } from '~/services/tmdb/types/responses.js';
 
-const parseTopNCredits = (credits: MovieResponse['credits']['cast'], n = 3) =>
-	credits
-		.slice(0, n)
-		.map((c) => c.name)
-		.join('|');
-
 export const parseMovie = (data: MovieResponse) => {
 	// ignore movies missing required data
 	if (
 		!(
 			data.credits?.crew.find((c) => c.job === 'Director')?.name?.length &&
-			parseTopNCredits(data.credits.cast)?.length &&
+			data.credits.cast.length &&
 			data.genres[0] &&
 			data.imdb_id &&
 			data.overview &&
@@ -28,7 +22,10 @@ export const parseMovie = (data: MovieResponse) => {
 	}
 
 	const director = data.credits.crew.find((c) => c.job === 'Director')?.name || '';
-	const cast = parseTopNCredits(data.credits.cast);
+	const cast = data.credits.cast
+		.slice(0, 3)
+		.map((c) => c.name)
+		.join('|');
 	const certification =
 		data.releases.countries.find((r) => r.iso_3166_1 === 'US' && r.certification)
 			?.certification || '';
