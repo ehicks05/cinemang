@@ -20,6 +20,7 @@ import type {
 	MovieResponse,
 	ShowResponse,
 } from '~/services/tmdb/types/responses.js';
+import { runLatencyReports } from '../scripts/runLatencyReports.js';
 import {
 	isEqual,
 	mediasToPersonIds,
@@ -27,7 +28,6 @@ import {
 	updateLanguages,
 	updateProviders,
 } from './helpers/helpers.js';
-import { reportDbLatency, reportTmdbLatency } from '../scripts/latency_test.js';
 import { createPersons, updatePersons } from './helpers/load_persons.js';
 import { parseMovie } from './helpers/parse_movie.js';
 import { parseShow } from './helpers/parse_show.js';
@@ -290,8 +290,7 @@ const runLoader = async (fullMode: boolean) => {
 // mostly housekeeping
 const wrapper = async () => {
 	try {
-		await reportDbLatency();
-		await reportTmdbLatency();
+		await runLatencyReports();
 
 		logger.info('starting tmdb_loader script');
 		const { id: logId } = await prisma.syncRunLog.create({ data: {} });
