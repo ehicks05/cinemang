@@ -21,7 +21,7 @@ const checkFullMode = () => {
 };
 
 // mostly housekeeping
-export const wrapper = async () => {
+export const runSyncJob = async () => {
 	const { id: logId } = await prisma.syncRunLog.create({ data: {} });
 
 	try {
@@ -29,7 +29,9 @@ export const wrapper = async () => {
 
 		const fullMode = checkFullMode();
 
-		await runSync();
+		logger.info('doing nothing');
+
+		// await runSync();
 	} catch (err) {
 		logger.error(err);
 	} finally {
