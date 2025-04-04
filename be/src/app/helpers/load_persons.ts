@@ -5,11 +5,10 @@ import { subDays } from 'date-fns';
 import { intersection } from 'lodash-es';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
-import { getRecentlyChangedIds } from '~/services/tmdb/changes.js';
 import { TMDB_OPTIONS } from '~/services/tmdb/constants.js';
-import { getPerson } from '~/services/tmdb/index.js';
 import type { PersonResponse } from '~/services/tmdb/types/responses.js';
 import { PRISMA_OPTIONS } from '../../constants.js';
+import { getPerson, getRecentlyChangedIds } from '../tmdb_api.js';
 import { parsePerson } from './parse_person.js';
 
 const toId = (o: { id: number }) => o.id;

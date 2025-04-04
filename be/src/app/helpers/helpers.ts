@@ -3,8 +3,8 @@ import P from 'bluebird';
 import { isEqual as _isEqual, chunk, keyBy, omit, uniq } from 'lodash-es';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
-import { getGenres, getLanguages, getProviders } from '~/services/tmdb/index.js';
 import type { MediaResponse } from '~/services/tmdb/types/responses.js';
+import { getGenres, getLanguages, getProviders } from '../tmdb_api.js';
 
 export const updateGenres = async () => {
 	update({

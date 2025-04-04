@@ -8,18 +8,8 @@ import {
 	getShow,
 } from './simple_endpoints.js';
 
+import { getRecentlyChangedIds } from './changes.js';
 import { discoverMediaIds } from './discover.js';
-
-export {
-	discoverMediaIds,
-	getMovie,
-	getGenres,
-	getLanguages,
-	getPerson,
-	getProviders,
-	getSeason,
-	getShow,
-};
 
 const tmdb = {
 	discoverMediaIds,
@@ -28,6 +18,7 @@ const tmdb = {
 	getLanguages,
 	getPerson,
 	getProviders,
+	getRecentlyChangedIds,
 	getSeason,
 	getShow,
 };

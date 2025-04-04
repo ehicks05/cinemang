@@ -15,12 +15,6 @@ import { argv } from '~/services/args.js';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
 import { TMDB_OPTIONS } from '~/services/tmdb/constants.js';
-import {
-	discoverMediaIds,
-	getMovie,
-	getSeason,
-	getShow,
-} from '~/services/tmdb/index.js';
 import type { SeasonSummary } from '~/services/tmdb/types/base.js';
 import type {
 	MovieResponse,
@@ -42,6 +36,7 @@ import {
 	updateLanguageCounts,
 	updateProviderCounts,
 } from './helpers/update_counts.js';
+import { discoverMediaIds, getMovie, getSeason, getShow } from './tmdb_api.js';
 
 const toId = (o: { id: number }) => o.id;
 const toCreditId = (o: { credit_id: string }) => o.credit_id;
