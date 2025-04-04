@@ -10,31 +10,23 @@ import { updateCounts } from './updateCounts.js';
 const REUSE_FILE = true;
 
 const run = async () => {
-	await fetchAndSave(REUSE_FILE);
+	await fetchAndSave(REUSE_FILE); // save movies, shows, and persons to disk
 
-	// all movies, shows, and persons are now stored on disk
-
-	// dropload 'system' tables
 	await droploadSystemTables();
 
-	// dropload core tables
 	await dropLoadTable('movie');
 	await dropLoadTable('tv');
 	await dropLoadTable('person');
 
-	// create relations for credits
 	await loadCredits('movie');
 	await loadCredits('tv');
 
-	// create relations for mediaProviders
 	await loadMediaProviders('movie');
 	await loadMediaProviders('tv');
 
-	// dropload seasons
 	await loadSeasons();
 
-	// update counts
-	updateCounts();
+	await updateCounts();
 };
 
 run();
