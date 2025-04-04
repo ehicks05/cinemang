@@ -2,7 +2,7 @@ import { GenreType } from '@prisma/client';
 import axios, { type AxiosError } from 'axios';
 import { groupBy } from 'lodash-es';
 import logger from '~/services/logger.js';
-import { tmdb } from '../client/index.js';
+import { tmdb } from './client/index.js';
 import type { GenreResponse } from './types/genre.js';
 import type { Language } from './types/media.js';
 import type { MovieResponse } from './types/movie.js';

@@ -1,6 +1,6 @@
 import { type Interval, format, subDays } from 'date-fns';
 import { intersection, range } from 'lodash-es';
-import { tmdb } from '../client/index.js';
+import { tmdb } from './client/index.js';
 import { discoverMediaIds } from './discover.js';
 import type { RecentChangesResponse } from './types/changes.js';
 

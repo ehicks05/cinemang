@@ -1,6 +1,6 @@
-import { getMovie } from '~/app/tmdb_api.js';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
+import { tmdb } from '~/services/tmdb/index.js';
 
 const reportDbLatency = async () => {
 	// warm
@@ -20,14 +20,14 @@ const reportDbLatency = async () => {
 const reportTmdbLatency = async () => {
 	const id = 603;
 	// warm
-	await getMovie(id);
-	await getMovie(id);
-	await getMovie(id);
+	await tmdb.getMovie(id);
+	await tmdb.getMovie(id);
+	await tmdb.getMovie(id);
 	// measure
 	const start = Date.now();
-	await getMovie(id);
-	await getMovie(id);
-	await getMovie(id);
+	await tmdb.getMovie(id);
+	await tmdb.getMovie(id);
+	await tmdb.getMovie(id);
 	const end = Date.now();
 	const dur = (end - start) / 3;
 	logger.info(`test query '/movie/${id}' averaged ${dur} ms`);

@@ -1,4 +1,4 @@
-import { formatDuration, intervalToDuration, isFirstDayOfMonth } from 'date-fns';
+import { formatDuration, intervalToDuration } from 'date-fns';
 import { argv } from '~/services/args.js';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
@@ -9,7 +9,7 @@ const checkFullMode = () => {
 		logger.info('--full arg detected.');
 	}
 
-	const isStartOfMonth = isFirstDayOfMonth(new Date());
+	const isStartOfMonth = new Date().getDate() === 1;
 	if (isStartOfMonth) {
 		logger.info('start of month detected.');
 	}

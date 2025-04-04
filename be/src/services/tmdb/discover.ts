@@ -6,7 +6,7 @@ import {
 	lastDayOfYear,
 	subMonths,
 } from 'date-fns';
-import { tmdb } from '../client/index.js';
+import { tmdb } from './client/index.js';
 import { MIN_VOTES } from './constants.js';
 
 const RECENCY_CLAUSE_KEY = {
