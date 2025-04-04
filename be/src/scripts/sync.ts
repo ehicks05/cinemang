@@ -12,21 +12,21 @@ const REUSE_FILE = true;
 
 export const runSync = async () => {
 	await runLatencyReports();
-	// await fetchAndSave(REUSE_FILE); // save movies, shows, and persons to disk
+	await fetchAndSave(REUSE_FILE); // saves to disk
 
 	await droploadSystemTables();
 
-	// await dropLoadTable('movie');
-	// await dropLoadTable('tv');
-	// await dropLoadTable('person');
+	await dropLoadTable('movie');
+	await dropLoadTable('tv');
+	await dropLoadTable('person');
 
-	// await loadCredits('movie');
-	// await loadCredits('tv');
+	await loadCredits('movie');
+	await loadCredits('tv');
 
-	// await loadMediaProviders('movie');
-	// await loadMediaProviders('tv');
+	await loadMediaProviders('movie');
+	await loadMediaProviders('tv');
 
-	// await loadSeasons();
+	await loadSeasons();
 
-	// await updateCounts();
+	await updateCounts();
 };
