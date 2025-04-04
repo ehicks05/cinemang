@@ -1,5 +1,5 @@
-import { type Interval, format } from 'date-fns';
-import { intersection } from 'lodash-es';
+import { type Interval, format, subDays } from 'date-fns';
+import { intersection, range } from 'lodash-es';
 import { tmdb } from '../client/index.js';
 import { discoverMediaIds } from './discover.js';
 import type { RecentChangesResponse } from './types/responses.js';
@@ -8,27 +8,29 @@ export type Resource = 'movie' | 'tv' | 'person';
 
 export const getRecentlyChangedIds = async (
 	resource: Resource,
-	interval: Interval,
+	interval: Interval = { start: subDays(new Date(), 1), end: new Date() },
 ) => {
 	const url = `/${resource}/changes`;
-	const params = {
-		start_date: format(interval.start, 'yyyy-MM-dd'),
-		end_date: format(interval.end, 'yyyy-MM-dd'),
-	};
+	const start_date = format(interval.start, 'yyyy-MM-dd');
+	const end_date = format(interval.end, 'yyyy-MM-dd');
 
-	const { data } = await tmdb<RecentChangesResponse>(url, { params });
+	const {
+		data: { total_pages },
+	} = await tmdb<RecentChangesResponse>(url, {
+		params: { start_date, end_date },
+	});
 
-	const ids = data.results.map((o) => o.id);
-	const pages = data.total_pages;
+	const pageResults = await Promise.all(
+		range(0, total_pages).map(async (i) => {
+			const page = i + 1;
+			const { data } = await tmdb<RecentChangesResponse>(url, {
+				params: { start_date, end_date, page },
+			});
+			return data.results.map((o) => o.id);
+		}),
+	);
 
-	let page = 1;
-	while (page < pages) {
-		page += 1;
-		const { data } = await tmdb<RecentChangesResponse>(url, {
-			params: { ...params, page },
-		});
-		ids.push(...data.results.map((o) => o.id));
-	}
+	const ids = pageResults.flat();
 
 	// filter using /discover
 	if (resource === 'person') return ids;
