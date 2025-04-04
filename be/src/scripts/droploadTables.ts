@@ -1,9 +1,9 @@
 import type { Prisma } from '@prisma/client';
-import { parseMovie } from '~/app/helpers/parse_movie.js';
-import { parsePerson } from '~/app/helpers/parse_person.js';
-import { parseShow } from '~/app/helpers/parse_show.js';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
+import { parseMovie } from './parsers/parse_movie.js';
+import { parsePerson } from './parsers/parse_person.js';
+import { parseShow } from './parsers/parse_show.js';
 import { processLines } from './processLineByLine.js';
 import { getPath } from './utils.js';
 
