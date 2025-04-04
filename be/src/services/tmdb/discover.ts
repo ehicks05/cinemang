@@ -1,4 +1,3 @@
-import P from 'bluebird';
 import {
 	type Interval,
 	addMonths,
@@ -8,10 +7,7 @@ import {
 	subMonths,
 } from 'date-fns';
 import { tmdb } from '../client/index.js';
-import { TMDB_OPTIONS } from './constants.js';
-
-const MIN_VOTES = '64';
-const DEFAULT_START_DATE = new Date('1874-01-01');
+import { MIN_VOTES } from './constants.js';
 
 const RECENCY_CLAUSE_KEY = {
 	movie: 'primary_release_date',
@@ -50,7 +46,7 @@ export const discoverMediaIds = async (
 	isFullMode = false,
 ) => {
 	const fullIntervals = eachYearOfInterval({
-		start: DEFAULT_START_DATE,
+		start: new Date('1874-01-01'),
 		end: addMonths(new Date(), 1),
 	}).map((date) => ({ start: date, end: lastDayOfYear(date) }));
 
@@ -58,10 +54,9 @@ export const discoverMediaIds = async (
 
 	const intervals = isFullMode ? fullIntervals : partialIntervals;
 
-	const idsByYear = await P.map(
-		intervals,
-		(interval: Interval) => getIdsForInterval(media, interval),
-		TMDB_OPTIONS,
+	const idsByYear = await Promise.all(
+		intervals.map((interval: Interval) => getIdsForInterval(media, interval)),
 	);
+
 	return idsByYear.flat();
 };
