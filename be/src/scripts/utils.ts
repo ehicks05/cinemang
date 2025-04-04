@@ -1,7 +1,7 @@
 import type { FileType } from './types.js';
 
 const prod = process.env.NODE_ENV === 'production';
-const base = prod ? '/app/storage/' : './scripts-data/';
+const base = prod ? '/app/storage/' : './script-data/';
 
 export const getPath = (type: FileType) => `${base}${type}.txt`;
 
