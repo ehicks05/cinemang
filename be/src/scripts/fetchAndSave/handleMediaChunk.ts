@@ -1,6 +1,5 @@
 import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
-import { TMDB_OPTIONS } from '../../services/tmdb/constants.js';
 import { tmdb } from '../../services/tmdb/index.js';
 import type { MediaResponse } from '../../services/tmdb/types/responses.js';
 import { MIN_VOTES } from '../constants.js';
@@ -53,7 +52,7 @@ export const handleMediaChunk = async (
 				: tmdb.getPerson(id);
 	};
 
-	const _media = await pMap(ids, handleId, TMDB_OPTIONS);
+	const _media = await pMap(ids, handleId);
 	const media = _media
 		.filter((media): media is MediaResponse => media !== undefined)
 		.map((media) => ({ ...media, credits: filterCredits(media.credits) })) // removed credits may affect isValid check below

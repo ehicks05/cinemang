@@ -1,5 +1,5 @@
 import { appendFile } from 'node:fs/promises';
-import pThrottle from 'p-throttle';
+import pMap from 'p-map';
 import { tmdb } from '../../services/tmdb/index.js';
 import type {
 	SeasonResponse,
@@ -31,11 +31,6 @@ const collectShowIdSeasonNumberPairs = async (chunkIds: number[]) => {
 	return showIdSeasonNumberPairs.filter((ids) => chunkIds.includes(ids.showId));
 };
 
-const throttle = pThrottle({
-	limit: 40,
-	interval: 1000,
-});
-
 const trim = (season: SeasonResponse) => ({
 	...season,
 	episodes: undefined,
@@ -54,13 +49,12 @@ export const handleSeasonChunk = async (
 
 	const showIdSeasonNumberPairs = await collectShowIdSeasonNumberPairs(ids);
 
-	const handler = throttle(async ({ showId, seasonNumber }: ShowIdSeasonNumber) => {
-		const season = await tmdb.getSeason(showId, seasonNumber);
-		return { ...season, showId };
-	});
-
-	const _seasons = await Promise.all(
-		showIdSeasonNumberPairs.map(async (pair) => await handler(pair)),
+	const _seasons = await pMap(
+		showIdSeasonNumberPairs,
+		async ({ showId, seasonNumber }: ShowIdSeasonNumber) => {
+			const season = await tmdb.getSeason(showId, seasonNumber);
+			return { ...season, showId };
+		},
 	);
 
 	const seasons = _seasons

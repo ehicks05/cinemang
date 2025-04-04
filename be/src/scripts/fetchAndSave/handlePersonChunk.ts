@@ -1,6 +1,5 @@
 import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
-import { TMDB_OPTIONS } from '../../services/tmdb/constants.js';
 import { tmdb } from '../../services/tmdb/index.js';
 import type { PersonResponse } from '../../services/tmdb/types/responses.js';
 import { getPath } from '../utils.js';
@@ -20,7 +19,7 @@ export const handlePersonChunk = async (
 		credits: undefined,
 	});
 
-	const _persons = await pMap(ids, handleId, TMDB_OPTIONS);
+	const _persons = await pMap(ids, handleId);
 	const persons = _persons
 		.filter((person): person is PersonResponse => person !== undefined)
 		.map(trim)
