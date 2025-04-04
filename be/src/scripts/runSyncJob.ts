@@ -29,9 +29,7 @@ export const runSyncJob = async () => {
 
 		const fullMode = checkFullMode();
 
-		logger.info('doing nothing');
-
-		// await runSync();
+		await runSync();
 	} catch (err) {
 		logger.error(err);
 	} finally {

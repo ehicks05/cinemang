@@ -13,7 +13,7 @@ const reportDbLatency = async () => {
 	await prisma.$executeRaw`select 1`;
 	await prisma.$executeRaw`select 1`;
 	const end = Date.now();
-	const dur = (end - start) / 3;
+	const dur = Math.round((end - start) / 3);
 	logger.info(`test query 'select 1' averaged ${dur} ms`);
 };
 
@@ -29,7 +29,7 @@ const reportTmdbLatency = async () => {
 	await tmdb.getMovie(id);
 	await tmdb.getMovie(id);
 	const end = Date.now();
-	const dur = (end - start) / 3;
+	const dur = Math.round((end - start) / 3);
 	logger.info(`test query '/movie/${id}' averaged ${dur} ms`);
 };
 

@@ -1,6 +1,7 @@
 import { omit } from 'lodash-es';
+import pMap from 'p-map';
 import logger from '~/services/logger.js';
-import prisma from '~/services/prisma.js';
+import prisma, { PRISMA_CONCURRENCY } from '~/services/prisma.js';
 
 // count shows as well?
 const updateLanguageCounts = async () => {
@@ -18,10 +19,10 @@ const updateLanguageCounts = async () => {
 		return { ...l, count };
 	});
 
-	await Promise.all(
-		languagesWithCounts.map((o) =>
-			prisma.language.update({ data: o, where: { id: o.id } }),
-		),
+	await pMap(
+		languagesWithCounts,
+		(o) => prisma.language.update({ data: o, where: { id: o.id } }),
+		PRISMA_CONCURRENCY,
 	);
 
 	logger.info('updated language counts');
@@ -43,13 +44,10 @@ const updateProviderCounts = async () => {
 		count: wp._count.medias,
 	}));
 
-	await Promise.all(
-		providers.map(async (p) => {
-			await prisma.provider.update({
-				data: p,
-				where: { id: p.id },
-			});
-		}),
+	await pMap(
+		providers,
+		async (p) => prisma.provider.update({ data: p, where: { id: p.id } }),
+		PRISMA_CONCURRENCY,
 	);
 
 	logger.info('updated watch provider counts');
