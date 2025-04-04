@@ -1,4 +1,17 @@
+import {
+	getGenres,
+	getLanguages,
+	getMovie,
+	getPerson,
+	getProviders,
+	getSeason,
+	getShow,
+} from './simple_endpoints.js';
+
+import { discoverMediaIds } from './discover.js';
+
 export {
+	discoverMediaIds,
 	getMovie,
 	getGenres,
 	getLanguages,
@@ -6,6 +19,17 @@ export {
 	getProviders,
 	getSeason,
 	getShow,
-} from './simple_endpoints.js';
+};
 
-export { discoverMediaIds } from './discover.js';
+const tmdb = {
+	discoverMediaIds,
+	getMovie,
+	getGenres,
+	getLanguages,
+	getPerson,
+	getProviders,
+	getSeason,
+	getShow,
+};
+
+export { tmdb };
