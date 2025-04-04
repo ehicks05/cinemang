@@ -52,7 +52,6 @@ export interface ProviderResponse {
 	results: Provider[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface SeasonResponse extends Season {
 	credits: { cast: CastCredit[]; crew: CrewCredit[] };
 }
