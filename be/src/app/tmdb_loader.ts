@@ -27,7 +27,7 @@ import {
 	updateLanguages,
 	updateProviders,
 } from './helpers/helpers.js';
-import { reportDbLatency, reportTmdbLatency } from './helpers/latency_test.js';
+import { reportDbLatency, reportTmdbLatency } from '../scripts/latency_test.js';
 import { createPersons, updatePersons } from './helpers/load_persons.js';
 import { parseMovie } from './helpers/parse_movie.js';
 import { parseShow } from './helpers/parse_show.js';
