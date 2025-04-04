@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PersonSchema, type Provider } from './base.js';
+import { PersonSchema, ProviderSchema } from './base.js';
 
 /**
  * Variations of the base types that generally omit a few fields
@@ -36,50 +36,65 @@ export type CrewCredit = z.infer<typeof CrewCreditSchema>;
 export const CreditSchema = z.union([CastCreditSchema, CrewCreditSchema]);
 export type Credit = z.infer<typeof CreditSchema>;
 
-export interface AppendedImage {
-	aspect_ratio: number;
-	file_path: string;
-	file_type?: '.svg' | '.png';
-	height: number;
-	iso_639_1?: string;
-	vote_average: number;
-	vote_count: number;
-	width: number;
-}
+export const CreditsSchema = z.object({
+	credits: z.object({
+		cast: z.array(CastCreditSchema),
+		crew: z.array(CrewCreditSchema),
+	}),
+});
+export type Credits = z.infer<typeof CreditsSchema>;
 
-export interface AppendedImages {
-	images: {
-		backdrops: AppendedImage[];
-		logos: AppendedImage[];
-		posters: AppendedImage[];
-	};
-}
+export const AppendedImageSchema = z.object({
+	aspect_ratio: z.number(),
+	file_path: z.string(),
+	height: z.number(),
+	iso_639_1: z.string().nullable(),
+	vote_average: z.number(),
+	vote_count: z.number(),
+	width: z.number(),
+});
+export type AppendedImage = z.infer<typeof AppendedImageSchema>;
 
-export interface AppendedRelease {
-	certification: string;
-	iso_3166_1: string;
-	primary: boolean;
-	release_date: string;
-}
+export const AppendedImagesSchema = z.object({
+	images: z.object({
+		backdrops: z.array(AppendedImageSchema),
+		logos: z.array(AppendedImageSchema),
+		posters: z.array(AppendedImageSchema),
+	}),
+});
+export type AppendedImages = z.infer<typeof AppendedImagesSchema>;
 
-export interface AppendedContentRating {
-	descriptors: unknown[];
-	iso_3166_1: string;
-	rating: string;
-}
+export const AppendedReleaseSchema = z.object({
+	certification: z.string(),
+	iso_3166_1: z.string(),
+	primary: z.boolean(),
+	release_date: z.string(),
+});
+export type AppendedRelease = z.infer<typeof AppendedReleaseSchema>;
 
-type AppendedProvider = Omit<Provider, 'display_priority'>;
+export const AppendedContentRatingSchema = z.object({
+	descriptors: z.array(z.unknown()),
+	iso_3166_1: z.string(),
+	rating: z.string(),
+});
+export type AppendedContentRating = z.infer<typeof AppendedContentRatingSchema>;
 
-export interface AppendedProviders {
-	'watch/providers': {
-		results: Record<
-			string,
-			{
-				link: string;
-				flatrate: AppendedProvider[];
-				buy: AppendedProvider[];
-				rent: AppendedProvider[];
-			}
-		>;
-	};
-}
+export const AppendedProviderSchema = ProviderSchema.omit({
+	display_priority: true,
+});
+export type AppendedProvider = z.infer<typeof AppendedProviderSchema>;
+
+export const AppendedProvidersSchema = z.object({
+	'watch/providers': z.object({
+		results: z.record(
+			z.string(),
+			z.object({
+				link: z.string(),
+				flatrate: z.array(AppendedProviderSchema),
+				buy: z.array(AppendedProviderSchema),
+				rent: z.array(AppendedProviderSchema),
+			}),
+		),
+	}),
+});
+export type AppendedProviders = z.infer<typeof AppendedProvidersSchema>;

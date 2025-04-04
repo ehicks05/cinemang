@@ -8,7 +8,7 @@ import {
 	ShowTypeEnum,
 } from './enums.js';
 
-const CompanySchema = z.object({
+export const CompanySchema = z.object({
 	description: z.string(),
 	headquarters: z.string(),
 	homepage: z.string(),
@@ -20,13 +20,13 @@ const CompanySchema = z.object({
 });
 export type Company = z.infer<typeof CompanySchema>;
 
-const GenreSchema = z.object({
+export const GenreSchema = z.object({
 	id: z.number(),
 	name: z.string(),
 });
 export type Genre = z.infer<typeof GenreSchema>;
 
-const LanguageSchema = z.object({
+export const LanguageSchema = z.object({
 	iso_639_1: z.string(),
 	english_name: z.string(),
 	name: z.string(),
@@ -41,7 +41,7 @@ const ProductionCompanySchema = CompanySchema.pick({
 });
 export type ProductionCompany = z.infer<typeof ProductionCompanySchema>;
 
-const ProductionCountrySchema = z.object({
+export const ProductionCountrySchema = z.object({
 	iso_639_1: z.string(),
 	name: z.string(),
 });
@@ -65,7 +65,7 @@ export const PersonSchema = z.object({
 });
 export type Person = z.infer<typeof PersonSchema>;
 
-const MediaSchema = z.object({
+export const MediaSchema = z.object({
 	adult: z.boolean(),
 	backdrop_path: z.string().nullable(),
 	genres: z.array(GenreSchema),
@@ -85,7 +85,7 @@ const MediaSchema = z.object({
 });
 export type Media = z.infer<typeof MediaSchema>;
 
-const CollectionSchema = z.object({
+export const CollectionSchema = z.object({
 	id: z.number(),
 	name: z.string(),
 	overview: z.string().nullable(),
