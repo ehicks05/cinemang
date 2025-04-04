@@ -26,11 +26,17 @@ export const queryFilms = async (form: MovieSearchForm) => {
 		throw creditPersonIds;
 	}
 
-	// providers: for showing providers linked to the film
-	// providerSearch: for filtering by provider
-	// creditSearch: for filtering by credit
-	const select =
-		'*, providers: media_provider(id: provider_id), providerSearch: media_provider!inner(provider_id), creditSearch: credit!inner(person_id)';
+	// creditSearch and providerSearch are for filtering
+	// providers is for showing providers linked to the film
+	const providerSearch =
+		form.providers.length > 0
+			? ['providerSearch: media_provider!inner(provider_id)']
+			: [];
+
+	const creditSearch =
+		form.creditName.length > 0 ? ['creditSearch: credit!inner(person_id)'] : [];
+
+	const select = ['*', PROVIDER_JOIN, ...providerSearch, ...creditSearch].join(', ');
 
 	const query = supabase.from('movie').select(select, { count: 'exact' });
 
@@ -70,7 +76,7 @@ export const queryFilms = async (form: MovieSearchForm) => {
 	}
 
 	if (creditPersonIds.length > 0) {
-		query.in('credit.person_id', creditPersonIds || []);
+		query.in('creditSearch.person_id', creditPersonIds || []);
 	}
 
 	const result = await query
@@ -79,7 +85,7 @@ export const queryFilms = async (form: MovieSearchForm) => {
 		.range(form.page * PAGE_SIZE, (form.page + 1) * PAGE_SIZE - 1);
 
 	return {
-		films: result.data as Film[],
+		films: result.data as unknown as Film[],
 		count: result.count || 0,
 	};
 };
