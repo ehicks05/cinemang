@@ -1,13 +1,18 @@
 import type { Prisma } from '@prisma/client';
 import type { ShowResponse } from '~/services/tmdb/types/show.js';
-import { isValid } from './utils.js';
+import { ValidShowSchema } from './utils.js';
 
-export const parseShow = (data: ShowResponse) => {
-	if (!isValid(data)) {
+export const parseShow = (
+	_data: ShowResponse,
+): Prisma.ShowUncheckedCreateInput | undefined => {
+	const { data, error } = ValidShowSchema.safeParse(_data);
+
+	if (error) {
+		console.log(error);
 		return undefined;
 	}
 
-	const create: Prisma.ShowUncheckedCreateInput = {
+	return {
 		id: data.id,
 		cast: data.credits.cast
 			.slice(0, 3)
@@ -34,5 +39,4 @@ export const parseShow = (data: ShowResponse) => {
 		voteCount: data.vote_count,
 		voteAverage: data.vote_average,
 	};
-	return create;
 };

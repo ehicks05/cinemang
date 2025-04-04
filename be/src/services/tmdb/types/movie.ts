@@ -38,21 +38,23 @@ export const MovieSchema = MediaSchema.extend({
 export type Movie = z.infer<typeof MovieSchema>;
 
 export const ReleasesSchema = z.object({
-	releases: z.object({
-		countries: z.array(
-			z.object({
-				certification: z.string(),
-				iso_3166_1: z.string(),
-				primary: z.boolean(),
-				release_date: z.string(),
-			}),
-		),
-	}),
+	countries: z.array(
+		z.object({
+			certification: z.string(),
+			iso_3166_1: z.string(),
+			primary: z.boolean(),
+			release_date: z.string(),
+		}),
+	),
 });
 export type Releases = z.infer<typeof ReleasesSchema>;
+
+const ReleasesMergeSchema = z.object({
+	releases: ReleasesSchema,
+});
 
 export const MovieResponseSchema = MovieSchema.merge(MediaImagesSchema)
 	.merge(AppendedProvidersSchema)
 	.merge(CreditsMergeSchema)
-	.merge(ReleasesSchema);
+	.merge(ReleasesMergeSchema);
 export type MovieResponse = z.infer<typeof MovieResponseSchema>;

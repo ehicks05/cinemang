@@ -2,7 +2,7 @@ import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
 import type { MediaResponse } from '~/services/tmdb/types/media.js';
 import { tmdb } from '../../services/tmdb/index.js';
-import { MIN_VOTES } from '../constants.js';
+import { ValidMovieSchema, ValidShowSchema } from '../parsers/utils.js';
 import { getPath } from '../utils.js';
 import {
 	filterCredits,
@@ -19,23 +19,10 @@ const trim = (media: MediaResponse) => ({
 });
 
 const isValid = (m: MediaResponse) => {
-	const isValidGeneral =
-		m.credits.cast.length > 0 &&
-		m.genres.length > 0 &&
-		!!m.overview &&
-		!!m.poster_path &&
-		m.vote_count >= MIN_VOTES;
+	const { data } =
+		'title' in m ? ValidMovieSchema.safeParse(m) : ValidShowSchema.safeParse(m);
 
-	const isValidForMediaType =
-		'title' in m
-			? !!m.credits?.crew.find((c) => c.job === 'Director')?.name?.length &&
-				!!m.imdb_id &&
-				!!m.release_date &&
-				!!m.releases &&
-				!!m.runtime
-			: !!m.content_ratings?.results.find((r) => r.iso_3166_1 === 'US' && r.rating);
-
-	return isValidGeneral && isValidForMediaType;
+	return !!data;
 };
 
 export const handleMediaChunk = async (

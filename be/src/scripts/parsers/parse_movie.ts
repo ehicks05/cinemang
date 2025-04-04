@@ -1,13 +1,18 @@
 import type { Prisma } from '@prisma/client';
 import type { MovieResponse } from '~/services/tmdb/types/movie.js';
-import { isValid } from './utils.js';
+import { ValidMovieSchema } from './utils.js';
 
-export const parseMovie = (data: MovieResponse) => {
-	if (!isValid(data)) {
+export const parseMovie = (
+	_data: MovieResponse,
+): Prisma.MovieCreateInput | undefined => {
+	const { data, error } = ValidMovieSchema.safeParse(_data);
+
+	if (error) {
+		console.log(error);
 		return undefined;
 	}
 
-	const create: Prisma.MovieCreateInput = {
+	return {
 		id: data.id,
 		cast: data.credits.cast
 			.slice(0, 3)
@@ -18,18 +23,15 @@ export const parseMovie = (data: MovieResponse) => {
 				?.certification || '',
 		director: data.credits.crew.find((c) => c.job === 'Director')?.name || '',
 		genreId: data.genres[0].id,
-		imdbId: data.imdb_id as string,
+		imdbId: data.imdb_id,
 		releasedAt: new Date(data.release_date),
 		languageId: data.original_language,
 		overview: data.overview,
 		popularity: data.popularity,
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		posterPath: data.poster_path!,
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		runtime: data.runtime!,
+		posterPath: data.poster_path,
+		runtime: data.runtime,
 		title: data.title,
 		voteCount: data.vote_count,
 		voteAverage: data.vote_average,
 	};
-	return create;
 };
