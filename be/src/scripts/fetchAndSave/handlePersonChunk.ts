@@ -1,15 +1,8 @@
-import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
 import { tmdb } from '~/services/tmdb/index.js';
 import type { PersonResponse } from '~/services/tmdb/types/person.js';
-import { getPath } from '../utils.js';
 
-export const handlePersonChunk = async (
-	ids: number[],
-	i: number,
-	type: 'person',
-) => {
-	const path = getPath(type);
+export const handlePersonChunk = async (ids: number[], type: 'person') => {
 	const handleId = async (id: number) => {
 		return tmdb.getPerson(id);
 	};
@@ -24,11 +17,5 @@ export const handlePersonChunk = async (
 		.filter((person): person is PersonResponse => person !== undefined)
 		.map(trim)
 		.map((person) => JSON.stringify(person));
-
-	if (persons.length > 0) {
-		if (i !== 0) {
-			await appendFile(path, '\n');
-		}
-		await appendFile(path, persons.join('\n'));
-	}
+	return persons;
 };

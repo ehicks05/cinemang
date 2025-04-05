@@ -1,4 +1,3 @@
-import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
 import { tmdb } from '~/services/tmdb/index.js';
 import type { SeasonResponse } from '~/services/tmdb/types/season.js';
@@ -38,13 +37,7 @@ const trim = (season: SeasonResponse) => ({
 
 type ModdedSeason = SeasonResponse & { showId: number };
 
-export const handleSeasonChunk = async (
-	ids: number[],
-	i: number,
-	type: 'season',
-) => {
-	const path = getPath(type);
-
+export const handleSeasonChunk = async (ids: number[], type: 'season') => {
 	const showIdSeasonNumberPairs = await collectShowIdSeasonNumberPairs(ids);
 
 	const _seasons = await pMap(
@@ -62,10 +55,5 @@ export const handleSeasonChunk = async (
 		.map(trim)
 		.map((season) => JSON.stringify(season));
 
-	if (seasons.length > 0) {
-		if (i !== 0) {
-			await appendFile(path, '\n');
-		}
-		await appendFile(path, seasons.join('\n'));
-	}
+	return seasons;
 };

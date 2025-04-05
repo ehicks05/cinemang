@@ -9,11 +9,10 @@ import { runLatencyReports } from './runLatencyReports.js';
 import { updateCounts } from './updateCounts.js';
 import { vacuumAnalyze } from './vacuumAnalyze.js';
 
-const REUSE_FILE = true;
-
 export const runSync = async () => {
 	await runLatencyReports();
-	await fetchAndSave(REUSE_FILE); // saves to disk
+
+	await fetchAndSave();
 
 	await droploadSystemTables();
 

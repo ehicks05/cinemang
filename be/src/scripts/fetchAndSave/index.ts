@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { existsSync } from 'node:fs';
-import { stat, truncate } from 'node:fs/promises';
+import { appendFile, rename, stat, truncate } from 'node:fs/promises';
 import { subHours } from 'date-fns';
 import { chunk } from 'lodash-es';
 import pMap from 'p-map';
@@ -15,23 +15,27 @@ import { handleMediaChunk } from './handleMediaChunk.js';
 import { handlePersonChunk } from './handlePersonChunk.js';
 import { handleSeasonChunk } from './handleSeasonChunk.js';
 
-const fetchAndSaveByType = async (reuseFile: boolean, type: FileType) => {
+const fetchAndSaveByType = async (type: FileType) => {
 	logger.info(`fetching all ${type}s`);
 	const path = getPath(type);
-	const exists = existsSync(path);
 
-	if (exists) {
+	if (existsSync(path)) {
 		const stats = await stat(path);
-		const isFresh = stats.mtime >= subHours(new Date(), 24);
-		if (isFresh && reuseFile) {
-			logger.info('skipping due to fresh file or reuseFile=true');
+		const isFresh = stats.mtime >= subHours(new Date(), 12);
+		if (isFresh) {
+			logger.info('skipping: file is fresh');
 			return;
 		}
-	}
 
-	if (exists) {
 		await truncate(path);
 	}
+
+	const tempPath = `${path}.tmp`;
+	if (existsSync(tempPath)) {
+		await truncate(tempPath);
+	}
+
+	logger.info('gathering ids');
 
 	const ids =
 		type === 'person'
@@ -41,27 +45,39 @@ const fetchAndSaveByType = async (reuseFile: boolean, type: FileType) => {
 				: await tmdb.discoverMediaIds(type, isFullMode);
 	const chunks = chunk(ids, 500);
 
+	logger.info('finished gathering ids, now fetching objects');
+
 	await pMap(
 		chunks,
 		async (chunk, i) => {
 			consoleLogInPlace(`chunk ${i + 1} of ${chunks.length}`);
 
-			type === 'person'
-				? await handlePersonChunk(chunk, i, type)
-				: type === 'season'
-					? await handleSeasonChunk(chunk, i, type)
-					: await handleMediaChunk(chunk, i, type);
+			const media =
+				type === 'person'
+					? await handlePersonChunk(chunk, type)
+					: type === 'season'
+						? await handleSeasonChunk(chunk, type)
+						: await handleMediaChunk(chunk, type);
+
+			if (media.length > 0) {
+				if (i !== 0) {
+					await appendFile(tempPath, '\n');
+				}
+				await appendFile(tempPath, media.join('\n'));
+			}
 		},
 		{ concurrency: 1 },
 	);
+
+	rename(tempPath, path);
 
 	process.stdout.write('\n'); // end the line
 	logger.info(`done fetching all ${type}s`);
 };
 
-export const fetchAndSave = async (reuseFile: boolean) => {
-	await fetchAndSaveByType(reuseFile, 'movie');
-	await fetchAndSaveByType(reuseFile, 'tv');
-	await fetchAndSaveByType(reuseFile, 'season'); // depends on tv
-	await fetchAndSaveByType(reuseFile, 'person'); // depends on movie, tv, and season
+export const fetchAndSave = async () => {
+	await fetchAndSaveByType('movie');
+	await fetchAndSaveByType('tv');
+	await fetchAndSaveByType('season'); // depends on tv
+	await fetchAndSaveByType('person'); // depends on movie, tv, and season
 };

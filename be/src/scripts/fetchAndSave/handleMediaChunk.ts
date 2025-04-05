@@ -1,15 +1,24 @@
-import { appendFile } from 'node:fs/promises';
 import pMap from 'p-map';
 import { tmdb } from '~/services/tmdb/index.js';
 import type { MediaResponse } from '~/services/tmdb/types/media.js';
-import { ValidMovieSchema, ValidShowSchema } from '../parsers/utils.js';
-import { getPath } from '../utils.js';
+import { ValidMovieSchema, ValidShowSchema } from '../parsers/validation.js';
 import {
 	filterCredits,
 	trimCredits,
 	trimSeasons,
 	trimWatchProviders,
 } from './utils.js';
+
+const EXPECTED_ISSUES = [
+	'cast is empty',
+	'director is missing',
+	'overview is empty',
+	'runtime is 0',
+	'imdb_id is empty',
+	'genres is empty',
+	'poster_path is empty',
+	'US content rating is missing',
+];
 
 const trim = (media: MediaResponse) => ({
 	...media,
@@ -19,18 +28,23 @@ const trim = (media: MediaResponse) => ({
 });
 
 const isValid = (m: MediaResponse) => {
-	const { data } =
+	const { data, error } =
 		'title' in m ? ValidMovieSchema.safeParse(m) : ValidShowSchema.safeParse(m);
+
+	// ignore expected issues
+	const issues = error?.issues.filter(
+		(issue) => !EXPECTED_ISSUES.includes(issue.message),
+	);
+
+	if (issues && issues.length > 0) {
+		console.log(`error for ${m.id}`);
+		console.log(issues);
+	}
 
 	return !!data;
 };
 
-export const handleMediaChunk = async (
-	ids: number[],
-	i: number,
-	type: 'movie' | 'tv',
-) => {
-	const path = getPath(type);
+export const handleMediaChunk = async (ids: number[], type: 'movie' | 'tv') => {
 	const handleId = async (id: number) => {
 		return type === 'movie'
 			? tmdb.getMovie(id)
@@ -47,10 +61,5 @@ export const handleMediaChunk = async (
 		.map(trim)
 		.map((media) => JSON.stringify(media));
 
-	if (media.length > 0) {
-		if (i !== 0) {
-			await appendFile(path, '\n');
-		}
-		await appendFile(path, media.join('\n'));
-	}
+	return media;
 };
