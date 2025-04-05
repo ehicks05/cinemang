@@ -67,7 +67,21 @@ export const getPerson = async (id: number) => {
 			params: { append_to_response: append.join(',') },
 		};
 		const { data } = await tmdbClient(`/person/${id}`, config);
-		return PersonResponseSchema.parse(data);
+
+		try {
+			return PersonResponseSchema.parse(data);
+		} catch (e) {
+			// ignore expected issues
+			const EXPECTED_ISSUES = ['missing known_for_department'];
+			const issues = (e as ZodError).issues.filter(
+				(issue) => !EXPECTED_ISSUES.includes(issue.message),
+			);
+
+			if (issues && issues.length > 0) {
+				console.log(`error for ${id}`);
+				console.log(issues);
+			}
+		}
 	} catch (e) {
 		if (axios.isAxiosError(e)) {
 			logAxiosError(e);

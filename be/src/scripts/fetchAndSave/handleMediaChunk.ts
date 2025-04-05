@@ -18,6 +18,7 @@ const EXPECTED_ISSUES = [
 	'genres is empty',
 	'poster_path is empty',
 	'US content rating is missing',
+	'missing known_for_department',
 ];
 
 const trim = (media: MediaResponse) => ({
