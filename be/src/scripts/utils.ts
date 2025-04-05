@@ -1,7 +1,9 @@
+import logger from '~/services/logger.js';
 import type { FileType } from './types.js';
 
 const prod = process.env.NODE_ENV === 'production';
 const base = prod ? '/app/storage/' : './script-data/';
+logger.info(`writing logs to ${base}`);
 
 export const getPath = (type: FileType) => `${base}${type}.txt`;
 
