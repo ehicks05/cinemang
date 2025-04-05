@@ -7,6 +7,7 @@ import { loadMediaProviders } from './relationships/loadMediaProviders.js';
 import { loadSeasons } from './relationships/loadSeasons.js';
 import { runLatencyReports } from './runLatencyReports.js';
 import { updateCounts } from './updateCounts.js';
+import { vacuumAnalyze } from './vacuumAnalyze.js';
 
 const REUSE_FILE = true;
 
@@ -29,4 +30,6 @@ export const runSync = async () => {
 	await loadSeasons();
 
 	await updateCounts();
+
+	await vacuumAnalyze();
 };
