@@ -1,11 +1,11 @@
 import type { Prisma } from '@prisma/client';
 import type { ShowResponse } from '~/services/tmdb/types/show.js';
-import { ValidShowSchema } from './utils.js';
+import { ValidTrimmedShowSchema } from './validation.js';
 
 export const parseShow = (
 	_data: ShowResponse,
 ): Prisma.ShowUncheckedCreateInput | undefined => {
-	const { data, error } = ValidShowSchema.safeParse(_data);
+	const { data, error } = ValidTrimmedShowSchema.safeParse(_data);
 
 	if (error) {
 		console.log(error);

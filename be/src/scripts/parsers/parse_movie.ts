@@ -1,11 +1,11 @@
 import type { Prisma } from '@prisma/client';
 import type { MovieResponse } from '~/services/tmdb/types/movie.js';
-import { ValidMovieSchema } from './utils.js';
+import { ValidTrimmedMovieSchema } from './validation.js';
 
 export const parseMovie = (
 	_data: MovieResponse,
 ): Prisma.MovieCreateInput | undefined => {
-	const { data, error } = ValidMovieSchema.safeParse(_data);
+	const { data, error } = ValidTrimmedMovieSchema.safeParse(_data);
 
 	if (error) {
 		console.log(error);
