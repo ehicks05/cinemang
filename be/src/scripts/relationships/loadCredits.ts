@@ -90,7 +90,9 @@ export const loadCredits = async (type: 'movie' | 'tv') => {
 		type === 'movie' ? { movieId: { not: null } } : { showId: { not: null } };
 	const deleteResult = await prisma.credit.deleteMany({ where: where });
 
-	logger.info(`dropped ${deleteResult.count} rows`);
+	logger.info(
+		`dropped ${deleteResult.count} rows (likely 0 if parent tables were droploaded)`,
+	);
 
 	await processLines(
 		getPath(type),

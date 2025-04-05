@@ -30,7 +30,9 @@ export const loadSeasons = async () => {
 	logger.info('droploading seasons');
 
 	const deleteResult = await prisma.season.deleteMany({});
-	logger.info(`dropped ${deleteResult.count} rows`);
+	logger.info(
+		`dropped ${deleteResult.count} rows (likely 0 if parent tables were droploaded)`,
+	);
 
 	await processLines(
 		getPath(type),

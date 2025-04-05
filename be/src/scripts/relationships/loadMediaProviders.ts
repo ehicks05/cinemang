@@ -31,7 +31,9 @@ const toMediaProviderCreateInput = (
 };
 
 export const loadMediaProviders = async (type: 'movie' | 'tv') => {
-	logger.info(`droploading ${type} mediaProviders`);
+	logger.info(
+		`droploading ${type} mediaProviders (likely 0 if parent tables were droploaded)`,
+	);
 	const providersById = await getProvidersById();
 
 	const where =
