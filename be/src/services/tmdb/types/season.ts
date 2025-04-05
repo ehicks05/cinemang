@@ -24,8 +24,9 @@ export type Episode = z.infer<typeof EpisodeSchema>;
 
 export const SeasonSchema = z.object({
 	_id: z.string(),
-	air_date: z.string(),
-	episodes: z.array(EpisodeSchema),
+	air_date: z.string().nullable(),
+	// episodes: z.array(EpisodeSchema),
+	episodes: z.array(z.unknown()), // seeing lots of messed up guest_star objects
 	name: z.string(),
 	overview: z.string(),
 	id: z.number(),

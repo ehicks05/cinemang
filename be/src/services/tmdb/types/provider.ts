@@ -10,7 +10,7 @@ export const ProviderSchema = z.object({
 export type Provider = z.infer<typeof ProviderSchema>;
 
 export const AppendedProviderSchema = ProviderSchema.omit({
-	display_priority: true,
+	display_priorities: true,
 });
 export type AppendedProvider = z.infer<typeof AppendedProviderSchema>;
 
@@ -19,10 +19,10 @@ export const AppendedProvidersSchema = z.object({
 		results: z.record(
 			z.string(),
 			z.object({
-				link: z.string(),
-				flatrate: z.array(AppendedProviderSchema),
-				buy: z.array(AppendedProviderSchema),
-				rent: z.array(AppendedProviderSchema),
+				link: z.string().optional(),
+				flatrate: z.array(AppendedProviderSchema).optional(),
+				buy: z.array(AppendedProviderSchema).optional(),
+				rent: z.array(AppendedProviderSchema).optional(),
 			}),
 		),
 	}),

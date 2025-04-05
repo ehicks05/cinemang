@@ -1,23 +1,13 @@
 import { z } from 'zod';
 import { CreditsMergeSchema } from './credits.js';
 import { MediaImagesSchema } from './images.js';
-import { MediaSchema } from './media.js';
+import { MediaSchema, MovieStatusEnum } from './mediabase.js';
 import { AppendedProvidersSchema } from './provider.js';
-
-export const MovieStatusEnum = z.enum([
-	'Rumored',
-	'Planned',
-	'In Production',
-	'Post Production',
-	'Released',
-	'Canceled',
-]);
-export type MovieStatusEnum = z.infer<typeof MovieStatusEnum>;
 
 export const CollectionSchema = z.object({
 	id: z.number(),
 	name: z.string(),
-	overview: z.string().nullable(),
+	overview: z.string().optional(),
 	poster_path: z.string().nullable(),
 	backdrop_path: z.string().nullable(),
 });
@@ -53,8 +43,7 @@ const ReleasesMergeSchema = z.object({
 	releases: ReleasesSchema,
 });
 
-export const MovieResponseSchema = MovieSchema.merge(MediaImagesSchema)
-	.merge(AppendedProvidersSchema)
+export const MovieResponseSchema = MovieSchema.merge(AppendedProvidersSchema)
 	.merge(CreditsMergeSchema)
 	.merge(ReleasesMergeSchema);
 export type MovieResponse = z.infer<typeof MovieResponseSchema>;

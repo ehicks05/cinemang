@@ -2,30 +2,20 @@ import { z } from 'zod';
 import { NetworkSchema } from './company.js';
 import { CreditsMergeSchema } from './credits.js';
 import { MediaImagesSchema } from './images.js';
-import { MediaSchema } from './media.js';
+import { MediaSchema, ShowStatusEnum } from './mediabase.js';
 import { CreatorSchema } from './person.js';
 import { AppendedProvidersSchema } from './provider.js';
 import { EpisodeSchema, SeasonSummarySchema } from './season.js';
 
-export const ShowStatusEnum = z.enum([
-	'Returning Series',
-	'Planned',
-	'In Production',
-	'Ended',
-	'Canceled',
-	'Pilot',
+export const ShowTypeEnum = z.enum([
+	'Documentary',
+	'News',
+	'Miniseries',
+	'Reality',
+	'Scripted',
+	'Talk Show',
+	'Video',
 ]);
-export type ShowStatusEnum = z.infer<typeof ShowStatusEnum>;
-
-export const ShowTypeEnum = z.nativeEnum({
-	Documentary: 0,
-	News: 1,
-	Miniseries: 2,
-	Reality: 3,
-	Scripted: 4,
-	TalkShow: 5,
-	Video: 6,
-} as const);
 export type ShowTypeEnum = z.infer<typeof ShowTypeEnum>;
 
 export const ShowSchema = MediaSchema.extend({
@@ -62,8 +52,7 @@ export const ContentRatingsSchema = z.object({
 });
 export type ContentRatings = z.infer<typeof ContentRatingsSchema>;
 
-export const ShowResponseSchema = ShowSchema.merge(MediaImagesSchema)
-	.merge(AppendedProvidersSchema)
+export const ShowResponseSchema = ShowSchema.merge(AppendedProvidersSchema)
 	.merge(CreditsMergeSchema)
 	.merge(ContentRatingsSchema);
 export type ShowResponse = z.infer<typeof ShowResponseSchema>;

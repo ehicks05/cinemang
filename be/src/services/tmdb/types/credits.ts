@@ -15,7 +15,6 @@ const CreditBaseSchema = PersonSchema.pick({
 });
 
 export const CastCreditSchema = CreditBaseSchema.extend({
-	cast_id: z.number(),
 	character: z.string(),
 	order: z.number(),
 });

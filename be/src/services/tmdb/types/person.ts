@@ -35,5 +35,5 @@ export const CreatorSchema = PersonSchema.pick({
 });
 export type Creator = z.infer<typeof CreatorSchema>;
 
-export const PersonResponseSchema = PersonSchema.merge(PersonImagesSchema);
+export const PersonResponseSchema = PersonSchema;
 export type PersonResponse = z.infer<typeof PersonResponseSchema>;
