@@ -38,6 +38,15 @@ const getIdsForInterval = async (media: 'movie' | 'tv', interval: Interval) => {
 	return ids.flat();
 };
 
+const FULL_INTERVALS = eachYearOfInterval({
+	start: new Date('1874-01-01'),
+	end: addMonths(new Date(), 1),
+});
+const DEBUG_INTERVALS = eachYearOfInterval({
+	start: new Date('1995-01-01'),
+	end: new Date('1995-12-31'),
+});
+
 /**
  * If `isFullMode`, grab all yearly intervals back to the oldest movie (from 1874)
  * If not, grab one interval covering the last 3 months
@@ -46,10 +55,10 @@ export const discoverMediaIds = async (
 	media: 'movie' | 'tv',
 	isFullMode = false,
 ) => {
-	const fullIntervals = eachYearOfInterval({
-		start: new Date('1874-01-01'),
-		end: addMonths(new Date(), 1),
-	}).map((date) => ({ start: date, end: lastDayOfYear(date) }));
+	const fullIntervals = FULL_INTERVALS.map((date) => ({
+		start: date,
+		end: lastDayOfYear(date),
+	}));
 
 	const partialIntervals = [{ start: subMonths(new Date(), 3), end: new Date() }];
 
