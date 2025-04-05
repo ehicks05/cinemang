@@ -1,7 +1,6 @@
 import { tmdb } from '~/services/tmdb/index.js';
 import { PersonResponseSchema } from '~/services/tmdb/types/person.js';
 import { SeasonResponseSchema } from '~/services/tmdb/types/season.js';
-import { trimCredits } from '../fetchAndSave/utils.js';
 import { ValidMovieSchema, ValidShowSchema } from '../parsers/validation.js';
 
 const testGetMovie = async () => {
@@ -13,11 +12,7 @@ const testGetMovie = async () => {
 		return;
 	}
 
-	const trimmed = { ...res, credits: trimCredits(res.credits) };
-
-	console.log(JSON.stringify(trimmed.credits, null, 2));
-
-	const { data, error } = ValidMovieSchema.safeParse(trimmed);
+	const { data, error } = ValidMovieSchema.safeParse(res);
 
 	if (data) {
 		console.log(`✔️ ${data.title}`);
