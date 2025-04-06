@@ -53,12 +53,35 @@ const handleShowChunk = async (chunk: string[]) => {
 		500,
 	);
 
-	const data = shows
+	const _data = shows
 		.map((show) => mergeSeasonCreditsIntoShow(show, seasons))
 		.flatMap(toCreditCreateInput)
 		.filter((o) => !!o);
 
+	const duplicateCreditIds = await findDuplicateCreditIds(_data);
+	const data = _data.filter(
+		(credit) => !duplicateCreditIds.includes(credit.creditId),
+	);
+
 	return data;
+};
+
+// We're seeing the same creditId across different shows. For example creditId
+// 5305003cc3a3682c960268b3 is in shows 45 and 4498 (Jeremy CLarkson in two
+// versions of Top Gear).
+const findDuplicateCreditIds = async (
+	credits: Prisma.CreditUncheckedCreateInput[],
+) => {
+	const duplicateCredits = await prisma.credit.findMany({
+		where: { creditId: { in: credits.map((o) => o.creditId) } },
+		select: { creditId: true, showId: true },
+	});
+
+	duplicateCredits.map((c) =>
+		logger.warn(`duplicate credit. creditId: ${c.creditId}, showId: ${c.showId}`),
+	);
+
+	return duplicateCredits.map((o) => o.creditId);
 };
 
 const detectCreditsWithMissingPerson = async (
