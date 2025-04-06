@@ -1,37 +1,22 @@
-import 'dotenv/config';
-import { existsSync } from 'node:fs';
-import { appendFile, rename, stat, truncate } from 'node:fs/promises';
-import { subHours } from 'date-fns';
+import { appendFile, rename } from 'node:fs/promises';
 import { chunk } from 'lodash-es';
 import pMap from 'p-map';
 import logger from '~/services/logger.js';
 import { tmdb } from '../../services/tmdb/index.js';
 import type { FileType } from '../types.js';
-import { consoleLogInPlace, getPath } from '../utils.js';
+import { consoleLogInPlace } from '../utils.js';
 import { collectPersonIds } from './collectPersonIds.js';
 import { collectShowIds } from './collectShowIds.js';
 import { handleMediaChunk } from './handleMediaChunk.js';
 import { handlePersonChunk } from './handlePersonChunk.js';
 import { handleSeasonChunk } from './handleSeasonChunk.js';
+import { prepFiles } from './prepFiles.js';
 
 export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
 	logger.info(`fetching ${type}s`);
-	const path = getPath(type);
-
-	if (existsSync(path)) {
-		const stats = await stat(path);
-		const isFresh = stats.mtime >= subHours(new Date(), 12);
-		if (isFresh) {
-			logger.info('skipping fresh file');
-			return;
-		}
-
-		await truncate(path);
-	}
-
-	const tempPath = `${path}.tmp`;
-	if (existsSync(tempPath)) {
-		await truncate(tempPath);
+	const { path, tempPath, isFresh } = await prepFiles(type);
+	if (isFresh) {
+		return;
 	}
 
 	logger.info('gathering ids');
