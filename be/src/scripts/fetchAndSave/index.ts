@@ -22,7 +22,7 @@ export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
 		const stats = await stat(path);
 		const isFresh = stats.mtime >= subHours(new Date(), 12);
 		if (isFresh) {
-			logger.info('skipping: file is fresh');
+			logger.info('skipping fresh file');
 			return;
 		}
 
@@ -44,7 +44,7 @@ export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
 				: await tmdb.discoverMediaIds(type, isFullMode);
 	const chunks = chunk(ids, 500);
 
-	logger.info('finished gathering ids, now fetching objects');
+	logger.info(`gathered ${ids.length} ids. fetching and saving objects`);
 
 	await pMap(
 		chunks,
@@ -70,6 +70,6 @@ export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
 
 	rename(tempPath, path);
 
-	logger.info(`done fetching all ${type}s`);
+	logger.info(`done fetching ${type}s`);
 	process.stdout.write('\n'); // end the line
 };
