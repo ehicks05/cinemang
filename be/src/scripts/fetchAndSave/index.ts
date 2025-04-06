@@ -71,8 +71,8 @@ const fetchAndSaveByType = async (type: FileType) => {
 
 	rename(tempPath, path);
 
-	process.stdout.write('\n'); // end the line
 	logger.info(`done fetching all ${type}s`);
+	process.stdout.write('\n'); // end the line
 };
 
 export const fetchAndSave = async () => {

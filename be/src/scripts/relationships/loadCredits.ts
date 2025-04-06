@@ -28,8 +28,8 @@ const mergeSeasonCreditsIntoShow = (show: ShowResponse, seasons: ModdedSeason[])
 	const showWithSeasonCredits = {
 		...show,
 		credits: {
-			cast: uniqBy(combinedCast, 'creditId'),
-			crew: uniqBy(combinedCrew, 'creditId'),
+			cast: uniqBy(combinedCast, (credit) => credit.credit_id),
+			crew: uniqBy(combinedCrew, (credit) => credit.credit_id),
 		},
 	};
 	return showWithSeasonCredits;
@@ -44,8 +44,8 @@ const handleShowChunk = async (chunk: string[]) => {
 	await processLines(
 		getPath('season'),
 		async (chunk) => {
-			const showSeasons: ModdedSeason[] = chunk
-				.map((line) => JSON.parse(line))
+			const showSeasons = chunk
+				.map((line) => JSON.parse(line) as ModdedSeason)
 				.filter((season) => showIds.includes(season.showId));
 
 			seasons.push(...showSeasons);
