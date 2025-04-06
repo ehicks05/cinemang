@@ -12,7 +12,10 @@ import { vacuumAnalyze } from './vacuumAnalyze.js';
 export const runSync = async () => {
 	await runLatencyReports();
 
-	await fetchAndSave();
+	await fetchAndSave('movie');
+	await fetchAndSave('tv');
+	await fetchAndSave('season'); // depends on tv
+	await fetchAndSave('person'); // depends on movie, tv, and season
 
 	await droploadSystemTables();
 

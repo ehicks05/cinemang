@@ -15,7 +15,7 @@ import { handleMediaChunk } from './handleMediaChunk.js';
 import { handlePersonChunk } from './handlePersonChunk.js';
 import { handleSeasonChunk } from './handleSeasonChunk.js';
 
-const fetchAndSaveByType = async (type: FileType) => {
+export const fetchAndSave = async (type: FileType) => {
 	logger.info(`fetching all ${type}s`);
 	const path = getPath(type);
 
@@ -73,11 +73,4 @@ const fetchAndSaveByType = async (type: FileType) => {
 
 	logger.info(`done fetching all ${type}s`);
 	process.stdout.write('\n'); // end the line
-};
-
-export const fetchAndSave = async () => {
-	await fetchAndSaveByType('movie');
-	await fetchAndSaveByType('tv');
-	await fetchAndSaveByType('season'); // depends on tv
-	await fetchAndSaveByType('person'); // depends on movie, tv, and season
 };
