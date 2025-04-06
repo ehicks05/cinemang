@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { droploadSystemTables } from './droploadSystemTables.js';
 import { dropLoadTable } from './droploadTables.js';
+import { checkFullMode } from './checkFullMode.js';
 import { fetchAndSave } from './fetchAndSave/index.js';
 import { loadCredits } from './relationships/loadCredits.js';
 import { loadMediaProviders } from './relationships/loadMediaProviders.js';
@@ -12,10 +13,11 @@ import { vacuumAnalyze } from './vacuumAnalyze.js';
 export const runSync = async () => {
 	await runLatencyReports();
 
-	await fetchAndSave('movie');
-	await fetchAndSave('tv');
-	await fetchAndSave('season'); // depends on tv
-	await fetchAndSave('person'); // depends on movie, tv, and season
+	const isFullMode = checkFullMode();
+	await fetchAndSave(isFullMode, 'movie');
+	await fetchAndSave(isFullMode, 'tv');
+	await fetchAndSave(isFullMode, 'season'); // depends on tv
+	await fetchAndSave(isFullMode, 'person'); // depends on movie, tv, and season
 
 	await droploadSystemTables();
 

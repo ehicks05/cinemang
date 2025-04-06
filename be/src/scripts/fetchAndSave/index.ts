@@ -8,14 +8,13 @@ import logger from '~/services/logger.js';
 import { tmdb } from '../../services/tmdb/index.js';
 import type { FileType } from '../types.js';
 import { consoleLogInPlace, getPath } from '../utils.js';
-import { checkFullMode } from './checkFullMode.js';
 import { collectPersonIds } from './collectPersonIds.js';
 import { collectShowIds } from './collectShowIds.js';
 import { handleMediaChunk } from './handleMediaChunk.js';
 import { handlePersonChunk } from './handlePersonChunk.js';
 import { handleSeasonChunk } from './handleSeasonChunk.js';
 
-export const fetchAndSave = async (type: FileType) => {
+export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
 	logger.info(`fetching ${type}s`);
 	const path = getPath(type);
 
@@ -36,7 +35,6 @@ export const fetchAndSave = async (type: FileType) => {
 	}
 
 	logger.info('gathering ids');
-	const isFullMode = checkFullMode();
 
 	const ids =
 		type === 'person'
