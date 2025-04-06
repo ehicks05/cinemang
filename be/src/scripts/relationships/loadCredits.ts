@@ -109,14 +109,6 @@ const detectCreditsWithMissingPerson = async (
 export const loadCredits = async (type: 'movie' | 'tv') => {
 	logger.info(`droploading ${type} credits`);
 
-	const where =
-		type === 'movie' ? { movieId: { not: null } } : { showId: { not: null } };
-	const deleteResult = await prisma.credit.deleteMany({ where: where });
-
-	logger.info(
-		`dropped ${deleteResult.count} rows (likely 0 if parent tables were droploaded)`,
-	);
-
 	await processLines(
 		getPath(type),
 		async (chunk) => {
@@ -128,6 +120,13 @@ export const loadCredits = async (type: 'movie' | 'tv') => {
 			const data = await detectCreditsWithMissingPerson(_data);
 
 			try {
+				const _ids =
+					type === 'movie' ? data.map((o) => o.movieId) : data.map((o) => o.showId);
+				const ids = _ids.filter((o): o is number => !!o);
+				const where =
+					type === 'movie' ? { movieId: { in: ids } } : { showId: { in: ids } };
+
+				await prisma.credit.deleteMany({ where: where });
 				await prisma.credit.createMany({ data });
 			} catch (e) {
 				logger.error(e);

@@ -10,16 +10,6 @@ import { getPath } from './utils.js';
 export const dropLoadTable = async (type: 'movie' | 'tv' | 'person') => {
 	logger.info(`droploading ${type}`);
 
-	// truncate table
-	const deleteResult =
-		type === 'movie'
-			? await prisma.movie.deleteMany()
-			: type === 'tv'
-				? await prisma.show.deleteMany()
-				: await prisma.person.deleteMany();
-	logger.info(`dropped ${deleteResult.count} rows`);
-
-	// insert all
 	await processLines(
 		getPath(type),
 		async (chunk) => {
@@ -34,14 +24,20 @@ export const dropLoadTable = async (type: 'movie' | 'tv' | 'person') => {
 
 			if (type === 'movie') {
 				const data = inserts as unknown as Prisma.MovieCreateInput[];
+				const ids = data.map((o) => o.id);
+				await prisma.movie.deleteMany({ where: { id: { in: ids } } });
 				await prisma.movie.createMany({ data });
 			}
 			if (type === 'tv') {
 				const data = inserts as unknown as Prisma.ShowCreateInput[];
+				const ids = data.map((o) => o.id);
+				await prisma.show.deleteMany({ where: { id: { in: ids } } });
 				await prisma.show.createMany({ data });
 			}
 			if (type === 'person') {
 				const data = inserts as unknown as Prisma.PersonCreateInput[];
+				const ids = data.map((o) => o.id);
+				await prisma.person.deleteMany({ where: { id: { in: ids } } });
 				await prisma.person.createMany({ data });
 			}
 		},

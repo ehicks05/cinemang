@@ -29,11 +29,6 @@ export const loadSeasons = async () => {
 	const type = 'season';
 	logger.info('droploading seasons');
 
-	const deleteResult = await prisma.season.deleteMany({});
-	logger.info(
-		`dropped ${deleteResult.count} rows (likely 0 if parent tables were droploaded)`,
-	);
-
 	await processLines(
 		getPath(type),
 		async (chunk) => {
@@ -42,6 +37,8 @@ export const loadSeasons = async () => {
 				.map(toSeasonCreateInput);
 
 			try {
+				const ids = data.map((o) => o.id);
+				await prisma.season.deleteMany({ where: { id: { in: ids } } });
 				await prisma.season.createMany({ data });
 			} catch (e) {
 				logger.error(e);

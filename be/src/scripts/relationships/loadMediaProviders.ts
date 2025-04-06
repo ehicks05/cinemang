@@ -6,8 +6,6 @@ import type { MediaResponse } from '~/services/tmdb/types/media.js';
 import { processLines } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 
-const toId = (o: { id: number }) => o.id;
-
 const toMediaKey = (media: MediaResponse) => {
 	if ('title' in media) return { movieId: media.id };
 	if ('name' in media) return { showId: media.id };
@@ -16,7 +14,7 @@ const toMediaKey = (media: MediaResponse) => {
 
 const getProvidersById = async () => {
 	const providers = await prisma.provider.findMany({});
-	return keyBy(providers, toId);
+	return keyBy(providers, (o) => o.id);
 };
 
 const toMediaProviderCreateInput = (
@@ -31,16 +29,8 @@ const toMediaProviderCreateInput = (
 };
 
 export const loadMediaProviders = async (type: 'movie' | 'tv') => {
-	logger.info(
-		`droploading ${type} mediaProviders (likely 0 if parent tables were droploaded)`,
-	);
+	logger.info(`droploading ${type} mediaProviders`);
 	const providersById = await getProvidersById();
-
-	const where =
-		type === 'movie' ? { movieId: { not: null } } : { showId: { not: null } };
-	const deleteResult = await prisma.mediaProvider.deleteMany({ where: where });
-
-	logger.info(`dropped ${deleteResult.count} rows`);
 
 	await processLines(
 		getPath(type),
@@ -51,6 +41,13 @@ export const loadMediaProviders = async (type: 'movie' | 'tv') => {
 				.filter((o) => o && providersById[o.providerId]);
 
 			try {
+				const _ids =
+					type === 'movie' ? data.map((o) => o.movieId) : data.map((o) => o.showId);
+				const ids = _ids.filter((o): o is number => !!o);
+				const where =
+					type === 'movie' ? { movieId: { in: ids } } : { showId: { in: ids } };
+
+				await prisma.mediaProvider.deleteMany({ where: where });
 				await prisma.mediaProvider.createMany({ data });
 			} catch (e) {
 				logger.error(e);
