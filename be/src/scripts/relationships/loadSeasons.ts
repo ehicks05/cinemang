@@ -26,11 +26,10 @@ export type ModdedSeason = SeasonResponse & {
 };
 
 export const loadSeasons = async () => {
-	const type = 'season';
 	logger.info('droploading seasons');
 
 	await processLines(
-		getPath(type),
+		getPath('season'),
 		async (chunk) => {
 			const data = chunk
 				.map((line) => JSON.parse(line) as ModdedSeason)

@@ -24,8 +24,6 @@ const updateLanguageCounts = async () => {
 		(o) => prisma.language.update({ data: o, where: { id: o.id } }),
 		PRISMA_CONCURRENCY,
 	);
-
-	logger.info('updated language counts');
 };
 
 const updateProviderCounts = async () => {
@@ -49,11 +47,12 @@ const updateProviderCounts = async () => {
 		async (p) => prisma.provider.update({ data: p, where: { id: p.id } }),
 		PRISMA_CONCURRENCY,
 	);
-
-	logger.info('updated watch provider counts');
 };
 
 export const updateCounts = async () => {
-	await updateLanguageCounts();
-	await updateProviderCounts();
+	logger.info('updating language and provider counts');
+
+	await Promise.all([updateLanguageCounts, updateProviderCounts]);
+
+	logger.info('finished updating language and provider counts');
 };

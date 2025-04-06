@@ -13,13 +13,12 @@ import { handleSeasonChunk } from './handleSeasonChunk.js';
 import { prepFiles } from './prepFiles.js';
 
 export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
-	logger.info(`fetching ${type}s`);
 	const { path, tempPath, isFresh } = await prepFiles(type);
 	if (isFresh) {
 		return;
 	}
 
-	logger.info('gathering ids');
+	logger.info(`gathering ${type} ids`);
 
 	const ids =
 		type === 'person'
