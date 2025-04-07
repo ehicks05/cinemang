@@ -141,7 +141,7 @@ const FormFields = () => {
 			</div>
 
 			<div className="flex gap-2">
-				<div className="shrink-0">
+				<div className="w-full">
 					<div className="whitespace-nowrap">Min Votes</div>
 					<div className="flex gap-2">
 						<input
@@ -155,7 +155,7 @@ const FormFields = () => {
 					</div>
 				</div>
 
-				<div className="shrink">
+				<div className="w-full">
 					<div>Rating</div>
 					<div className="flex gap-2">
 						<input
@@ -174,7 +174,7 @@ const FormFields = () => {
 				</div>
 			</div>
 			{mode === 'movie' && (
-				<div>
+				<div className="col-span-2">
 					<div>Released</div>
 					<div className="flex flex-col gap-2 sm:flex-row">
 						<input
