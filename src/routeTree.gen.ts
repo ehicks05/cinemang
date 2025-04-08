@@ -20,6 +20,7 @@ import { Route as TvShowIdImport } from './routes/tv.$showId'
 import { Route as TanRoutesRedirectImport } from './routes/tan-routes/redirect'
 import { Route as TanRoutesDeferredImport } from './routes/tan-routes/deferred'
 import { Route as PeoplePersonIdImport } from './routes/people.$personId'
+import { Route as FilmsFooImport } from './rout./routes/films.foo
 import { Route as FilmsFilmIdImport } from './routes/films.$filmId'
 import { Route as PathlessLayoutNestedLayoutImport } from './routes/_pathlessLayout/_nested-layout'
 import { Route as TanRoutesUsersRouteImport } from './routes/tan-routes/users.route'
@@ -84,6 +85,12 @@ const TanRoutesDeferredRoute = TanRoutesDeferredImport.update({
 const PeoplePersonIdRoute = PeoplePersonIdImport.update({
   id: '/people/$personId',
   path: '/people/$personId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FilmsFooRoute = FilmsFooImport.update({
+  id: '/films/foo',
+  path: '/films/foo',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -200,6 +207,13 @@ declare module '@tanstack/react-router' {
       path: '/films/$filmId'
       fullPath: '/films/$filmId'
       preLoaderRoute: typeof FilmsFilmIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/films/foo': {
+      id: '/films/foo'
+      path: '/films/foo'
+      fullPath: '/films/foo'
+      preLoaderRoute: typeof FilmsFooImport
       parentRoute: typeof rootRoute
     }
     '/people/$personId': {
@@ -367,6 +381,7 @@ export interface FileRoutesByFullPath {
   '/tan-routes/posts': typeof TanRoutesPostsRouteRouteWithChildren
   '/tan-routes/users': typeof TanRoutesUsersRouteRouteWithChildren
   '/films/$filmId': typeof FilmsFilmIdRoute
+  '/films/foo': typeof FilmsFooRoute
   '/people/$personId': typeof PeoplePersonIdRoute
   '/tan-routes/deferred': typeof TanRoutesDeferredRoute
   '/tan-routes/redirect': typeof TanRoutesRedirectRoute
@@ -387,6 +402,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/films/$filmId': typeof FilmsFilmIdRoute
+  '/films/foo': typeof FilmsFooRoute
   '/people/$personId': typeof PeoplePersonIdRoute
   '/tan-routes/deferred': typeof TanRoutesDeferredRoute
   '/tan-routes/redirect': typeof TanRoutesRedirectRoute
@@ -411,6 +427,7 @@ export interface FileRoutesById {
   '/tan-routes/users': typeof TanRoutesUsersRouteRouteWithChildren
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/films/$filmId': typeof FilmsFilmIdRoute
+  '/films/foo': typeof FilmsFooRoute
   '/people/$personId': typeof PeoplePersonIdRoute
   '/tan-routes/deferred': typeof TanRoutesDeferredRoute
   '/tan-routes/redirect': typeof TanRoutesRedirectRoute
@@ -435,6 +452,7 @@ export interface FileRouteTypes {
     | '/tan-routes/posts'
     | '/tan-routes/users'
     | '/films/$filmId'
+    | '/films/foo'
     | '/people/$personId'
     | '/tan-routes/deferred'
     | '/tan-routes/redirect'
@@ -454,6 +472,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/films/$filmId'
+    | '/films/foo'
     | '/people/$personId'
     | '/tan-routes/deferred'
     | '/tan-routes/redirect'
@@ -476,6 +495,7 @@ export interface FileRouteTypes {
     | '/tan-routes/users'
     | '/_pathlessLayout/_nested-layout'
     | '/films/$filmId'
+    | '/films/foo'
     | '/people/$personId'
     | '/tan-routes/deferred'
     | '/tan-routes/redirect'
@@ -499,6 +519,7 @@ export interface RootRouteChildren {
   TanRoutesPostsRouteRoute: typeof TanRoutesPostsRouteRouteWithChildren
   TanRoutesUsersRouteRoute: typeof TanRoutesUsersRouteRouteWithChildren
   FilmsFilmIdRoute: typeof FilmsFilmIdRoute
+  FilmsFooRoute: typeof FilmsFooRoute
   PeoplePersonIdRoute: typeof PeoplePersonIdRoute
   TanRoutesDeferredRoute: typeof TanRoutesDeferredRoute
   TanRoutesRedirectRoute: typeof TanRoutesRedirectRoute
@@ -515,6 +536,7 @@ const rootRouteChildren: RootRouteChildren = {
   TanRoutesPostsRouteRoute: TanRoutesPostsRouteRouteWithChildren,
   TanRoutesUsersRouteRoute: TanRoutesUsersRouteRouteWithChildren,
   FilmsFilmIdRoute: FilmsFilmIdRoute,
+  FilmsFooRoute: FilmsFooRoute,
   PeoplePersonIdRoute: PeoplePersonIdRoute,
   TanRoutesDeferredRoute: TanRoutesDeferredRoute,
   TanRoutesRedirectRoute: TanRoutesRedirectRoute,
@@ -540,6 +562,7 @@ export const routeTree = rootRoute
         "/tan-routes/posts",
         "/tan-routes/users",
         "/films/$filmId",
+        "/films/foo",
         "/people/$personId",
         "/tan-routes/deferred",
         "/tan-routes/redirect",
@@ -583,6 +606,9 @@ export const routeTree = rootRoute
     },
     "/films/$filmId": {
       "filePath": "films.$filmId.tsx"
+    },
+    "/films/foo": {
+      "filePath": "films.foo.tsx"
     },
     "/people/$personId": {
       "filePath": "people.$personId.tsx"
