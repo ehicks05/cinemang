@@ -26,11 +26,12 @@ export const prepFiles = async (type: FileType) => {
 	}
 
 	const { exists, isFresh } = await checkFreshness(path);
-	if (isFresh) {
-		logger.info(`found fresh ${type} file`);
-	}
-	if (exists && !isFresh) {
-		await truncate(path);
+	if (exists) {
+		if (isFresh) {
+			logger.info(`found fresh ${type} file`);
+		} else {
+			await truncate(path);
+		}
 	}
 
 	return { path, tempPath, isFresh };
