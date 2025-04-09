@@ -1,11 +1,14 @@
 import logger from '~/services/logger.js';
 import type { FileType } from './types.js';
+import { checkFullMode } from './checkFullMode.js';
 
 const prod = process.env.NODE_ENV === 'production';
 const base = prod ? '/app/storage/' : './script-data/';
 logger.info(`writing logs to ${base}`);
+const isFullMode = checkFullMode();
+const mode = isFullMode ? '.full' : '.incremental';
 
-export const getPath = (type: FileType) => `${base}${type}.txt`;
+export const getPath = (type: FileType) => `${base}${type}${mode}.txt`;
 
 export const consoleLogInPlace = (input: string) => {
 	if (prod || !process.stdout.clearLine) {
