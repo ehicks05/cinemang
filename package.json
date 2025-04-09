@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "vinxi dev",
 		"build": "vinxi build",
-		"start": "vinxi start"
+		"start": "vinxi start",
+		"postinstall": "npx prisma generate"
 	},
 	"dependencies": {
 		"@prisma/client": "^6.6.0",
