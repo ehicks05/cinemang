@@ -74,12 +74,10 @@ const findDuplicateCreditIds = async (
 ) => {
 	const duplicateCredits = await prisma.credit.findMany({
 		where: { creditId: { in: credits.map((o) => o.creditId) } },
-		select: { creditId: true, showId: true },
+		select: { creditId: true },
 	});
 
-	duplicateCredits.map((c) =>
-		logger.warn(`duplicate credit. creditId: ${c.creditId}, showId: ${c.showId}`),
-	);
+	logger.warn(`duplicate creditIds: ${duplicateCredits.join(', ')}`);
 
 	return duplicateCredits.map((o) => o.creditId);
 };
@@ -88,6 +86,7 @@ const detectCreditsWithMissingPerson = async (
 	credits: Prisma.CreditUncheckedCreateInput[],
 ) => {
 	const persons = await prisma.person.findMany({
+		select: { id: true },
 		where: { id: { in: credits.map((o) => o.personId) } },
 	});
 	const personIds = persons.map((o) => o.id);

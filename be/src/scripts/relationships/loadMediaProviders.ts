@@ -13,7 +13,7 @@ const toMediaKey = (media: MediaResponse) => {
 };
 
 const getProvidersById = async () => {
-	const providers = await prisma.provider.findMany({});
+	const providers = await prisma.provider.findMany({ select: { id: true } });
 	return keyBy(providers, (o) => o.id);
 };
 
