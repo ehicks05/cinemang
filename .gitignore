@@ -28,3 +28,4 @@ tsconfig.tsbuildinfo
 .output
 .vercel
 src/generated/prisma
+.env
