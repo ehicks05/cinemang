@@ -27,3 +27,4 @@ tsconfig.tsbuildinfo
 .vinxi
 .output
 .vercel
+src/generated/prisma

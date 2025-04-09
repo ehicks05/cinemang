@@ -23,5 +23,19 @@ It is powered by a Supabase instance that is populated with data from TMDB via t
    npm run dev
    ```
 
+## DB Requirements
+
+1. Postgres
+2. Currently needs at least 400MB disk space
+3. Ability to install the `pg_trgm` extension
+
+### DB Provider Free Tiers
+
+1. Supabase - has been great but is now constantly hitting disk IO quotas.
+2. Neon - promising so far
+3. Aiven - resource limits look great, nyc-digital-ocean-only, no connection pooling, 20 connections
+4. Gel - learning curve, not raw postgres, lock-in
+5. Xata - no extensions, limited statements (?)
+
 ## why is it called cinemang
 Take the word 'cinema' and add a very good cat named Mang and you get cinemang.
