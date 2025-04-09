@@ -47,7 +47,7 @@ export const MediaCard = ({ media, palette }: Props) => {
 				</div>
 				<div className="flex gap-4">
 					<div className="shrink-0">
-						<TmdbImage className="rounded-sm" path={media.poster_path} />
+						<TmdbImage className="rounded-sm" path={media.posterPath} />
 					</div>
 					<div className="flex flex-col gap-1">
 						<TopCrew media={media} />

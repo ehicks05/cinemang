@@ -1,15 +1,16 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import { MediaDetail } from '~/app/MediaDetail';
 import { fetchTrailer } from '~/core-components/Trailer/useFetchVideos';
-import { getFilmById } from '~/hooks/useFetchFilms';
+import { fetchFilm } from '~/server/fetchFilm';
 import { usePalette } from '~/utils/palettes/usePalettes';
 
 export const Route = createFileRoute('/films/$filmId')({
 	loader: async ({ params }) => {
-		const film = await getFilmById(Number(params.filmId));
-		const trailer = await fetchTrailer({ movieId: film.id });
+		const film = await fetchFilm({ data: { id: Number(params.filmId) } });
+		const trailer = await fetchTrailer({ movieId: film?.id || 0 });
 		return { film, trailer };
 	},
+	staleTime: 1000 * 60 * 60,
 	component: RouteComponent,
 	errorComponent: ErrorComponent,
 });
@@ -17,7 +18,9 @@ export const Route = createFileRoute('/films/$filmId')({
 function RouteComponent() {
 	const { film, trailer } = Route.useLoaderData();
 
-	const { palette } = usePalette({ path: film.poster_path });
+	if (!film) throw Error('Missing Film');
+
+	const { palette } = usePalette({ path: film.posterPath });
 	if (!palette) return null;
 
 	return <MediaDetail media={film} trailer={trailer} palette={palette} />;

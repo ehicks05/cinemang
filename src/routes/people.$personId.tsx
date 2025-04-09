@@ -1,10 +1,12 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import { MediaDetail } from '~/app/MediaDetail';
-import { getPersonById } from '~/hooks/useFetchPersons';
+import { fetchPerson } from '~/server/fetchPerson';
 import { usePalette } from '~/utils/palettes/usePalettes';
 
 export const Route = createFileRoute('/people/$personId')({
-	loader: async ({ params }) => getPersonById(Number(params.personId)),
+	loader: async ({ params }) =>
+		fetchPerson({ data: { id: Number(params.personId) } }),
+	staleTime: 1000 * 60 * 60,
 	component: RouteComponent,
 	errorComponent: ErrorComponent,
 });
@@ -12,12 +14,10 @@ export const Route = createFileRoute('/people/$personId')({
 function RouteComponent() {
 	const person = Route.useLoaderData();
 
-	const { palette } = usePalette({ path: person.profile_path });
+	if (!person) throw Error('Missing Person');
+
+	const { palette } = usePalette({ path: person.profilePath });
 	if (!palette) return null;
 
-	return (
-		<div>
-			<MediaDetail media={person} palette={palette} />
-		</div>
-	);
+	return <MediaDetail media={person} palette={palette} />;
 }

@@ -1,27 +1,27 @@
 import { createServerFn } from '@tanstack/react-start';
 import { PAGE_SIZE } from '~/constants/constants';
 import type { Prisma } from '~/generated/prisma';
-import type { MovieSearchForm } from '~/utils/searchParams/types';
+import type { TvSearchForm } from '~/utils/searchParams/types';
 import prisma from './prisma';
 
-export type Film = Awaited<ReturnType<typeof findFilms>>['films'][number];
+export type Show = Awaited<ReturnType<typeof findShows>>['shows'][number];
 
-export const findFilms = createServerFn()
-	.validator((data: MovieSearchForm) => data)
+export const findShows = createServerFn()
+	.validator((data: TvSearchForm) => data)
 	.handler(async (ctx) => {
-		const start = Date.now();
 		const search = ctx.data;
+		console.log(search);
 
-		const where: Prisma.MovieWhereInput = {
-			title: { contains: search.title, mode: 'insensitive' },
+		const where: Prisma.ShowWhereInput = {
+			name: { contains: search.name, mode: 'insensitive' },
 			voteCount: { gte: search.minVotes, lte: search.maxVotes },
 			voteAverage: { gte: search.minRating, lte: search.maxRating },
 			...(search.genre && { genreId: { equals: search.genre } }),
 			...(search.language && { languageId: { equals: search.language } }),
-			...((search.minReleasedAt || search.maxReleasedAt) && {
-				releasedAt: {
-					gte: search.minReleasedAt || undefined,
-					lte: search.maxReleasedAt || undefined,
+			...((search.minLastAirDate || search.maxLastAirDate) && {
+				lastAirDate: {
+					gte: search.minLastAirDate || undefined,
+					lte: search.maxLastAirDate || undefined,
 				},
 			}),
 
@@ -37,8 +37,8 @@ export const findFilms = createServerFn()
 			}),
 		};
 
-		const count = await prisma.movie.count({ where });
-		const films = await prisma.movie.findMany({
+		const count = await prisma.show.count({ where });
+		const shows = await prisma.show.findMany({
 			include: { providers: { select: { providerId: true } } },
 			take: PAGE_SIZE,
 			skip: search.page * PAGE_SIZE,
@@ -46,6 +46,5 @@ export const findFilms = createServerFn()
 			orderBy: { [search.sortColumn]: search.ascending ? 'asc' : 'desc' },
 		});
 
-		console.log(`took ${Date.now() - start} ms`);
-		return { count, films };
+		return { count, shows };
 	});

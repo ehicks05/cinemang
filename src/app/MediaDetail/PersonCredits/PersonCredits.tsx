@@ -5,13 +5,13 @@ import type { IconType } from 'react-icons';
 import { FaCalendar, FaHeart, FaStar } from 'react-icons/fa';
 import type { Credit, Person } from '~/types/types';
 import type { PaletteWithGradient } from '~/utils/palettes/palette';
-import { PersonCredit } from './PersonCredit';
+import { PersonCreditCard } from './PersonCreditCard';
 
-type SortKey = 'released_at' | 'vote_average' | 'vote_count';
+type SortKey = 'releasedAt' | 'voteAverage' | 'voteCount';
 const SORT_OPTIONS: { color: string; icon: IconType; sort: SortKey }[] = [
-	{ color: 'text-white', icon: FaCalendar, sort: 'released_at' },
-	{ color: 'text-red-600', icon: FaHeart, sort: 'vote_average' },
-	{ color: 'text-yellow-300', icon: FaStar, sort: 'vote_count' },
+	{ color: 'text-white', icon: FaCalendar, sort: 'releasedAt' },
+	{ color: 'text-red-600', icon: FaHeart, sort: 'voteAverage' },
+	{ color: 'text-yellow-300', icon: FaStar, sort: 'voteCount' },
 ];
 
 const SortButtons = ({
@@ -39,11 +39,11 @@ const SortButtons = ({
 );
 
 const toSortValue = (credit: Credit, sort: SortKey) => {
-	if (credit.movie) {
+	if ('movie' in credit && credit.movie) {
 		return credit.movie[sort];
 	}
-	if (credit.show) {
-		const sortKey = sort === 'released_at' ? 'last_air_date' : sort;
+	if ('show' in credit && credit.show) {
+		const sortKey = sort === 'releasedAt' ? 'lastAirDate' : sort;
 		return credit.show[sortKey];
 	}
 };
@@ -54,7 +54,7 @@ interface Props {
 }
 
 export const PersonCredits = ({ person, palette }: Props) => {
-	const [sort, setSort] = useState<SortKey>('released_at');
+	const [sort, setSort] = useState<SortKey>('releasedAt');
 	const sortOptions = (
 		<SortButtons darkVibrant={palette.darkMuted} setSort={setSort} sort={sort} />
 	);
@@ -86,10 +86,10 @@ export const PersonCredits = ({ person, palette }: Props) => {
 
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
 						{credits.map((c) => (
-							<PersonCredit
+							<PersonCreditCard
 								bgColor={palette.darkMuted}
 								credit={c}
-								key={c.credit_id}
+								key={c.creditId}
 							/>
 						))}
 					</div>

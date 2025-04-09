@@ -12,7 +12,7 @@ interface Props {
 
 export const MediaList = ({ media, count }: Props) => {
 	const { palettes } = usePalettes({
-		paths: media.map((film) => film.poster_path),
+		paths: media.map((film) => film.posterPath),
 	});
 
 	return (

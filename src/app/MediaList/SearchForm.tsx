@@ -14,7 +14,11 @@ import {
 	DEFAULT_MOVIE_SEARCH_FORM,
 	DEFAULT_TV_SEARCH_FORM,
 } from '~/utils/searchParams/constants';
-import type { MovieSearchForm, TvSearchForm } from '~/utils/searchParams/types';
+import type {
+	MovieSearchForm,
+	SortColumn,
+	TvSearchForm,
+} from '~/utils/searchParams/types';
 
 export const SearchForm = () => (
 	<Accordion type="single" collapsible>
@@ -31,8 +35,6 @@ export const SearchForm = () => (
 		</AccordionItem>
 	</Accordion>
 );
-
-type SortColumn = 'vote_average' | 'vote_count' | 'released_at' | 'last_air_date';
 
 const FormFields = () => {
 	const { pathname } = useLocation();
@@ -121,18 +123,14 @@ const FormFields = () => {
 						<ComboBox
 							options={providers
 								// sort by selected providers, then by provider priority
-								.sort((o1, o2) => o1.display_priority - o2.display_priority)
+								.sort((o1, o2) => o1.displayPriority - o2.displayPriority)
 								.sort((o1, o2) => {
 									const o1Selected = form.providers.includes(o1.id) ? 1 : -1;
 									const o2Selected = form.providers.includes(o2.id) ? 1 : -1;
 									return o2Selected - o1Selected;
 								})
 								.filter((p) => p.count > 0)
-								.map((p) => ({
-									id: p.id,
-									label: p.name,
-									imagePath: p.logo_path,
-								}))}
+								.map((p) => ({ id: p.id, label: p.name, imagePath: p.logoPath }))}
 							selectedOptions={form.providers}
 							handleChange={(providers) => handleChange({ providers })}
 						/>
@@ -266,11 +264,11 @@ const FormFields = () => {
 						value={form.sortColumn}
 					>
 						{[
-							{ label: 'User Rating', value: 'vote_average' } as const,
-							{ label: 'User Votes', value: 'vote_count' },
+							{ label: 'User Rating', value: 'voteAverage' } as const,
+							{ label: 'User Votes', value: 'voteCount' },
 							'minReleasedAt' in form
-								? { label: 'Released', value: 'released_at' }
-								: { label: 'Last Aired', value: 'last_air_date' },
+								? { label: 'Released', value: 'releasedAt' }
+								: { label: 'Last Aired', value: 'lastAirDate' },
 						].map((option) => (
 							<option key={option.value} value={option.value}>
 								{option.label}
@@ -294,7 +292,7 @@ const FormFields = () => {
 						className="border-neutral-500 border rounded-none bg-neutral-700 px-3 py-5 text-base text-white"
 						onClick={() =>
 							handleChange({
-								...(from === '/tv'
+								...(from === '/tv/'
 									? DEFAULT_TV_SEARCH_FORM
 									: DEFAULT_MOVIE_SEARCH_FORM),
 							})

@@ -1,19 +1,19 @@
 import { groupBy } from 'lodash-es';
 
-import type { Credit } from '~/types/types';
+import type { MediaCredit } from '~/types/types';
 import type { PaletteWithGradient } from '~/utils/palettes/palette';
 import { PersonCard } from './PersonCard';
 
 interface Props {
-	credits: Credit[];
+	credits: MediaCredit[];
 	palette: PaletteWithGradient;
 }
 
 export const MediaCredits = ({ credits, palette }: Props) => {
 	const cast = credits.filter((c) => c.character);
 	const crew = credits.filter((c) => c.job);
-	const groupedCast = groupBy(cast, (c) => c.person_id);
-	const groupedCrew = groupBy(crew, (c) => c.person_id);
+	const groupedCast = groupBy(cast, (c) => c.personId);
+	const groupedCrew = groupBy(crew, (c) => c.personId);
 
 	return (
 		<>
@@ -24,11 +24,11 @@ export const MediaCredits = ({ credits, palette }: Props) => {
 					.map((c) => (
 						<PersonCard
 							characters={c.map((c) => c.character || '')}
-							key={c[0].credit_id}
+							key={c[0].creditId}
 							name={c[0].person.name}
 							palette={palette}
 							personId={c[0].person.id}
-							profilePath={c[0].person.profile_path}
+							profilePath={c[0].person.profilePath}
 						/>
 					))}
 			</div>
@@ -39,11 +39,11 @@ export const MediaCredits = ({ credits, palette }: Props) => {
 					.map((c) => (
 						<PersonCard
 							jobs={c.map((c) => c.job || '')}
-							key={c[0].credit_id}
+							key={c[0].creditId}
 							name={c[0].person.name}
 							palette={palette}
 							personId={c[0].person.id}
-							profilePath={c[0].person.profile_path}
+							profilePath={c[0].person.profilePath}
 						/>
 					))}
 			</div>

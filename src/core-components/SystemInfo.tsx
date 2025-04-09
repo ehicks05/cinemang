@@ -1,44 +1,24 @@
+import { useQuery } from '@tanstack/react-query';
 import { format, formatDistance } from 'date-fns';
-import { useEffect, useState } from 'react';
 import { HiOutlineInformationCircle } from 'react-icons/hi2';
-import { supabase } from '~/utils/supabase';
+import { fetchSyncLog } from '~/server/fetchSyncLog';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 const SHORT = 'hh:mm:ss a';
 const DEFAULT = `yyyy-MM-dd'T'${SHORT}`;
 
-interface RunLog {
-	created_at: string;
-	ended_at: string | null;
-	id: string;
-}
-
-const useLog = () => {
-	const [syncRunLog, setSyncRunLog] = useState<RunLog>();
-
-	useEffect(() => {
-		const doIt = async () => {
-			const { data } = await supabase
-				.from('sync_run_log')
-				.select('*')
-				.order('created_at', { ascending: false })
-				.limit(1)
-				.single();
-			if (data) setSyncRunLog(data);
-		};
-
-		doIt();
-	}, []);
-
-	return { syncRunLog };
-};
+export const useFetchSyncLog = () =>
+	useQuery({
+		queryKey: ['syncLog'],
+		queryFn: async () => fetchSyncLog(),
+		staleTime: 1000 * 60 * 60,
+	});
 
 export const SystemInfo = () => {
-	const { syncRunLog } = useLog();
+	const { data: syncRunLog } = useFetchSyncLog();
 	if (!syncRunLog) return null;
 
-	const createdAt = new Date(syncRunLog.created_at);
-	const endedAt = syncRunLog.ended_at ? new Date(syncRunLog.ended_at) : undefined;
+	const { createdAt, endedAt } = syncRunLog;
 	const duration = endedAt ? formatDistance(endedAt, createdAt) : undefined;
 
 	return (

@@ -1,43 +1,16 @@
-import type { Database } from './database.gen';
+import type { FilmDetail } from '~/server/fetchFilm';
+import type { Person } from '~/server/fetchPerson';
+import type { ShowDetail } from '~/server/fetchShow';
+import type { Genre, Language, Provider } from '~/server/fetchSystemData';
+import type { Film } from '~/server/findFilms';
+import type { Show } from '~/server/findShows';
 
-// Prefix with 'T' if we need to hydrate joined tables
-export type TCredit = Database['public']['Tables']['credit']['Row'];
-export type Genre = Database['public']['Tables']['genre']['Row'];
-export type Language = Database['public']['Tables']['language']['Row'];
-export type TPerson = Database['public']['Tables']['person']['Row'];
-export type TMovie = Database['public']['Tables']['movie']['Row'];
-export type TShow = Database['public']['Tables']['show']['Row'];
-export type Season = Database['public']['Tables']['season']['Row'];
-export type Provider = Database['public']['Tables']['provider']['Row'];
+export type PersonCredit = Person['credits'][number];
+export type MediaCredit = FilmDetail['credits'][number];
 
-export interface Credit extends TCredit {
-	movie?: Film;
-	show?: Show;
-	person: TPerson;
-}
+export type Credit = PersonCredit | MediaCredit;
 
-export interface Film extends TMovie {
-	providers: { id: number }[];
-}
-
-export interface FilmDetail extends TMovie {
-	credits: Credit[];
-	providers: Provider[];
-}
-
-export interface Show extends TShow {
-	providers: { id: number }[];
-}
-
-export interface ShowDetail extends TShow {
-	credits: Credit[];
-	providers: Provider[];
-	seasons: Season[];
-}
-
-export interface Person extends TPerson {
-	credits: Credit[];
-}
+export type Season = ShowDetail['seasons'][number];
 
 export interface Video {
 	id: string;
@@ -51,3 +24,14 @@ export interface Video {
 	size: number;
 	type: string;
 }
+
+export type {
+	Film,
+	FilmDetail,
+	Genre,
+	Language,
+	Person,
+	Provider,
+	Show,
+	ShowDetail,
+};

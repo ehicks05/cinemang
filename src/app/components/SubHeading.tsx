@@ -1,4 +1,4 @@
-import { addMinutes, format, intervalToDuration, parseISO } from 'date-fns';
+import { addMinutes, format, intervalToDuration } from 'date-fns';
 import { useSystemData } from '~/hooks/useSystemData';
 import type { Film, Person, Show } from '~/types/types';
 
@@ -9,8 +9,8 @@ interface Props {
 export const SubHeading = ({ media }: Props) => {
 	const { genres } = useSystemData();
 
-	if ('released_at' in media) {
-		const year = format(parseISO(media.released_at), 'yyyy');
+	if ('releasedAt' in media) {
+		const year = format(media.releasedAt, 'yyyy');
 		const runtime = intervalToDuration({
 			end: addMinutes(new Date(), Number(media.runtime)),
 			start: new Date(),
@@ -18,48 +18,51 @@ export const SubHeading = ({ media }: Props) => {
 
 		return (
 			<>
-				<span className="font-semibold" title={media.released_at}>
-					{year} {genres.find((genre) => genre.id === media.genre_id)?.name}
+				<span
+					className="font-semibold"
+					title={media.releasedAt.toLocaleDateString()}
+				>
+					{year} {genres.find((genre) => genre.id === media.genreId)?.name}
 				</span>
 				{' • '}
 				<span className="whitespace-nowrap">{`${runtime.hours || 0}h ${runtime.minutes}m`}</span>
 
-				{media.language_id !== 'en' && (
+				{media.languageId !== 'en' && (
 					<span>
 						{' • '}
-						{media.language_id}
+						{media.languageId}
 					</span>
 				)}
 			</>
 		);
 	}
 
-	if ('first_air_date' in media) {
-		const firstYear = format(parseISO(media.first_air_date), 'yyyy');
-		const lastYear = format(parseISO(media.last_air_date), 'yyyy');
+	if ('firstAirDate' in media) {
+		const firstYear = format(media.firstAirDate, 'yyyy');
+		const lastYear = format(media.lastAirDate, 'yyyy');
 		const years = firstYear === lastYear ? firstYear : `${firstYear}-${lastYear}`;
 
 		return (
 			<>
 				<span className="font-semibold">
-					{years} {genres.find((genre) => genre.id === media.genre_id)?.name} {' • '}
+					{years} {genres.find((genre) => genre.id === media.genreId)?.name} {' • '}
 				</span>
 				<span>{media.status.replace(' Series', '')}</span>
 
-				{media.language_id !== 'en' && (
+				{media.languageId !== 'en' && (
 					<span>
 						{' • '}
-						{media.language_id}
+						{media.languageId}
 					</span>
 				)}
 			</>
 		);
 	}
 
-	if ('known_for_department' in media) {
+	if ('knownForDepartment' in media) {
 		return (
 			<span>
-				{media.known_for_department}
+				{media.knownForDepartment}
 				{' • '}
 				{media.credits.length} Credits
 			</span>

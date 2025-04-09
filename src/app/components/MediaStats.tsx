@@ -6,7 +6,7 @@ const nf = Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
 export const toShort = (voteCount: number) =>
 	Number(voteCount) > 1000 ? `${Math.round(voteCount / 1000)}k` : String(voteCount);
 
-const heartColor = (voteAverage: number) =>
+const heartColor = (voteAverage = 0) =>
 	voteAverage >= 8
 		? 'text-red-500'
 		: voteAverage >= 7
@@ -15,7 +15,7 @@ const heartColor = (voteAverage: number) =>
 				? 'text-red-700'
 				: 'text-red-800';
 
-const starColor = (voteCount: number) =>
+const starColor = (voteCount = 0) =>
 	voteCount >= 10_000
 		? 'text-yellow-300'
 		: voteCount >= 1000
@@ -27,14 +27,14 @@ const starColor = (voteCount: number) =>
 interface Props {
 	bgColor: string;
 	object: {
-		vote_average: number;
-		vote_count: number;
-	};
+		voteAverage: number;
+		voteCount: number;
+	} | null;
 	classname?: string;
 }
 
 export const MediaStats = ({ bgColor, object, classname }: Props) => {
-	const { vote_average: voteAverage, vote_count: voteCount } = object;
+	const { voteAverage, voteCount } = object || {};
 
 	const stats = [
 		{

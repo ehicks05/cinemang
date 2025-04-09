@@ -34,4 +34,5 @@ export const useFetchTrailers = (input: Props) =>
 	useQuery<Video>({
 		queryKey: ['films', input, 'trailers'],
 		queryFn: async () => fetchTrailer(input),
+		staleTime: 1000 * 60 * 60,
 	});

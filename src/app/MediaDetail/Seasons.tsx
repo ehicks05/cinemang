@@ -10,19 +10,19 @@ const SeasonCard = ({ season }: { season: Season }) => (
 				<TmdbImage
 					alt="poster"
 					className="w-full rounded-lg"
-					path={season.poster_path || ''}
+					path={season.posterPath || ''}
 					width={500}
 				/>
-				<OriginalImageLink path={season.poster_path || undefined} />
+				<OriginalImageLink path={season.posterPath || undefined} />
 			</div>
 
 			<div className="flex flex-col justify-between w-full p-4 rounded-lg bg-neutral-900">
 				<div>
 					<div className="flex items-center gap-2">
 						<span className="font-semibold">{season.name}</span>
-						{season.air_date && (
+						{season.airDate && (
 							<span className="text-sm opacity-75">
-								{new Date(season.air_date).toLocaleDateString()}
+								{new Date(season.airDate).toLocaleDateString()}
 							</span>
 						)}
 					</div>
@@ -33,13 +33,13 @@ const SeasonCard = ({ season }: { season: Season }) => (
 				<span className="mt-2 flex w-full items-center gap-2">
 					<StatChip
 						icon={FaHeart}
-						label={season.vote_average || '?'}
+						label={season.voteAverage || '?'}
 						bgColor="#333"
 						color="text-red-600"
 						title="Vote Average"
 					/>
 					<StatChip
-						label={`${season.episode_count} Episodes`}
+						label={`${season.episodeCount} Episodes`}
 						bgColor="#333"
 						color=""
 						title=""
@@ -56,7 +56,7 @@ export const Seasons = ({ seasons }: { seasons: Season[] }) => (
 			Season{seasons.length > 1 && 's'} ({seasons.length})
 		</div>
 		<div className="grid gap-4 sm:gap-2">
-			{sortBy(seasons, (o) => o.season_number).map((season) => (
+			{sortBy(seasons, (o) => o.seasonNumber).map((season) => (
 				<SeasonCard key={season.id} season={season} />
 			))}
 		</div>

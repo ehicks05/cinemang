@@ -11,7 +11,7 @@ interface Props {
 export const GeneralInfo = ({ media, palette }: Props) => {
 	return (
 		<div className="flex flex-col gap-2 rounded-lg bg-neutral-900 p-4">
-			{('director' in media || 'created_by' in media) && (
+			{('director' in media || 'createdBy' in media) && (
 				<TopCrew media={media} showAllCreators />
 			)}
 			{/* STARRING */}

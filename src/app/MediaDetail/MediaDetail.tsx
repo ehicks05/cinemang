@@ -29,7 +29,7 @@ const Heading = ({ media }: { media: Film | Show | Person }) => {
 };
 
 const Image = ({ media }: { media: Film | Show | Person }) => {
-	const imagePath = 'profile_path' in media ? media.profile_path : media.poster_path;
+	const imagePath = 'profilePath' in media ? media.profilePath : media.posterPath;
 
 	return (
 		<div className="w-full sm:w-2/5 relative">

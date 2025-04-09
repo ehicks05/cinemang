@@ -1,6 +1,14 @@
 import { fallback } from '@tanstack/zod-adapter';
 import { z } from 'zod';
 
+const SortColumnEnum = z.enum([
+	'voteCount',
+	'voteAverage',
+	'releasedAt',
+	'lastAirDate',
+]);
+export type SortColumn = z.infer<typeof SortColumnEnum>;
+
 export const SearchFormSchema = z.object({
 	ascending: fallback(z.boolean(), false).default(false),
 	creditName: fallback(z.string(), '').default(''),
@@ -20,10 +28,7 @@ export const MovieSearchFormSchema = SearchFormSchema.extend({
 	minReleasedAt: fallback(z.string(), '').default(''),
 	minVotes: fallback(z.number(), 0).default(500),
 	title: fallback(z.string(), '').default(''),
-	sortColumn: fallback(
-		z.enum(['vote_count', 'vote_average', 'released_at']),
-		'released_at',
-	).default('released_at'),
+	sortColumn: fallback(SortColumnEnum, 'releasedAt').default('releasedAt'),
 });
 
 export type MovieSearchForm = z.infer<typeof MovieSearchFormSchema>;
@@ -33,10 +38,7 @@ export const TvSearchFormSchema = SearchFormSchema.extend({
 	minLastAirDate: fallback(z.string(), '').default(''),
 	minVotes: fallback(z.number(), 0).default(300),
 	name: fallback(z.string(), '').default(''),
-	sortColumn: fallback(
-		z.enum(['vote_count', 'vote_average', 'last_air_date']),
-		'last_air_date',
-	).default('last_air_date'),
+	sortColumn: fallback(SortColumnEnum, 'lastAirDate').default('lastAirDate'),
 });
 
 export type TvSearchForm = z.infer<typeof TvSearchFormSchema>;

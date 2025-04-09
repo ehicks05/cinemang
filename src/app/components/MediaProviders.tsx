@@ -3,17 +3,17 @@ import { useSystemData } from '~/hooks/useSystemData';
 import type { Provider } from '~/types/types';
 
 interface Props {
-	ids: { id: number }[];
+	ids: { providerId: number }[];
 }
 
 export const MediaProviders = ({ ids }: Props) => {
 	const { providers } = useSystemData();
 
 	const filteredProviders = ids
-		.map((id) => providers.find((p) => p.id === id.id))
+		.map((id) => providers.find((p) => p.id === id.providerId))
 		.filter((p): p is Provider => p !== null && p !== undefined)
-		.filter((p) => p.display_priority <= 22)
-		.sort((p1, p2) => p1.display_priority - p2.display_priority)
+		.filter((p) => p.displayPriority <= 22)
+		.sort((p1, p2) => p1.displayPriority - p2.displayPriority)
 		.slice(0, 2);
 
 	if (filteredProviders.length === 0) return null;
@@ -23,7 +23,7 @@ export const MediaProviders = ({ ids }: Props) => {
 				<TmdbImage
 					key={provider.id}
 					className="h-8 w-8 rounded-full"
-					path={provider.logo_path}
+					path={provider.logoPath}
 					width={'original'}
 					title={provider.name}
 					alt={provider.name}
