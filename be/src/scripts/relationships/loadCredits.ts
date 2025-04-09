@@ -76,10 +76,11 @@ const findDuplicateCreditIds = async (
 		where: { creditId: { in: credits.map((o) => o.creditId) } },
 		select: { creditId: true },
 	});
+	const ids = duplicateCredits.map((o) => o.creditId);
 
-	logger.warn(`duplicate creditIds: ${duplicateCredits.join(', ')}`);
+	logger.warn(`duplicate creditIds: ${ids.join(', ')}`);
 
-	return duplicateCredits.map((o) => o.creditId);
+	return ids;
 };
 
 const detectCreditsWithMissingPerson = async (
