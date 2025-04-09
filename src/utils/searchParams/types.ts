@@ -9,7 +9,7 @@ const SortColumnEnum = z.enum([
 ]);
 export type SortColumn = z.infer<typeof SortColumnEnum>;
 
-export const SearchFormSchema = z.object({
+const SearchFormSchema = z.object({
 	ascending: fallback(z.boolean(), false).default(false),
 	creditName: fallback(z.string(), '').default(''),
 	genre: fallback(z.number(), 0).default(0),
@@ -20,8 +20,6 @@ export const SearchFormSchema = z.object({
 	page: fallback(z.number(), 0).default(0),
 	providers: fallback(z.number().array(), []).default([]),
 });
-
-export type SearchForm = z.infer<typeof SearchFormSchema>;
 
 export const MovieSearchFormSchema = SearchFormSchema.extend({
 	maxReleasedAt: fallback(z.string(), '').default(''),
