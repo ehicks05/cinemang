@@ -1,7 +1,7 @@
 import { createFileRoute, stripSearchParams } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
-import { MediaList } from '~/app/MediaList';
-import { findFilms } from '~/server/prisma/findFilms';
+import { MediaListSimple } from '~/app/MediaList/MediaList';
+import { findFilms } from '~/server/drizzle/findFilms';
 import { DEFAULT_MOVIE_SEARCH_FORM } from '~/utils/searchParams/constants';
 import {
 	type MovieSearchForm,
@@ -18,7 +18,7 @@ export const Route = createFileRoute('/films/')({
 });
 
 function RouteComponent() {
-	const { films, count } = Route.useLoaderData();
+	const { films, hasMore } = Route.useLoaderData();
 
-	return <MediaList media={films || []} count={count || 0} />;
+	return <MediaListSimple media={films || []} hasMore={hasMore} />;
 }

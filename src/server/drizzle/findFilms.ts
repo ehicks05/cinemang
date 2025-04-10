@@ -1,10 +1,41 @@
 import { createServerFn } from '@tanstack/react-start';
 import { parseISO } from 'date-fns';
-import { count } from 'drizzle-orm';
 import { PAGE_SIZE } from '~/constants/constants';
-import { movie } from '~/server/drizzle/db/schema';
 import type { MovieSearchForm } from '~/utils/searchParams/types';
 import { db } from './db/drizzle';
+
+// TODO: fix
+// relational-query-builder doesn't support count, so we have to build a
+// regular select-style query to get the count...
+// const getCount = async (search: MovieSearchForm) => {
+// 	const __count = await db
+// 		.select()
+// 		.from(movie)
+// 		.leftJoin(credit, eq(movie.id, credit.movieId))
+// 		.leftJoin(person, eq(credit.personId, person.id))
+// 		.leftJoin(mediaProvider, eq(movie.id, mediaProvider.movieId))
+// 		.where(
+// 			and(
+// 				ilike(movie.title, `%${search.title}%`),
+// 				gte(movie.voteCount, search.minVotes),
+// 				lte(movie.voteCount, search.maxVotes),
+// 				gte(movie.voteAverage, search.minRating),
+// 				lte(movie.voteAverage, search.maxRating),
+// 				search.genre ? eq(movie.genreId, search.genre) : undefined,
+// 				search.language ? eq(movie.languageId, search.language) : undefined,
+// 				search.minReleasedAt
+// 					? gte(movie.releasedAt, parseISO(search.minReleasedAt))
+// 					: undefined,
+// 				search.maxReleasedAt
+// 					? lte(movie.releasedAt, parseISO(search.maxReleasedAt))
+// 					: undefined,
+// 				search.creditName ? ilike(person.name, `%${search.creditName}%`) : undefined,
+// 				inArray(mediaProvider.providerId, search.providers),
+// 			),
+// 		);
+// 	const _count = [...new Set(__count.map((o) => o.movie.id))].length;
+// 	return _count;
+// };
 
 export type Film = Awaited<ReturnType<typeof findFilms>>['films'][number];
 
@@ -14,40 +45,38 @@ export const findFilms = createServerFn()
 		const start = Date.now();
 		const search = ctx.data;
 
-		const where = {
-			title: { ilike: `%${search.title}%` },
-			voteCount: { gte: search.minVotes, lte: search.maxVotes },
-			voteAverage: { gte: search.minRating, lte: search.maxRating },
-			...(search.genre && { genreId: { eq: search.genre } }),
-			...(search.language && { languageId: { eq: search.language } }),
-			...((search.minReleasedAt || search.maxReleasedAt) && {
-				releasedAt: {
-					gte: parseISO(search.minReleasedAt) || undefined,
-					lte: parseISO(search.maxReleasedAt) || undefined,
-				},
-			}),
-
-			...(search.providers.length > 0 && {
-				providers: { id: { in: search.providers.map(String) } },
-			}),
-			...(search.creditName && {
-				credits: {
-					person: { name: { ilike: `%${search.creditName}%` } },
-				},
-			}),
-		};
-
-		// const _count = await db.select({ count: count() }).from(movie).where(where);
-		const _count = 1;
-
-		const films = await db.query.movie.findMany({
+		const _films = await db.query.movie.findMany({
+			// extras: { count: sql`count(*)` },
 			with: { providers: { columns: { providerId: true } } },
-			where,
+			where: {
+				title: { ilike: `%${search.title}%` },
+				voteCount: { gte: search.minVotes, lte: search.maxVotes },
+				voteAverage: { gte: search.minRating, lte: search.maxRating },
+				...(search.genre && { genreId: { eq: search.genre } }),
+				...(search.language && { languageId: { eq: search.language } }),
+				...((search.minReleasedAt || search.maxReleasedAt) && {
+					releasedAt: {
+						...(search.minReleasedAt && { gte: parseISO(search.minReleasedAt) }),
+						...(search.maxReleasedAt && { lte: parseISO(search.maxReleasedAt) }),
+					},
+				}),
+				...(search.providers.length > 0 && {
+					providers: { providerId: { in: search.providers } },
+				}),
+				...(search.creditName && {
+					credits: {
+						person: { name: { ilike: `%${search.creditName}%` } },
+					},
+				}),
+			},
 			orderBy: { [search.sortColumn]: search.ascending ? 'asc' : 'desc' },
-			limit: PAGE_SIZE,
+			limit: PAGE_SIZE + 1,
 			offset: search.page * PAGE_SIZE,
 		});
 
+		const hasMore = _films.length > PAGE_SIZE;
+		const films = _films.slice(0, PAGE_SIZE);
+
 		console.log(`took ${Date.now() - start} ms`);
-		return { count: _count, films };
+		return { films, hasMore };
 	});
