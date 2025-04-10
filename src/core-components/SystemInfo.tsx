@@ -1,18 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
 import { format, formatDistance } from 'date-fns';
 import { HiOutlineInformationCircle } from 'react-icons/hi2';
-import { fetchSyncLog } from '~/server/prisma/fetchSyncLog';
+import { useFetchSyncLog } from '~/hooks/useFetchSyncLog';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 const SHORT = 'hh:mm:ss a';
 const DEFAULT = `yyyy-MM-dd'T'${SHORT}`;
-
-export const useFetchSyncLog = () =>
-	useQuery({
-		queryKey: ['syncLog'],
-		queryFn: async () => fetchSyncLog(),
-		staleTime: 1000 * 60 * 60,
-	});
 
 export const SystemInfo = () => {
 	const { data: syncRunLog } = useFetchSyncLog();

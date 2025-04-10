@@ -1,9 +1,9 @@
-import type { FilmDetail } from '~/server/prisma/fetchFilm';
-import type { Person } from '~/server/prisma/fetchPerson';
-import type { ShowDetail } from '~/server/prisma/fetchShow';
-import type { Genre, Language, Provider } from '~/server/prisma/fetchSystemData';
-import type { Film } from '~/server/prisma/findFilms';
-import type { Show } from '~/server/prisma/findShows';
+import type { FilmDetail } from '~/server/drizzle/fetchFilm';
+import type { Person } from '~/server/drizzle/fetchPerson';
+import type { ShowDetail } from '~/server/drizzle/fetchShow';
+import type { Genre, Language, Provider } from '~/server/drizzle/fetchSystemData';
+import type { Film } from '~/server/drizzle/findFilms';
+import type { Show } from '~/server/drizzle/findShows';
 
 export type PersonCredit = Person['credits'][number];
 export type MediaCredit = FilmDetail['credits'][number];

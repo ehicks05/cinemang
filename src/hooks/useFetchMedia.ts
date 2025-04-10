@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchFilm } from '~/server/prisma/fetchFilm';
-import { fetchShow } from '~/server/prisma/fetchShow';
+import { fetchFilm } from '~/server/drizzle/fetchFilm';
+import { fetchShow } from '~/server/drizzle/fetchShow';
 
 export const useFetchFilm = (id: number) =>
 	useQuery({

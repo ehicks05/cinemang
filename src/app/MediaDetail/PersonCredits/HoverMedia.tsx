@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useTimeout } from 'usehooks-ts';
 import { MediaCard } from '~/app/components';
+import { useFetchFilm, useFetchShow } from '~/hooks/useFetchMedia';
 import { usePalette } from '~/utils/palettes/usePalettes';
 import { HoverLoading } from './HoverLoading';
 import { container } from './constants';
-import { useFetchFilm, useFetchShow } from './useFetchMedia';
 
 interface Props {
 	id: number;
