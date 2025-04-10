@@ -1,6 +1,6 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import { MediaDetail } from '~/app/MediaDetail';
-import { fetchPerson } from '~/server/prisma/fetchPerson';
+import { fetchPerson } from '~/server/drizzle/fetchPerson';
 import { usePalette } from '~/utils/palettes/usePalettes';
 
 export const Route = createFileRoute('/people/$personId')({

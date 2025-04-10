@@ -1,19 +1,20 @@
-import { defineRelations } from "drizzle-orm";
-import * as schema from "./schema";
+import { defineRelations } from 'drizzle-orm';
+import * as schema from './schema';
 
 export const relations = defineRelations(schema, (r) => ({
 	credit: {
 		movie: r.one.movie({
 			from: r.credit.movieId,
-			to: r.movie.id
+			to: r.movie.id,
 		}),
 		person: r.one.person({
 			from: r.credit.personId,
-			to: r.person.id
+			to: r.person.id,
+			optional: false,
 		}),
 		show: r.one.show({
 			from: r.credit.showId,
-			to: r.show.id
+			to: r.show.id,
 		}),
 	},
 	movie: {
@@ -31,15 +32,16 @@ export const relations = defineRelations(schema, (r) => ({
 	mediaProvider: {
 		movie: r.one.movie({
 			from: r.mediaProvider.movieId,
-			to: r.movie.id
+			to: r.movie.id,
 		}),
 		provider: r.one.provider({
 			from: r.mediaProvider.providerId,
-			to: r.provider.id
+			to: r.provider.id,
+			optional: false,
 		}),
 		show: r.one.show({
 			from: r.mediaProvider.showId,
-			to: r.show.id
+			to: r.show.id,
 		}),
 	},
 	provider: {
@@ -48,7 +50,8 @@ export const relations = defineRelations(schema, (r) => ({
 	season: {
 		show: r.one.show({
 			from: r.season.showId,
-			to: r.show.id
+			to: r.show.id,
+			optional: false,
 		}),
 	},
-}))
+}));
