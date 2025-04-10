@@ -16,8 +16,8 @@ export const findFilms = createServerFn()
 
 		// relational-query-builder doesn't support count, so we have to build a
 		// regular select-style query to get the count...
-		const _count = await db
-			.select({ count: count() })
+		const __count = await db
+			.select()
 			.from(movie)
 			.leftJoin(credit, eq(movie.id, credit.movieId))
 			.leftJoin(person, eq(credit.personId, person.id))
@@ -45,7 +45,7 @@ export const findFilms = createServerFn()
 				),
 			);
 
-		console.log(_count);
+		const _count = [...new Set(__count.map((o) => o.movie.id))].length;
 
 		const films = await db.query.movie.findMany({
 			// extras: { count: sql`count(*)` },
@@ -77,5 +77,5 @@ export const findFilms = createServerFn()
 		});
 
 		console.log(`took ${Date.now() - start} ms`);
-		return { count: _count[0].count, films };
+		return { count: _count, films };
 	});
