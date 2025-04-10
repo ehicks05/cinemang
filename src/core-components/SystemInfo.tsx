@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { format, formatDistance } from 'date-fns';
 import { HiOutlineInformationCircle } from 'react-icons/hi2';
-import { fetchSyncLog } from '~/server/fetchSyncLog';
+import { fetchSyncLog } from '~/server/prisma/fetchSyncLog';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 const SHORT = 'hh:mm:ss a';
