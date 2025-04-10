@@ -129,7 +129,7 @@ const FormFields = () => {
 									const o2Selected = form.providers.includes(o2.id) ? 1 : -1;
 									return o2Selected - o1Selected;
 								})
-								.filter((p) => p.count > 0)
+								// .filter((p) => p.count > 0)
 								.map((p) => ({ id: p.id, label: p.name, imagePath: p.logoPath }))}
 							selectedOptions={form.providers}
 							handleChange={(providers) => handleChange({ providers })}
