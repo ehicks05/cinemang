@@ -26,7 +26,7 @@ export const findFilms = createServerFn()
 			}),
 
 			...(search.providers.length > 0 && {
-				providers: { some: { id: { in: search.providers.map(String) } } },
+				providers: { some: { providerId: { in: search.providers } } },
 			}),
 			...(search.creditName && {
 				credits: {
