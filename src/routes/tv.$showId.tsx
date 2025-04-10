@@ -1,7 +1,7 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import { MediaDetail } from '~/app/MediaDetail';
 import { fetchTrailer } from '~/core-components/Trailer/useFetchVideos';
-import { fetchShow } from '~/server/drizzle/fetchShow';
+import { fetchShow } from '~/server/fetchShow';
 import { usePalette } from '~/utils/palettes/usePalettes';
 
 export const Route = createFileRoute('/tv/$showId')({

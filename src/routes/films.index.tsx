@@ -1,7 +1,7 @@
 import { createFileRoute, stripSearchParams } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
 import { MediaListSimple } from '~/app/MediaList/MediaList';
-import { findFilms } from '~/server/drizzle/findFilms';
+import { findFilms } from '~/server/findFilms';
 import { DEFAULT_MOVIE_SEARCH_FORM } from '~/utils/searchParams/constants';
 import {
 	type MovieSearchForm,

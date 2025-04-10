@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchSyncLog } from '~/server/drizzle/fetchSyncLog';
+import { fetchSyncLog } from '~/server/fetchSyncLog';
 
 export const useFetchSyncLog = () =>
 	useQuery({
