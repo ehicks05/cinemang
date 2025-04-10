@@ -1,6 +1,6 @@
+import type { Prisma } from '@prisma/client/.prisma/client/index.js';
 import { createServerFn } from '@tanstack/react-start';
 import { PAGE_SIZE } from '~/constants/constants';
-import type { Prisma } from '~/generated/prisma';
 import type { MovieSearchForm } from '~/utils/searchParams/types';
 import prisma from './prisma';
 

@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
 import { PAGE_SIZE } from '~/constants/constants';
-import type { Prisma } from '~/generated/prisma';
+import type { Prisma } from '@prisma/client/.prisma/client/index.js';
 import type { TvSearchForm } from '~/utils/searchParams/types';
 import prisma from './prisma';
 
