@@ -15,6 +15,7 @@ const SearchFormSchema = z.object({
 	genre: fallback(z.number(), 0).default(0),
 	language: fallback(z.string(), '').default(''),
 	maxRating: fallback(z.number(), 0).default(10),
+	minVotes: fallback(z.number(), 0).default(200),
 	maxVotes: fallback(z.number(), 0).default(100_000),
 	minRating: fallback(z.number(), 0).default(6),
 	page: fallback(z.number(), 0).default(0),
@@ -24,7 +25,6 @@ const SearchFormSchema = z.object({
 export const MovieSearchFormSchema = SearchFormSchema.extend({
 	maxReleasedAt: fallback(z.string(), '').default(''),
 	minReleasedAt: fallback(z.string(), '').default(''),
-	minVotes: fallback(z.number(), 0).default(500),
 	title: fallback(z.string(), '').default(''),
 	sortColumn: fallback(SortColumnEnum, 'releasedAt').default('releasedAt'),
 });
@@ -34,7 +34,6 @@ export type MovieSearchForm = z.infer<typeof MovieSearchFormSchema>;
 export const TvSearchFormSchema = SearchFormSchema.extend({
 	maxLastAirDate: fallback(z.string(), '').default(''),
 	minLastAirDate: fallback(z.string(), '').default(''),
-	minVotes: fallback(z.number(), 0).default(300),
 	name: fallback(z.string(), '').default(''),
 	sortColumn: fallback(SortColumnEnum, 'lastAirDate').default('lastAirDate'),
 });
