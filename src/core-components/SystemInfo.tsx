@@ -1,16 +1,16 @@
 import { format, formatDistance } from 'date-fns';
 import { HiOutlineInformationCircle } from 'react-icons/hi2';
-import { useFetchSyncLog } from '~/hooks/useFetchSyncLog';
+import { useSystemData } from '~/hooks/useSystemData';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 const SHORT = 'hh:mm:ss a';
 const DEFAULT = `yyyy-MM-dd'T'${SHORT}`;
 
 export const SystemInfo = () => {
-	const { data: syncRunLog } = useFetchSyncLog();
-	if (!syncRunLog) return null;
+	const { syncLog } = useSystemData();
+	if (!syncLog) return null;
 
-	const { createdAt, endedAt } = syncRunLog;
+	const { createdAt, endedAt } = syncLog;
 	const duration = endedAt ? formatDistance(endedAt, createdAt) : undefined;
 
 	return (
