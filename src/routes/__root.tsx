@@ -98,10 +98,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			<body>
 				<div className="flex min-h-screen flex-col bg-linear-to-tr from-indigo-900 to-emerald-800 text-neutral-50">
 					<Header />
-					<div className="flex h-full grow flex-col pb-4 sm:px-4">
-						{children}
-						<Footer />
-					</div>
+					<div className="flex h-full grow flex-col pb-4 sm:px-4">{children}</div>
+					<Footer />
 				</div>
 				<TanStackRouterDevtools position="bottom-left" />
 				<Scripts />

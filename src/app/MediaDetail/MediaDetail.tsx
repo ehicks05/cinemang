@@ -63,7 +63,7 @@ interface Props {
 export const MediaDetail = ({ media, palette, trailer }: Props) => {
 	return (
 		<div
-			className="m-auto flex max-w-5xl flex-col gap-4 p-4 sm:rounded-lg"
+			className="mx-auto flex max-w-5xl flex-col gap-4 p-4 sm:rounded-lg"
 			style={palette.bgStyles}
 		>
 			<Heading media={media} />
