@@ -1,14 +1,12 @@
-import { z } from 'zod';
 import {
 	CastCreditSchema,
-	CrewCreditSchema,
-} from '~/services/tmdb/types/credits.js';
-import { GenreSchema } from '~/services/tmdb/types/genre.js';
-import { MovieResponseSchema } from '~/services/tmdb/types/movie.js';
-import {
 	ContentRatingsSchema,
+	CrewCreditSchema,
+	GenreSchema,
+	MovieResponseSchema,
 	ShowResponseSchema,
-} from '~/services/tmdb/types/show.js';
+} from '@ehicks05/tmdb-api';
+import { z } from 'zod';
 import { MIN_VOTES } from '../constants.js';
 
 const TrimmedCastCreditSchema = CastCreditSchema.pick({

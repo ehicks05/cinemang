@@ -1,6 +1,4 @@
-import type { Credits } from '~/services/tmdb/types/credits.js';
-import type { MediaResponse } from '~/services/tmdb/types/media.js';
-import type { AppendedProviders } from '~/services/tmdb/types/provider.js';
+import type { AppendedProviders, Credits, MediaResponse } from '@ehicks05/tmdb-api';
 
 export const filterCredits = (credits: Credits) => ({
 	cast: credits.cast.filter((credit) => credit.profile_path !== null),

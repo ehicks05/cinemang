@@ -1,6 +1,6 @@
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
-import { tmdb } from '~/services/tmdb/index.js';
+import { tmdb } from '~/services/tmdb.js';
 
 const reportDbLatency = async () => {
 	// warm

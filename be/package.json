@@ -14,9 +14,8 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@ehicks05/tmdb-api": "^0.1.2",
 		"@prisma/client": "^6.5.0",
-		"agentkeepalive": "^4.6.0",
-		"axios": "^1.8.4",
 		"date-fns": "^4.1.0",
 		"dotenv": "^16.4.7",
 		"lodash-es": "^4.17.21",

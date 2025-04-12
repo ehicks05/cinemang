@@ -28,13 +28,7 @@ const updateLanguageCounts = async () => {
 
 const updateProviderCounts = async () => {
 	const providersWithCounts = await prisma.provider.findMany({
-		include: {
-			_count: {
-				select: {
-					medias: true,
-				},
-			},
-		},
+		include: { _count: { select: { medias: true } } },
 	});
 
 	const providers = providersWithCounts.map((wp) => ({

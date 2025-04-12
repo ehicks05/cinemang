@@ -4,7 +4,7 @@ import { checkFullMode } from './checkFullMode.js';
 
 const prod = process.env.NODE_ENV === 'production';
 const base = prod ? '/app/storage/' : './script-data/';
-logger.info(`writing logs to ${base}`);
+logger.info(`writing data files to ${base}`);
 const isFullMode = checkFullMode();
 const mode = isFullMode ? '.full' : '.incremental';
 

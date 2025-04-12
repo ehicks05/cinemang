@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client';
-import type { MovieResponse } from '~/services/tmdb/types/movie.js';
+import type { MovieResponse } from '@ehicks05/tmdb-api';
 import { ValidTrimmedMovieSchema } from './validation.js';
 
 export const parseMovie = (

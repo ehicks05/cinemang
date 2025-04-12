@@ -1,7 +1,6 @@
 import pMap from 'p-map';
-import { tmdb } from '~/services/tmdb/index.js';
-import type { SeasonResponse } from '~/services/tmdb/types/season.js';
-import type { ShowResponse } from '~/services/tmdb/types/show.js';
+import type { SeasonResponse, ShowResponse } from '@ehicks05/tmdb-api';
+import { tmdb } from '~/services/tmdb.js';
 import { processLineByLine } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 import { filterCredits, trimCredits } from './utils.js';

@@ -1,8 +1,8 @@
 import type { Prisma } from '@prisma/client';
 import { uniqBy } from 'lodash-es';
+import type { ShowResponse } from '@ehicks05/tmdb-api';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
-import type { ShowResponse } from '~/services/tmdb/types/show.js';
 import { processLines } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 import type { ModdedSeason } from './loadSeasons.js';

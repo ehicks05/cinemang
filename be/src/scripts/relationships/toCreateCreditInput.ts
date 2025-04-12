@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client';
-import type { MediaResponse } from '~/services/tmdb/types/media.js';
+import type { MediaResponse } from '@ehicks05/tmdb-api';
 
 const toMediaKey = (media: MediaResponse) => {
 	if ('title' in media) return { movieId: media.id };

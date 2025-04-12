@@ -1,6 +1,6 @@
 import pMap from 'p-map';
-import { tmdb } from '~/services/tmdb/index.js';
-import type { MediaResponse } from '~/services/tmdb/types/media.js';
+import type { MediaResponse } from '@ehicks05/tmdb-api';
+import { tmdb } from '~/services/tmdb.js';
 import { ValidMovieSchema, ValidShowSchema } from '../parsers/validation.js';
 import {
 	filterCredits,

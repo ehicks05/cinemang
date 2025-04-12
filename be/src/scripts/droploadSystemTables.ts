@@ -1,9 +1,14 @@
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
-import { tmdb } from '../services/tmdb/index.js';
+import { tmdb } from '~/services/tmdb.js';
 
 export const updateGenres = async () => {
 	const genres = await tmdb.getGenres();
+
+	if (!genres) {
+		logger.error('unable to fetch genres');
+		return;
+	}
 
 	await prisma.genre.deleteMany();
 	await prisma.genre.createMany({ data: genres });
@@ -11,6 +16,11 @@ export const updateGenres = async () => {
 
 export const updateLanguages = async () => {
 	const _languages = await tmdb.getLanguages();
+	if (!_languages) {
+		logger.error('unable to fetch languages');
+		return;
+	}
+
 	const languages = _languages.map((o) => ({
 		id: o.iso_639_1,
 		name: o.english_name,
@@ -22,6 +32,11 @@ export const updateLanguages = async () => {
 
 export const updateProviders = async () => {
 	const _providers = await tmdb.getProviders();
+	if (!_providers) {
+		logger.error('unable to fetch providers');
+		return;
+	}
+
 	const providers = _providers.map((o) => ({
 		displayPriority: o.display_priorities.US,
 		id: o.provider_id,

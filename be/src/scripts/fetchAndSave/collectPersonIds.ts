@@ -1,6 +1,6 @@
 import 'dotenv/config';
+import type { Credits } from '@ehicks05/tmdb-api';
 import logger from '~/services/logger.js';
-import type { Credits } from '~/services/tmdb/types/credits.js';
 import { processLineByLine } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 
