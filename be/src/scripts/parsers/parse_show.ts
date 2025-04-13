@@ -17,15 +17,14 @@ export const parseShow = (
 		cast: data.credits.cast
 			.slice(0, 3)
 			.map((c) => c.name)
-			.join(', '),
+			.join('|'),
 		contentRating:
 			data.content_ratings?.results.find((r) => r.iso_3166_1 === 'US' && r.rating)
 				?.rating || '',
-		createdBy:
-			data.created_by
-				.slice(0, 3)
-				.map((o) => o.name)
-				.join(', ') || '',
+		createdBy: data.created_by
+			.slice(0, 3)
+			.map((o) => o.name)
+			.join('|'),
 		genreId: data.genres[0].id,
 		firstAirDate: new Date(data.first_air_date),
 		languageId: data.original_language,

@@ -20,7 +20,7 @@ export const TopCrew = ({ media, showAllCreators = false }: Props) => {
 	if (media.createdBy) {
 		const creator = showAllCreators
 			? media.createdBy
-			: media.createdBy.split(',')[0];
+			: media.createdBy.split(/[,|]/)[0];
 		return (
 			<div className="flex items-center gap-1" title="Created by">
 				<Lightbulb size={16} className="text-neutral-400 shrink-0" />{' '}
