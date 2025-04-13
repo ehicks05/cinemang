@@ -23,12 +23,9 @@ export const MediaCard = ({ media, palette }: Props) => {
 					linkParams: { showId: String(media.id) },
 				};
 
-	const fontSize =
-		title.length > 36
-			? 'font-semibold'
-			: title.length > 24
-				? 'text-base'
-				: 'text-lg';
+	const fontSizeTitle = (s: string) =>
+		s.length > 36 ? 'font-semibold' : s.length > 24 ? 'text-base' : 'text-lg';
+	const fontSize = (s: string) => (s.length > 22 ? 'text-sm' : 'text-base');
 
 	return (
 		<Link to={linkTo} params={linkParams}>
@@ -38,7 +35,7 @@ export const MediaCard = ({ media, palette }: Props) => {
 			>
 				<div className="flex justify-between gap-0.5">
 					<div>
-						<span className={`${fontSize} font-bold`}>{title}</span>
+						<span className={`${fontSizeTitle(title)} font-bold`}>{title}</span>
 						<span className="flex gap-1 text-xs text-neutral-300">
 							<SubHeading media={media} />
 						</span>
@@ -53,7 +50,9 @@ export const MediaCard = ({ media, palette }: Props) => {
 						<TopCrew media={media} />
 						<div>
 							{media.cast.split('|').map((name) => (
-								<div key={name}>{name}</div>
+								<div key={name} className={`line-clamp-1 ${fontSize(name)}`}>
+									{name}
+								</div>
 							))}
 						</div>
 						<div className="line-clamp-5 text-xs">{media.overview}</div>
