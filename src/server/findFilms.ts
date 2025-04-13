@@ -12,7 +12,6 @@ export const findFilms = createServerFn()
 			JSON.stringify(ctx.data),
 		);
 		if (cachedResponse) {
-			console.log(typeof cachedResponse.films[0].releasedAt);
 			const result = {
 				films: cachedResponse.films.map((o) => ({
 					...o,

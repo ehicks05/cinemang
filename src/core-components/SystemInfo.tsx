@@ -10,7 +10,7 @@ export const SystemInfo = () => {
 	const { syncLog } = useSystemData();
 	if (!syncLog) return null;
 
-	const { createdAt, endedAt } = syncLog;
+	const { createdAt, endedAt } = syncLog[0];
 	const duration = endedAt ? formatDistance(endedAt, createdAt) : undefined;
 
 	return (
