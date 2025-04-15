@@ -46,7 +46,7 @@ const updateProviderCounts = async () => {
 export const updateCounts = async () => {
 	logger.info('updating language and provider counts');
 
-	await Promise.all([updateLanguageCounts, updateProviderCounts]);
+	await Promise.all([updateLanguageCounts(), updateProviderCounts()]);
 
 	logger.info('finished updating language and provider counts');
 };
