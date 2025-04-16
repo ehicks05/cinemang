@@ -79,7 +79,10 @@ export const Route = createRootRoute({
 		const syncLog = loaderData.syncLog[0];
 		const endedAt = syncLog?.endedAt;
 		const lastModified = endedAt ? new Date(endedAt).toUTCString() : '';
-		return { 'last-modified': lastModified };
+		return {
+			'cache-control': 'max-age=14400',
+			'last-modified': lastModified,
+		};
 	},
 });
 
