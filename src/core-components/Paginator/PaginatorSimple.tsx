@@ -1,5 +1,5 @@
 import { useLocation, useSearch } from '@tanstack/react-router';
-import { FastForward, Play } from 'lucide-react';
+import { Play } from 'lucide-react';
 import { PageLink } from './PageLink';
 import { usePaginationSimple } from './usePagination';
 
@@ -35,20 +35,21 @@ export const PaginatorSimple = ({ count, hasMore, isLoading }: Props) => {
 	return (
 		<div className="bg-neutral-800 p-4 sm:rounded-lg">
 			<div
-				className={`flex flex-col items-center justify-between gap-4 sm:flex-row ${
+				className={`flex items-center justify-between gap-4 ${
 					isLoading ? 'invisible' : ''
 				}`}
 			>
 				<div>{currentlyShowing}</div>
 				<div className="flex -space-x-px">
-					<PageLink isDisabled={!hasPreviousPage} className="rounded-l" page={0}>
-						<FastForward className="my-auto rotate-180" size={16} />
-					</PageLink>
-					<PageLink isDisabled={!hasPreviousPage} page={previousPage}>
+					<PageLink
+						isDisabled={!hasPreviousPage}
+						className="rounded-l"
+						page={previousPage}
+					>
 						<Play className="my-auto rotate-180" size={16} />
 					</PageLink>
 
-					<PageLink isDisabled={!hasNextPage} page={nextPage}>
+					<PageLink isDisabled={!hasNextPage} className="rounded-r" page={nextPage}>
 						<Play className="my-auto" size={16} />
 					</PageLink>
 				</div>
