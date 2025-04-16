@@ -1,24 +1,24 @@
 import { parseISO } from 'date-fns';
 import { PAGE_SIZE } from '~/constants/constants';
-import type { MovieSearchForm } from '~/utils/searchParams/types';
+import type { TvSearchForm } from '~/utils/searchParams/types';
 import { db } from './db/drizzle';
 
-export type FindFilmsReturn = Awaited<ReturnType<typeof findFilmsQuery>>;
-export type Film = FindFilmsReturn['films'][number];
+export type FindShowsReturn = Awaited<ReturnType<typeof findShowsQuery>>;
+export type Show = FindShowsReturn['shows'][number];
 
-export const findFilmsQuery = async (search: MovieSearchForm) => {
-	const _films = await db.query.movie.findMany({
+export const findShowsQuery = async (search: TvSearchForm) => {
+	const _shows = await db.query.show.findMany({
 		with: { providers: { columns: { providerId: true } } },
 		where: {
-			title: { ilike: `%${search.title}%` },
+			name: { ilike: `%${search.name}%` },
 			voteCount: { gte: search.minVotes, lte: search.maxVotes },
 			voteAverage: { gte: search.minRating, lte: search.maxRating },
 			...(search.genre && { genreId: { eq: search.genre } }),
 			...(search.language && { languageId: { eq: search.language } }),
-			...((search.minReleasedAt || search.maxReleasedAt) && {
-				releasedAt: {
-					...(search.minReleasedAt && { gte: parseISO(search.minReleasedAt) }),
-					...(search.maxReleasedAt && { lte: parseISO(search.maxReleasedAt) }),
+			...((search.minLastAirDate || search.maxLastAirDate) && {
+				lastAirDate: {
+					...(search.minLastAirDate && { gte: parseISO(search.minLastAirDate) }),
+					...(search.maxLastAirDate && { lte: parseISO(search.maxLastAirDate) }),
 				},
 			}),
 			...(search.providers.length > 0 && {
@@ -36,7 +36,7 @@ export const findFilmsQuery = async (search: MovieSearchForm) => {
 	});
 
 	return {
-		films: _films.slice(0, PAGE_SIZE),
-		hasMore: _films.length > PAGE_SIZE,
+		shows: _shows.slice(0, PAGE_SIZE),
+		hasMore: _shows.length > PAGE_SIZE,
 	};
 };

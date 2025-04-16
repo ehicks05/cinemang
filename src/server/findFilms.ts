@@ -5,28 +5,21 @@ import { storage } from './storage';
 
 export const findFilms = createServerFn()
 	.validator((data: MovieSearchForm) => data)
-	.handler(async (ctx) => {
-		const start = Date.now();
-
-		const cachedResponse = await storage.get<FindFilmsReturn>(
-			JSON.stringify(ctx.data),
-		);
+	.handler(async ({ data: search }) => {
+		const cacheKey = JSON.stringify(search);
+		const cachedResponse = await storage.get<FindFilmsReturn>(cacheKey);
 		if (cachedResponse) {
-			const result = {
+			return {
+				...cachedResponse,
 				films: cachedResponse.films.map((o) => ({
 					...o,
 					releasedAt: new Date(o.releasedAt),
 				})),
-				hasMore: cachedResponse.hasMore,
 			};
-
-			console.log(`[HIT] took ${Date.now() - start} ms`);
-			return result;
 		}
 
-		const result = await findFilmsQuery(ctx.data);
-		storage.set(JSON.stringify(ctx.data), result);
-		console.log(`[MISS] took ${Date.now() - start} ms`);
+		const result = await findFilmsQuery(search);
+		storage.set(cacheKey, result);
 
 		return result;
 	});
