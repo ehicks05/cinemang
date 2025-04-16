@@ -16,6 +16,7 @@
 	"dependencies": {
 		"@ehicks05/tmdb-api": "^0.1.2",
 		"@prisma/client": "^6.5.0",
+		"cloudflare": "^4.2.0",
 		"date-fns": "^4.1.0",
 		"dotenv": "^16.4.7",
 		"lodash-es": "^4.17.21",

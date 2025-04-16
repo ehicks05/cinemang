@@ -1,8 +1,9 @@
 import 'dotenv/config';
+import { checkFullMode } from './checkFullMode.js';
 import { droploadSystemTables } from './droploadSystemTables.js';
 import { dropLoadTable } from './droploadTables.js';
-import { checkFullMode } from './checkFullMode.js';
 import { fetchAndSave } from './fetchAndSave/index.js';
+import { purgeCache } from './purgeCache.js';
 import { loadCredits } from './relationships/loadCredits.js';
 import { loadMediaProviders } from './relationships/loadMediaProviders.js';
 import { loadSeasons } from './relationships/loadSeasons.js';
@@ -36,4 +37,6 @@ export const runSync = async () => {
 	await updateCounts();
 
 	await vacuumAnalyze();
+
+	await purgeCache();
 };
