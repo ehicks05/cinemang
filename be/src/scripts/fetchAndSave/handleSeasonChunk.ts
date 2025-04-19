@@ -1,7 +1,8 @@
+import type { SeasonResponse } from '@ehicks05/tmdb-api';
 import pMap from 'p-map';
-import type { SeasonResponse, ShowResponse } from '@ehicks05/tmdb-api';
 import { tmdb } from '~/services/tmdb.js';
 import { processLineByLine } from '../processLineByLine.js';
+import { type ShowResponse, seasonAppends } from '../types.js';
 import { getPath } from '../utils.js';
 import { filterCredits, trimCredits } from './utils.js';
 
@@ -42,7 +43,11 @@ export const handleSeasonChunk = async (ids: number[], type: 'season') => {
 	const _seasons = await pMap(
 		showIdSeasonNumberPairs,
 		async ({ showId, seasonNumber }: ShowIdSeasonNumber) => {
-			const season = await tmdb.getSeason(showId, seasonNumber);
+			const season = await tmdb.season({
+				showId,
+				seasonNumber,
+				appends: seasonAppends,
+			});
 			return { ...season, showId };
 		},
 	);

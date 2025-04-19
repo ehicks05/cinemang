@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { checkFullMode } from './checkFullMode.js';
 import { droploadSystemTables } from './droploadSystemTables.js';
 import { dropLoadTable } from './droploadTables.js';

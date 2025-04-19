@@ -1,5 +1,3 @@
-import 'dotenv/config';
-import type { ShowResponse } from '@ehicks05/tmdb-api';
 import logger from '~/services/logger.js';
 import { processLineByLine } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
@@ -10,7 +8,7 @@ export const collectShowIds = async () => {
 	const showIds: number[] = [];
 
 	await processLineByLine(getPath('tv'), (line) => {
-		const media: ShowResponse = JSON.parse(line);
+		const media: { id: number } = JSON.parse(line);
 		showIds.push(media.id);
 	});
 

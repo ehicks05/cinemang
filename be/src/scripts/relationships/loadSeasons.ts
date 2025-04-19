@@ -1,8 +1,9 @@
+import type { SeasonSummary } from '@ehicks05/tmdb-api';
 import type { Prisma } from '@prisma/client';
-import type { SeasonResponse, SeasonSummary } from '@ehicks05/tmdb-api';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
 import { processLines } from '../processLineByLine.js';
+import type { SeasonResponse } from '../types.js';
 import { getPath } from '../utils.js';
 
 const toSeasonCreateInput = (

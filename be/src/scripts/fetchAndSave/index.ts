@@ -2,11 +2,11 @@ import { appendFile, rename } from 'node:fs/promises';
 import { chunk } from 'lodash-es';
 import pMap from 'p-map';
 import logger from '~/services/logger.js';
-import { tmdb } from '../../services/tmdb.js';
 import type { FileType } from '../types.js';
 import { consoleLogInPlace } from '../utils.js';
 import { collectPersonIds } from './collectPersonIds.js';
 import { collectShowIds } from './collectShowIds.js';
+import { discoverMediaIds } from './discoverMediaIds.js';
 import { handleMediaChunk } from './handleMediaChunk.js';
 import { handlePersonChunk } from './handlePersonChunk.js';
 import { handleSeasonChunk } from './handleSeasonChunk.js';
@@ -25,7 +25,7 @@ export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
 			? await collectPersonIds()
 			: type === 'season'
 				? await collectShowIds()
-				: (await tmdb.discoverMediaIds(type, isFullMode)) || [];
+				: await discoverMediaIds(type, isFullMode);
 	const chunks = chunk(ids, 500);
 
 	logger.info(`gathered ${ids.length} ids. fetching and saving objects`);

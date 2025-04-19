@@ -1,9 +1,9 @@
 import type { Prisma } from '@prisma/client';
 import { keyBy } from 'lodash-es';
-import type { MediaResponse } from '@ehicks05/tmdb-api';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
 import { processLines } from '../processLineByLine.js';
+import type { MediaResponse } from '../types.js';
 import { getPath } from '../utils.js';
 
 const toMediaKey = (media: MediaResponse) => {

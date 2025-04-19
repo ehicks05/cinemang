@@ -1,7 +1,7 @@
 import pMap from 'p-map';
-import type { MediaResponse } from '@ehicks05/tmdb-api';
 import { tmdb } from '~/services/tmdb.js';
 import { ValidMovieSchema, ValidShowSchema } from '../parsers/validation.js';
+import { type MediaResponse, movieAppends, showAppends } from '../types.js';
 import {
 	filterCredits,
 	trimCredits,
@@ -24,8 +24,8 @@ const EXPECTED_ISSUES = [
 const trim = (media: MediaResponse) => ({
 	...media,
 	credits: trimCredits(media.credits),
-	'watch/providers': trimWatchProviders(media),
-	seasons: trimSeasons(media),
+	'watch/providers': trimWatchProviders(media['watch/providers']),
+	seasons: 'seasons' in media ? trimSeasons(media.seasons) : undefined,
 });
 
 const isValid = (m: MediaResponse) => {
@@ -48,10 +48,10 @@ const isValid = (m: MediaResponse) => {
 export const handleMediaChunk = async (ids: number[], type: 'movie' | 'tv') => {
 	const handleId = async (id: number) => {
 		return type === 'movie'
-			? tmdb.getMovie(id)
+			? tmdb.movie({ id, appends: movieAppends })
 			: type === 'tv'
-				? tmdb.getShow(id)
-				: tmdb.getPerson(id);
+				? tmdb.show({ id, appends: showAppends })
+				: tmdb.person({ id });
 	};
 
 	const _media = await pMap(ids, handleId);

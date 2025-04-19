@@ -3,11 +3,10 @@ import {
 	ContentRatingsSchema,
 	CrewCreditSchema,
 	GenreSchema,
-	MovieResponseSchema,
-	ShowResponseSchema,
 } from '@ehicks05/tmdb-api';
 import { z } from 'zod';
 import { MIN_VOTES } from '../constants.js';
+import { MovieResponseSchema, ShowResponseSchema } from '../types.js';
 
 const TrimmedCastCreditSchema = CastCreditSchema.pick({
 	id: true,
@@ -35,12 +34,12 @@ const ValidMediaSchema = z.object({
 	genres: z.array(GenreSchema).nonempty({ message: 'genres is empty' }),
 	overview: z.string().nonempty({ message: 'overview is empty' }),
 	poster_path: z
-		.string({ message: 'poster_path is empty' })
+		.string({ message: 'poster_path is not string' })
 		.nonempty({ message: 'poster_path is empty' }),
 	vote_count: z.number().gte(MIN_VOTES),
 });
 
-export const ValidMovieSchema = MovieResponseSchema.merge(ValidMediaSchema).extend({
+export const ValidMovieSchema = MovieResponseSchema.extend(ValidMediaSchema).extend({
 	credits: TrimmedCreditsSchema.refine(
 		(credits) => {
 			const directorNameLength =
@@ -50,15 +49,15 @@ export const ValidMovieSchema = MovieResponseSchema.merge(ValidMediaSchema).exte
 		{ message: 'director is missing' },
 	),
 	imdb_id: z
-		.string({ message: 'poster_path is empty' })
+		.string({ message: 'imdb_id is not string' })
 		.nonempty({ message: 'imdb_id is empty' }),
-	release_date: z.string().date(),
+	release_date: z.iso.date(),
 	// releases: ReleasesSchema.extend.releases.nonempty(),
 	runtime: z.number().positive({ message: 'runtime is 0' }),
 });
 
-export const ValidShowSchema = ShowResponseSchema.merge(ValidMediaSchema).extend({
-	content_ratings: ContentRatingsSchema.shape.content_ratings.refine(
+export const ValidShowSchema = ShowResponseSchema.extend(ValidMediaSchema).extend({
+	content_ratings: ContentRatingsSchema.refine(
 		(ratings) => {
 			const result = ratings?.results.find((r) => r.iso_3166_1 === 'US' && r.rating);
 			return result !== undefined;
@@ -79,9 +78,9 @@ const TrimmedWatchProvidersSchema = z.object({
 	}),
 });
 
-export const ValidTrimmedMovieSchema = ValidMovieSchema.merge(
+export const ValidTrimmedMovieSchema = ValidMovieSchema.extend(
 	TrimmedWatchProvidersSchema,
 );
-export const ValidTrimmedShowSchema = ValidShowSchema.merge(
+export const ValidTrimmedShowSchema = ValidShowSchema.extend(
 	TrimmedWatchProvidersSchema,
 );

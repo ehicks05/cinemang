@@ -1,10 +1,10 @@
-import pMap from 'p-map';
 import type { PersonResponse } from '@ehicks05/tmdb-api';
+import pMap from 'p-map';
 import { tmdb } from '~/services/tmdb.js';
 
 export const handlePersonChunk = async (ids: number[], type: 'person') => {
 	const handleId = async (id: number) => {
-		return tmdb.getPerson(id);
+		return tmdb.person({ id });
 	};
 
 	const trim = (p: PersonResponse) => ({

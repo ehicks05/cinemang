@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client';
-import type { ShowResponse } from '@ehicks05/tmdb-api';
+import type { ShowResponse } from '../types.js';
 import { ValidTrimmedShowSchema } from './validation.js';
 
 export const parseShow = (

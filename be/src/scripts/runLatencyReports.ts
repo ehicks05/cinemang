@@ -20,14 +20,14 @@ const reportDbLatency = async () => {
 const reportTmdbLatency = async () => {
 	const id = 603;
 	// warm
-	await tmdb.getMovie(id);
-	await tmdb.getMovie(id);
-	await tmdb.getMovie(id);
+	await tmdb.movie({ id });
+	await tmdb.movie({ id });
+	await tmdb.movie({ id });
 	// measure
 	const start = Date.now();
-	await tmdb.getMovie(id);
-	await tmdb.getMovie(id);
-	await tmdb.getMovie(id);
+	await tmdb.movie({ id });
+	await tmdb.movie({ id });
+	await tmdb.movie({ id });
 	const end = Date.now();
 	const dur = Math.round((end - start) / 3);
 	logger.info(`tmdb latency: ${dur} ms`);

@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import type { Credits } from '@ehicks05/tmdb-api';
 import logger from '~/services/logger.js';
 import { processLineByLine } from '../processLineByLine.js';
