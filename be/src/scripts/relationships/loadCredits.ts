@@ -78,7 +78,7 @@ const findDuplicateCreditIds = async (
 	});
 	const ids = duplicateCredits.map((o) => o.creditId);
 
-	logger.warn(`duplicate creditIds: ${ids.join(', ')}`);
+	if (ids.length > 0) logger.warn(`duplicate creditIds: ${ids.join(', ')}`);
 
 	return ids;
 };
