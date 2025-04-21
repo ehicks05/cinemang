@@ -3,30 +3,37 @@ import {
 	ContentRatingsSchema,
 	CrewCreditSchema,
 	GenreSchema,
+	PersonSchema,
 } from '@ehicks05/tmdb-api';
 import { z } from 'zod';
 import { MIN_VOTES } from '../constants.js';
 import { MovieResponseSchema, ShowResponseSchema } from '../types.js';
 
-const TrimmedCastCreditSchema = CastCreditSchema.pick({
-	id: true,
-	credit_id: true,
-	name: true,
-	character: true,
-	order: true,
-});
-
-const TrimmedCrewCreditSchema = CrewCreditSchema.pick({
-	id: true,
-	credit_id: true,
-	name: true,
-	job: true,
-	department: true,
-});
-
 export const TrimmedCreditsSchema = z.object({
-	cast: z.array(TrimmedCastCreditSchema).nonempty({ message: 'cast is empty' }),
-	crew: z.array(TrimmedCrewCreditSchema),
+	cast: z
+		.array(
+			CastCreditSchema.pick({
+				id: true,
+				credit_id: true,
+				name: true,
+				character: true,
+				order: true,
+			}).extend({
+				known_for_department: z.string({ message: 'missing known_for_department' }),
+			}),
+		)
+		.nonempty({ message: 'cast is empty' }),
+	crew: z.array(
+		CrewCreditSchema.pick({
+			id: true,
+			credit_id: true,
+			name: true,
+			job: true,
+			department: true,
+		}).extend({
+			known_for_department: z.string({ message: 'missing known_for_department' }),
+		}),
+	),
 });
 
 const ValidMediaSchema = z.object({
@@ -84,3 +91,7 @@ export const ValidTrimmedMovieSchema = ValidMovieSchema.extend(
 export const ValidTrimmedShowSchema = ValidShowSchema.extend(
 	TrimmedWatchProvidersSchema,
 );
+
+export const ValidPersonSchema = PersonSchema.extend({
+	known_for_department: z.string({ message: 'missing known_for_department' }),
+});
