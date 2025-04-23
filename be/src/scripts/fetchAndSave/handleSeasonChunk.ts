@@ -37,8 +37,8 @@ const trim = (season: SeasonResponse) => ({
 
 type ModdedSeason = SeasonResponse & { showId: number };
 
-export const handleSeasonChunk = async (ids: number[], type: 'season') => {
-	const showIdSeasonNumberPairs = await collectShowIdSeasonNumberPairs(ids);
+export const handleSeasonChunk = async (showIds: number[]) => {
+	const showIdSeasonNumberPairs = await collectShowIdSeasonNumberPairs(showIds);
 
 	const _seasons = await pMap(
 		showIdSeasonNumberPairs,

@@ -4,6 +4,7 @@ const argv = yargs(process.argv.slice(2))
 	.options({
 		full: { type: 'string', default: 'auto', choices: ['auto', 'off', 'on'] },
 		syncOnStart: { type: 'boolean', default: false, alias: 's' },
+		runFor: { type: 'string', default: '' },
 	})
 	.parseSync();
 

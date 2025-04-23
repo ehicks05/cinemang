@@ -1,6 +1,7 @@
 import { appendFile, rename } from 'node:fs/promises';
 import { chunk } from 'lodash-es';
 import pMap from 'p-map';
+import { argv } from '~/services/args.js';
 import logger from '~/services/logger.js';
 import type { FileType } from '../types.js';
 import { consoleLogInPlace } from '../utils.js';
@@ -12,23 +13,42 @@ import { handlePersonChunk } from './handlePersonChunk.js';
 import { handleSeasonChunk } from './handleSeasonChunk.js';
 import { prepFiles } from './prepFiles.js';
 
-export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
-	const { path, tempPath, isFresh } = await prepFiles(type);
-	if (isFresh) {
-		return;
+const getIds = async (type: FileType, isFullMode: boolean) => {
+	// hacky: override to sync one specific movie/show
+	if ((argv.runFor && type === 'movie') || type === 'tv') {
+		const [runForType, id] = argv.runFor.split(':');
+		if (runForType === type) {
+			return [Number(id)];
+		}
+		if (
+			(runForType === 'movie' && type === 'tv') ||
+			(runForType === 'tv' && type === 'movie')
+		) {
+			return [];
+		}
 	}
 
-	logger.info(`gathering ${type} ids`);
+	let ids: number[] = [];
 
-	const ids =
-		type === 'person'
-			? await collectPersonIds()
-			: type === 'season'
-				? await collectShowIds()
-				: await discoverMediaIds(type, isFullMode);
-	const chunks = chunk(ids, 500);
+	if (type === 'movie' || type === 'tv') {
+		ids = await discoverMediaIds(type, isFullMode);
+	}
+	if (type === 'season') {
+		ids = await collectShowIds();
+	}
+	if (type === 'person') {
+		ids = await collectPersonIds();
+	}
 
-	logger.info(`gathered ${ids.length} ids. fetching and saving`);
+	return ids;
+};
+
+const handleChunks = async (
+	chunks: number[][],
+	type: FileType,
+	tempPath: string,
+) => {
+	await appendFile(tempPath, ''); // make sure it exists
 
 	await pMap(
 		chunks,
@@ -39,7 +59,7 @@ export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
 				type === 'person'
 					? await handlePersonChunk(chunk, type)
 					: type === 'season'
-						? await handleSeasonChunk(chunk, type)
+						? await handleSeasonChunk(chunk)
 						: await handleMediaChunk(chunk, type);
 
 			if (media.length > 0) {
@@ -51,8 +71,22 @@ export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
 		},
 		{ concurrency: 1 },
 	);
+};
 
-	rename(tempPath, path);
+export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
+	const { path, tempPath, isFresh } = await prepFiles(type);
+	if (isFresh) {
+		return;
+	}
+
+	logger.info(`gathering ${type} ids`);
+	const ids = await getIds(type, isFullMode);
+	const chunks = chunk(ids, 500);
+	logger.info(`gathered ${ids.length} ids. fetching and saving`);
+
+	await handleChunks(chunks, type, tempPath);
+
+	await rename(tempPath, path);
 
 	logger.info(`done fetching ${type}s`);
 	process.stdout.write('\n'); // end the line
