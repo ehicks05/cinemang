@@ -28,7 +28,7 @@ export const fetchAndSave = async (isFullMode: boolean, type: FileType) => {
 				: await discoverMediaIds(type, isFullMode);
 	const chunks = chunk(ids, 500);
 
-	logger.info(`gathered ${ids.length} ids. fetching and saving objects`);
+	logger.info(`gathered ${ids.length} ids. fetching and saving`);
 
 	await pMap(
 		chunks,

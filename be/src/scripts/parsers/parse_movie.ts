@@ -1,4 +1,5 @@
 import type { Prisma } from '@prisma/client';
+import z from 'zod';
 import type { MovieResponse } from '../types.js';
 import { ValidTrimmedMovieSchema } from './validation.js';
 
@@ -8,7 +9,7 @@ export const parseMovie = (
 	const { data, error } = ValidTrimmedMovieSchema.safeParse(_data);
 
 	if (error) {
-		console.log(error);
+		console.log(z.prettifyError(error));
 		return undefined;
 	}
 

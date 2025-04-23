@@ -4,7 +4,6 @@ import { tmdb } from '~/services/tmdb.js';
 
 export const updateGenres = async () => {
 	const genres = await tmdb.genres();
-
 	if (!genres) {
 		logger.error('unable to fetch genres');
 		return;

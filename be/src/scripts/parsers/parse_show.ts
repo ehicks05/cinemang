@@ -1,4 +1,5 @@
 import type { Prisma } from '@prisma/client';
+import z from 'zod';
 import type { ShowResponse } from '../types.js';
 import { ValidTrimmedShowSchema } from './validation.js';
 
@@ -8,7 +9,7 @@ export const parseShow = (
 	const { data, error } = ValidTrimmedShowSchema.safeParse(_data);
 
 	if (error) {
-		console.log(error);
+		console.log(z.prettifyError(error));
 		return undefined;
 	}
 
