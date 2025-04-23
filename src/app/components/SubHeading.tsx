@@ -22,7 +22,8 @@ export const SubHeading = ({ media }: Props) => {
 					className="font-semibold"
 					title={media.releasedAt.toLocaleDateString()}
 				>
-					{year} {genres.find((genre) => genre.id === media.genreId)?.name}
+					{year} {' • '}
+					{genres.find((genre) => genre.id === media.genreId)?.name}
 				</span>
 				{' • '}
 				<span className="whitespace-nowrap">{`${runtime.hours || 0}h ${runtime.minutes}m`}</span>
@@ -45,7 +46,8 @@ export const SubHeading = ({ media }: Props) => {
 		return (
 			<>
 				<span className="font-semibold">
-					{years} {genres.find((genre) => genre.id === media.genreId)?.name} {' • '}
+					{years} {' • '}
+					{genres.find((genre) => genre.id === media.genreId)?.name} {' • '}
 				</span>
 				<span>{media.status.replace(' Series', '')}</span>
 
