@@ -18,8 +18,6 @@ export const TrimmedCreditsSchema = z.object({
 				name: true,
 				character: true,
 				order: true,
-			}).extend({
-				known_for_department: z.string({ message: 'missing known_for_department' }),
 			}),
 		)
 		.nonempty({ message: 'cast is empty' }),
@@ -30,8 +28,6 @@ export const TrimmedCreditsSchema = z.object({
 			name: true,
 			job: true,
 			department: true,
-		}).extend({
-			known_for_department: z.string({ message: 'missing known_for_department' }),
 		}),
 	),
 });
