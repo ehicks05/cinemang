@@ -14,29 +14,29 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@ehicks05/tmdb-api": "^0.1.4",
-		"@prisma/client": "^6.5.0",
+		"@ehicks05/tmdb-api": "^0.1.8",
+		"@prisma/client": "^6.7.0",
 		"cloudflare": "^4.2.0",
 		"date-fns": "^4.1.0",
-		"dotenv": "^16.4.7",
+		"dotenv": "^16.5.0",
 		"lodash-es": "^4.17.21",
 		"log4js": "^6.9.1",
 		"node-schedule": "^2.1.1",
 		"p-map": "^7.0.3",
 		"p-throttle": "^7.0.0",
 		"yargs": "^17.7.2",
-		"zod": "^4.0.0-beta.20250417T043022"
+		"zod": "^4.0.0-beta.20250505T195954"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-		"@tsconfig/node22": "^22.0.0",
+		"@tsconfig/node22": "^22.0.1",
 		"@types/lodash-es": "^4.17.12",
-		"@types/node": "^22.13.11",
+		"@types/node": "^22.15.17",
 		"@types/node-schedule": "^2.1.7",
 		"@types/yargs": "^17.0.33",
-		"prisma": "^6.5.0",
-		"tsc-alias": "^1.8.11",
-		"tsx": "^4.19.3",
-		"typescript": "^5.8.2"
+		"prisma": "^6.7.0",
+		"tsc-alias": "^1.8.16",
+		"tsx": "^4.19.4",
+		"typescript": "^5.8.3"
 	}
 }
