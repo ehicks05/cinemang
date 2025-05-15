@@ -11,7 +11,7 @@ import {
 	type ShowAppends,
 	ShowSchema,
 } from '@ehicks05/tmdb-api';
-import type z from 'zod';
+import type { z } from 'zod/v4';
 
 export const movieAppends: MovieAppends = {
 	credits: true,
