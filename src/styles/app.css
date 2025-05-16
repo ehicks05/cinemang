@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import url('./LiteYouTubeEmbed.css');
 
 @plugin '@tailwindcss/forms';
 

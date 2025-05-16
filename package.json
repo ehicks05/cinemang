@@ -29,7 +29,7 @@
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",
 		"react-icons": "^5.5.0",
-		"react-lite-youtube-embed": "^2.4.0",
+		"react-youtube": "^10.1.0",
 		"redaxios": "^0.5.1",
 		"tailwind-merge": "^3.2.0",
 		"unstorage": "^1.15.0",

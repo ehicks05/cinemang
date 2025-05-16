@@ -1,5 +1,5 @@
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
-import LiteYouTubeEmbed from 'react-lite-youtube-embed';
+import YouTube from 'react-youtube';
 import type { Video } from '~/types/types';
 
 interface Props {
@@ -10,10 +10,10 @@ export const Trailer = ({ trailer }: Props) => {
 	if (!trailer) return null;
 
 	return (
-		<LiteYouTubeEmbed
-			id={trailer.key}
-			title={trailer.name}
-			wrapperClass="yt-lite rounded-lg"
+		<YouTube
+			videoId={trailer.key}
+			className="h-full w-full"
+			iframeClassName="rounded-lg w-full h-full"
 		/>
 	);
 };
