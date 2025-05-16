@@ -13,19 +13,21 @@ import { handlePersonChunk } from './handlePersonChunk.js';
 import { handleSeasonChunk } from './handleSeasonChunk.js';
 import { prepFiles } from './prepFiles.js';
 
+const getRunForIds = (type: FileType) => {
+	const [runForType, idsRaw] = argv.runFor.split(':');
+	if (runForType === type) {
+		return idsRaw.split(',').map(Number);
+	}
+
+	// if running for one type, skip the other type
+	return [];
+};
+
 const getIds = async (type: FileType, isFullMode: boolean) => {
-	// hacky: override to sync one specific movie/show
-	if ((argv.runFor && type === 'movie') || type === 'tv') {
-		const [runForType, id] = argv.runFor.split(':');
-		if (runForType === type) {
-			return [Number(id)];
-		}
-		if (
-			(runForType === 'movie' && type === 'tv') ||
-			(runForType === 'tv' && type === 'movie')
-		) {
-			return [];
-		}
+	// hacky: override to sync specific movies/shows
+	if (argv.runFor && ['movie', 'tv'].includes(type)) {
+		const runForIds = getRunForIds(type);
+		return runForIds;
 	}
 
 	let ids: number[] = [];
