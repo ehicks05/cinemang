@@ -1,3 +1,4 @@
+import type { DiscoverQuery } from '@ehicks05/tmdb-api';
 import { subMonths } from 'date-fns';
 import logger from '~/services/logger.js';
 import { tmdb } from '~/services/tmdb.js';
@@ -12,10 +13,10 @@ export const discoverMediaIds = async (media: Media, isFullMode: boolean) => {
 		? undefined
 		: subMonths(new Date(), 3).toISOString().split('T')[0];
 
-	const query = {
+	const query: DiscoverQuery = {
 		'vote_count.gte': MIN_VOTES,
 		...(media === 'movie' ? { 'release_date.gte': start } : undefined),
-		...(media === 'tv' ? { 'first_air_date.gte': start } : undefined),
+		...(media === 'tv' ? { 'air_date.gte': start } : undefined),
 	};
 
 	const results = (await tmdb.discover({ media, query })) || [];

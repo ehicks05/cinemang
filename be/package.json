@@ -14,7 +14,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@ehicks05/tmdb-api": "^0.1.9",
+		"@ehicks05/tmdb-api": "^0.1.10",
 		"@prisma/client": "^6.7.0",
 		"cloudflare": "^4.2.0",
 		"date-fns": "^4.1.0",
