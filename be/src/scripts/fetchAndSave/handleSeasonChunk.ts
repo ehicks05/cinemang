@@ -1,32 +1,14 @@
 import type { SeasonResponse } from '@ehicks05/tmdb-api';
 import pMap from 'p-map';
 import { tmdb } from '~/services/tmdb.js';
-import { processLineByLine } from '../processLineByLine.js';
-import { type ShowResponse, seasonAppends } from '../types.js';
-import { getPath } from '../utils.js';
+import { seasonAppends } from '../types.js';
+import { collectSeasonIds } from './collectSeasonIds.js';
 import { filterCredits, trimCredits } from './utils.js';
 
 interface ShowIdSeasonNumber {
 	showId: number;
 	seasonNumber: number;
 }
-
-// kinda wasteful
-const collectShowIdSeasonNumberPairs = async (chunkIds: number[]) => {
-	const showIdSeasonNumberPairs: ShowIdSeasonNumber[] = [];
-
-	await processLineByLine(getPath('tv'), (line) => {
-		const media: ShowResponse = JSON.parse(line);
-		const pairs = media.seasons.map((season) => ({
-			showId: media.id,
-			seasonNumber: season.season_number,
-		}));
-
-		showIdSeasonNumberPairs.push(...pairs);
-	});
-
-	return showIdSeasonNumberPairs.filter((ids) => chunkIds.includes(ids.showId));
-};
 
 const trim = (season: SeasonResponse) => ({
 	...season,
@@ -38,7 +20,7 @@ const trim = (season: SeasonResponse) => ({
 type ModdedSeason = SeasonResponse & { showId: number };
 
 export const handleSeasonChunk = async (showIds: number[]) => {
-	const showIdSeasonNumberPairs = await collectShowIdSeasonNumberPairs(showIds);
+	const showIdSeasonNumberPairs = await collectSeasonIds(showIds);
 
 	const _seasons = await pMap(
 		showIdSeasonNumberPairs,
