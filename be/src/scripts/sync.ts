@@ -1,3 +1,4 @@
+import logger from '~/services/logger.js';
 import { checkFullMode } from './checkFullMode.js';
 import { droploadSystemTables } from './droploadSystemTables.js';
 import { dropLoadTable } from './droploadTables.js';
@@ -14,6 +15,8 @@ export const runSync = async () => {
 	await runLatencyReports();
 
 	const isFullMode = checkFullMode();
+	logger.info(`running ${isFullMode ? 'full' : 'partial'} load`);
+
 	await fetchAndSave(isFullMode, 'movie');
 	await fetchAndSave(isFullMode, 'tv');
 	await fetchAndSave(isFullMode, 'season'); // depends on tv

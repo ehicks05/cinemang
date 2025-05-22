@@ -12,7 +12,5 @@ export const checkFullMode = () => {
 	}
 
 	const fullMode = argv.full === 'on' || (isStartOfMonth && argv.full !== 'off');
-	logger.info(`running ${fullMode ? 'full' : 'partial'} load`);
-
 	return fullMode;
 };
