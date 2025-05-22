@@ -39,7 +39,7 @@ const getIds = async (type: FileType, isFullMode: boolean) => {
 		ids = await collectShowIds();
 	}
 	if (type === 'person') {
-		ids = await collectPersonIds();
+		ids = await collectPersonIds(isFullMode);
 	}
 
 	return ids;

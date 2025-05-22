@@ -1,5 +1,6 @@
 import type { Credits } from '@ehicks05/tmdb-api';
 import logger from '~/services/logger.js';
+import prisma from '~/services/prisma.js';
 import { processLineByLine } from '../processLineByLine.js';
 import { getPath } from '../utils.js';
 
@@ -10,7 +11,7 @@ const mediaToPersonIds = (line: string) => {
 	return castPersonIds.concat(crewPersonIds);
 };
 
-export const collectPersonIds = async () => {
+export const collectPersonIds = async (isFullMode: boolean) => {
 	logger.info('mapping medias to personids');
 
 	const _personIds: number[] = [];
@@ -31,9 +32,17 @@ export const collectPersonIds = async () => {
 	});
 
 	const personIds = [...new Set(_personIds)];
-	logger.info(`found ${personIds.length} unique personIds`);
 
-	logger.info('done mapping medias to personids');
+	if (isFullMode) {
+		logger.info(`found ${personIds.length} unique personIds`);
+		return personIds;
+	}
 
-	return personIds;
+	const idsInDb = (await prisma.person.findMany({ select: { id: true } })).map(
+		(person) => person.id,
+	);
+	const newPersonIds = personIds.filter((personId) => !idsInDb.includes(personId));
+
+	logger.info(`found ${newPersonIds.length} new, unique personIds`);
+	return newPersonIds;
 };
