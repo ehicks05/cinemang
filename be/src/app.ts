@@ -13,7 +13,7 @@ export function scheduleUpdateTask() {
 
 const init = async () => {
 	if (argv.syncOnStart) {
-		logger.info('--syncOnStart arg detected.');
+		logger.info('--syncOnStart');
 		runSyncJob();
 	}
 	scheduleUpdateTask();
