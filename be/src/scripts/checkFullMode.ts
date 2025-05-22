@@ -2,7 +2,7 @@ import { argv } from '~/services/args.js';
 import logger from '~/services/logger.js';
 
 export const checkFullMode = () => {
-	if (argv.full !== 'auto') {
+	if (argv.full) {
 		logger.info('--full arg detected.');
 	}
 
@@ -11,6 +11,6 @@ export const checkFullMode = () => {
 		logger.info('start of month detected.');
 	}
 
-	const fullMode = argv.full === 'on' || (isStartOfMonth && argv.full !== 'off');
+	const fullMode = argv.full || isStartOfMonth;
 	return fullMode;
 };
