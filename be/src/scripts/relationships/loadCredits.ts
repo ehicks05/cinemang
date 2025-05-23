@@ -132,7 +132,7 @@ export const loadCredits = async (type: 'movie' | 'tv') => {
 				logger.error(e);
 			}
 		},
-		500,
+		400, // too high can result in errors like: too many bind variables in prepared statement, expected maximum of 32767, received 33472
 	);
 
 	logger.info(`finished droploading ${type} credits`);

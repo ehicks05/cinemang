@@ -14,9 +14,9 @@ const EXPECTED_ISSUES = [
 	'director is missing',
 	'overview is empty',
 	'runtime is 0',
-	'imdb_id is empty',
+	'imdb_id is not string',
 	'genres is empty',
-	'poster_path is empty',
+	'poster_path is not string',
 	'US content rating is missing',
 	'missing known_for_department',
 ];
