@@ -15,3 +15,21 @@ export const getGenreName = (genreName: string) =>
 
 export const findGenre = (genres: Genre[], genreId: number) =>
 	genres.find((genre) => genre.id === genreId);
+
+export const ROUTE_META = {
+	'/': {
+		mode: 'movie',
+		from: '/films/',
+		navigateFrom: '/films',
+	},
+	'/films': {
+		mode: 'movie',
+		from: '/tv/',
+		navigateFrom: '/films',
+	},
+	'/tv': {
+		mode: 'tv',
+		from: '/tv/',
+		navigateFrom: '/tv',
+	},
+} as const;

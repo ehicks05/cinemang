@@ -3,6 +3,7 @@ import { range } from 'lodash-es';
 import { FastForward, Play } from 'lucide-react';
 import { PageLink } from './PageLink';
 import { usePagination } from './usePagination';
+import { ROUTE_META } from '~/constants/constants';
 
 const nf = Intl.NumberFormat('en-US');
 
@@ -16,7 +17,8 @@ export const Paginator = ({ count = 0, isLoading }: Props) => {
 	const { pathname } = useLocation();
 	// todo: investigate why using `strict: false` instead of `from` briefly shows an error
 	// const from = pathname === '/tv' ? '/tv/' : '/films/';
-	const search = useSearch({ strict: false });
+	const { from } = ROUTE_META[pathname as keyof typeof ROUTE_META];
+	const search = useSearch({ from });
 	const { page: currentPage = 0 } = search;
 
 	const {

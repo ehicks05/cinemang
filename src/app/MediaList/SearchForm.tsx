@@ -2,6 +2,7 @@ import { useLocation, useNavigate, useSearch } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import { useDebounceValue } from 'usehooks-ts';
+import { ROUTE_META } from '~/constants/constants';
 import { Button, ComboBox } from '~/core-components';
 import {
 	Accordion,
@@ -38,9 +39,8 @@ export const SearchForm = () => (
 
 const FormFields = () => {
 	const { pathname } = useLocation();
-	const mode = pathname === '/tv' ? 'tv' : 'movie';
-	const from = mode === 'tv' ? '/tv/' : '/films/';
-	const navigateFrom = mode === 'tv' ? '/tv' : '/films';
+	const { mode, from, navigateFrom } =
+		ROUTE_META[pathname as keyof typeof ROUTE_META];
 
 	const { genres, languages, providers } = useSystemData();
 

@@ -6,7 +6,7 @@ export const Header = () => (
 		<Link
 			className="flex items-center gap-1 p-4 text-2xl"
 			style={{ fontFamily: 'Urbanist' }}
-			to="/films"
+			to="/"
 		>
 			Cine
 			<FaCat className="inline text-emerald-500" />

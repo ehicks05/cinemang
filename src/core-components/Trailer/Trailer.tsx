@@ -1,4 +1,3 @@
-import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import YouTube from 'react-youtube';
 import type { Video } from '~/types/types';
 
