@@ -1,6 +1,6 @@
 import logger from '~/services/logger.js';
-import type { FileType } from './types.js';
 import { checkFullMode } from './checkFullMode.js';
+import type { FileType } from './types.js';
 
 const prod = process.env.NODE_ENV === 'production';
 const base = prod ? '/app/storage/' : './script-data/';

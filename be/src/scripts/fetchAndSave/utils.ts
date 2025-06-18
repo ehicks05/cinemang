@@ -7,11 +7,11 @@ export const filterCredits = (credits: Credits) => ({
 
 export const trimCredits = (credits: Credits) => ({
 	cast: credits.cast.map((credit) => {
-		const { id, credit_id, name, character, order, ...rest } = credit;
+		const { id, credit_id, name, character, order, ..._rest } = credit;
 		return { id, character, order, credit_id, name };
 	}),
 	crew: credits.crew.map((credit) => {
-		const { id, credit_id, name, job, department, ...rest } = credit;
+		const { id, credit_id, name, job, department, ..._rest } = credit;
 		return { id, job, department, credit_id, name };
 	}),
 });

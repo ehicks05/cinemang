@@ -59,7 +59,7 @@ const handleChunks = async (
 
 			const media =
 				type === 'person'
-					? await handlePersonChunk(chunk, type)
+					? await handlePersonChunk(chunk)
 					: type === 'season'
 						? await handleSeasonChunk(chunk)
 						: await handleMediaChunk(chunk, type);

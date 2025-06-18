@@ -2,7 +2,7 @@ import pMap from 'p-map';
 import { tmdb } from '~/services/tmdb.js';
 import type { PersonResponse } from '../types.js';
 
-export const handlePersonChunk = async (ids: number[], type: 'person') => {
+export const handlePersonChunk = async (ids: number[]) => {
 	const handleId = async (id: number) => {
 		return tmdb.person({ id });
 	};

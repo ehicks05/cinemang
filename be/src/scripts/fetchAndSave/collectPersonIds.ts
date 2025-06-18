@@ -16,17 +16,17 @@ export const collectPersonIds = async (isFullMode: boolean) => {
 
 	const _personIds: number[] = [];
 
-	await processLineByLine(getPath('movie'), (line, i) => {
+	await processLineByLine(getPath('movie'), (line) => {
 		const mediaPersonIds = mediaToPersonIds(line);
 		_personIds.push(...mediaPersonIds);
 	});
 
-	await processLineByLine(getPath('tv'), (line, i) => {
+	await processLineByLine(getPath('tv'), (line) => {
 		const mediaPersonIds = mediaToPersonIds(line);
 		_personIds.push(...mediaPersonIds);
 	});
 
-	await processLineByLine(getPath('season'), (line, i) => {
+	await processLineByLine(getPath('season'), (line) => {
 		const mediaPersonIds = mediaToPersonIds(line);
 		_personIds.push(...mediaPersonIds);
 	});

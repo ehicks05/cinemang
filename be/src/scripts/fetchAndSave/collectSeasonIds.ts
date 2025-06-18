@@ -13,7 +13,7 @@ export const collectSeasonIds = async (chunkIds: number[]) => {
 
 	const seasonIds: SeasonId[] = [];
 
-	await processLineByLine(getPath('tv'), (line, i) => {
+	await processLineByLine(getPath('tv'), (line) => {
 		const show: ShowResponse = JSON.parse(line);
 		if (chunkIds.includes(show.id)) {
 			const ids = show.seasons.map((season) => ({
