@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const MediaList = ({ media, hasMore }: Props) => {
-	const { palettes } = usePalettes({
+	const { palettes, isLoading } = usePalettes({
 		paths: media.map((film) => film.posterPath),
 	});
 
@@ -21,13 +21,14 @@ export const MediaList = ({ media, hasMore }: Props) => {
 
 			<Paginator count={media.length} hasMore={hasMore} isLoading={false} />
 			<MediaLayout>
-				{media.map((media, i) => (
-					<MediaCard
-						key={media.id}
-						media={media}
-						palette={palettes?.[i] || DEFAULT_PALETTE}
-					/>
-				))}
+				{!isLoading &&
+					media.map((media, i) => (
+						<MediaCard
+							key={media.id}
+							media={media}
+							palette={palettes?.[i] || DEFAULT_PALETTE}
+						/>
+					))}
 			</MediaLayout>
 			<Paginator count={media.length} hasMore={hasMore} isLoading={false} />
 		</div>
