@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useTimeout } from 'usehooks-ts';
 import { MediaCard } from '~/app/components';
-import { useFetchFilm, useFetchShow } from '~/hooks/useFetchMedia';
+import { useFetchMedia } from '~/hooks/useFetchMedia';
 import { usePalette } from '~/utils/palettes/usePalettes';
-import { HoverLoading } from './HoverLoading';
 import { container } from './constants';
+import { HoverLoading } from './HoverLoading';
 
 interface Props {
 	id: number;
@@ -12,11 +12,7 @@ interface Props {
 }
 
 export const HoverMedia = ({ id, mediaType }: Props) => {
-	const {
-		data: media,
-		error,
-		isLoading,
-	} = mediaType === 'film' ? useFetchFilm(id) : useFetchShow(id);
+	const { data: media, error, isLoading } = useFetchMedia({ id, type: mediaType });
 
 	const { palette } = usePalette({ path: media?.posterPath });
 

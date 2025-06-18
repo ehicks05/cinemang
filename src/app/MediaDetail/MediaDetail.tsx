@@ -42,7 +42,10 @@ const Image = ({ media }: { media: Film | Show | Person }) => {
 const TmdbLink = ({
 	media,
 	palette,
-}: { media: Film | Show | Person; palette: PaletteWithGradient }) => (
+}: {
+	media: Film | Show | Person;
+	palette: PaletteWithGradient;
+}) => (
 	<a
 		href={`https://www.themoviedb.org/${'birthday' in media ? 'person' : 'title' in media ? 'movie' : 'tv'}/${media.id}`}
 		className="flex items-center justify-center h-8 w-8 rounded-full"

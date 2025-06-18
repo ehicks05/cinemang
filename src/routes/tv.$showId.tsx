@@ -1,4 +1,4 @@
-import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, ErrorComponent } from '@tanstack/react-router';
 import { MediaDetail } from '~/app/MediaDetail';
 import { fetchTrailer } from '~/core-components/Trailer/useFetchVideos';
 import { fetchShow } from '~/server/fetchShow';

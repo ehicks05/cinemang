@@ -1,4 +1,4 @@
-import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, ErrorComponent } from '@tanstack/react-router';
 import { MediaDetail } from '~/app/MediaDetail';
 import { fetchPerson } from '~/server/fetchPerson';
 import { usePalette } from '~/utils/palettes/usePalettes';

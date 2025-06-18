@@ -65,7 +65,7 @@ export function ComboBox({ options, selectedOptions, handleChange }: Props) {
 								<CommandItem
 									key={option.id}
 									value={option.label}
-									onSelect={(currentValue) => {
+									onSelect={() => {
 										if (selectedOptions.includes(option.id)) {
 											handleChange(selectedOptions.filter((o) => o !== option.id));
 										} else {
