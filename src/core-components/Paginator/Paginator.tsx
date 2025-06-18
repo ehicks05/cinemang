@@ -1,75 +1,53 @@
-import { useLocation, useSearch } from '@tanstack/react-router';
-import { range } from 'lodash-es';
-import { FastForward, Play } from 'lucide-react';
+import { useSearch } from '@tanstack/react-router';
+import { Play } from 'lucide-react';
 import { PageLink } from './PageLink';
 import { usePagination } from './usePagination';
-import { ROUTE_META } from '~/constants/constants';
 
 const nf = Intl.NumberFormat('en-US');
 
 interface Props {
-	count?: number;
+	count: number;
+	hasMore: boolean;
 	isLoading: boolean;
 	pageSize?: number;
 }
 
-export const Paginator = ({ count = 0, isLoading }: Props) => {
-	const { pathname } = useLocation();
-	// todo: investigate why using `strict: false` instead of `from` briefly shows an error
-	// const from = pathname === '/tv' ? '/tv/' : '/films/';
-	const { from } = ROUTE_META[pathname as keyof typeof ROUTE_META];
-	const search = useSearch({ from });
+export const Paginator = ({ count, hasMore, isLoading }: Props) => {
+	const search = useSearch({ strict: false });
 	const { page: currentPage = 0 } = search;
 
 	const {
-		firstPageIndex,
 		firstResultIndex,
 		hasNextPage,
 		hasPreviousPage,
-		lastPageIndex,
 		lastResultIndex,
 		nextPage,
 		previousPage,
-		totalPages,
-	} = usePagination({ currentPage, linkCount: 5, count });
+	} = usePagination({ currentPage, hasMore, count });
 
 	const currentlyShowing = `Showing ${nf.format(firstResultIndex + 1)}-${nf.format(
 		lastResultIndex + 1,
-	)} of ${nf.format(count)}`;
+	)}`;
+
+	const classes = `flex items-center justify-between gap-4 ${
+		isLoading ? 'invisible' : ''
+	}`;
 
 	return (
 		<div className="bg-neutral-800 p-4 sm:rounded-lg">
-			<div
-				className={`flex flex-col items-center justify-between gap-4 sm:flex-row ${
-					isLoading ? 'invisible' : ''
-				}`}
-			>
+			<div className={classes}>
 				<div>{currentlyShowing}</div>
 				<div className="flex -space-x-px">
-					<PageLink isDisabled={!hasPreviousPage} className="rounded-l" page={0}>
-						<FastForward className="my-auto rotate-180" size={16} />
-					</PageLink>
-					<PageLink isDisabled={!hasPreviousPage} page={previousPage}>
+					<PageLink
+						isDisabled={!hasPreviousPage}
+						className="rounded-l"
+						page={previousPage}
+					>
 						<Play className="my-auto rotate-180" size={16} />
 					</PageLink>
-					{range(firstPageIndex, lastPageIndex + 1).map((pageIndex) => (
-						<PageLink
-							isActive={pageIndex === currentPage}
-							key={pageIndex}
-							page={pageIndex}
-						>
-							{pageIndex + 1}
-						</PageLink>
-					))}
-					<PageLink isDisabled={!hasNextPage} page={nextPage}>
+
+					<PageLink isDisabled={!hasNextPage} className="rounded-r" page={nextPage}>
 						<Play className="my-auto" size={16} />
-					</PageLink>
-					<PageLink
-						isDisabled={!hasNextPage}
-						className="rounded-r"
-						page={totalPages - 1}
-					>
-						<FastForward className="my-auto" size={16} />
 					</PageLink>
 				</div>
 			</div>

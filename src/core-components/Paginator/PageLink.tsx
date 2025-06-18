@@ -17,8 +17,7 @@ export const PageLink = ({
 	isDisabled,
 	page,
 }: Props) => {
-	const { pathname } = useLocation();
-	const from = pathname === '/tv' ? '/tv' : '/films';
+	const { pathname: to } = useLocation();
 
 	const defaults =
 		'flex items-center justify-center w-9 h-9 border border-neutral-600';
@@ -26,12 +25,14 @@ export const PageLink = ({
 	const active = isActive ? 'z-10 border-emerald-700 bg-emerald-900' : '';
 	const notSpecial = !isDisabled && !isActive ? 'hover:bg-neutral-700' : '';
 
+	const classes = cn(defaults, disabled, active, notSpecial, className);
+
 	return (
 		<Link
 			disabled={isDisabled}
-			className={cn(defaults, disabled, active, notSpecial, className)}
+			className={classes}
 			search={(prev) => ({ ...prev, page })}
-			to={from}
+			to={to}
 		>
 			{children}
 		</Link>

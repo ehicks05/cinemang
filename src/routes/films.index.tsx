@@ -1,6 +1,6 @@
 import { createFileRoute, stripSearchParams } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
-import { MediaListSimple } from '~/app/MediaList/MediaList';
+import { MediaList } from '~/app/MediaList';
 import { findFilms } from '~/server/findFilms';
 import { DEFAULT_MOVIE_SEARCH_FORM } from '~/utils/searchParams/constants';
 import {
@@ -20,5 +20,5 @@ export const Route = createFileRoute('/films/')({
 function RouteComponent() {
 	const { films, hasMore } = Route.useLoaderData();
 
-	return <MediaListSimple media={films || []} hasMore={hasMore} />;
+	return <MediaList media={films || []} hasMore={hasMore} />;
 }

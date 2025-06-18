@@ -19,12 +19,12 @@ export const findGenre = (genres: Genre[], genreId: number) =>
 export const ROUTE_META = {
 	'/': {
 		mode: 'movie',
-		from: '/films/',
-		navigateFrom: '/films',
+		from: '/',
+		navigateFrom: '/',
 	},
 	'/films': {
 		mode: 'movie',
-		from: '/tv/',
+		from: '/films/',
 		navigateFrom: '/films',
 	},
 	'/tv': {

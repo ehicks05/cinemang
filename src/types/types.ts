@@ -1,9 +1,9 @@
 import type { FilmDetail } from '~/server/fetchFilm';
 import type { Person } from '~/server/fetchPerson';
 import type { ShowDetail } from '~/server/fetchShow';
-import type { Genre, Language, Provider } from '~/server/fetchSystemData';
-import type { Film } from '~/server/findFilms';
-import type { Show } from '~/server/findShows';
+import type { Genre, Language, Provider } from '~/server/fetchSystemDataQuery';
+import type { Film } from '~/server/findFilmsQuery';
+import type { Show } from '~/server/findShowsQuery';
 
 export type PersonCredit = Person['credits'][number];
 export type MediaCredit = FilmDetail['credits'][number];

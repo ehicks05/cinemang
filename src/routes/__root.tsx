@@ -76,7 +76,7 @@ export const Route = createRootRoute({
 	loader: async () => fetchSystemData(),
 	staleTime: 1000 * 60 * 60,
 	headers: ({ loaderData }) => {
-		const syncLog = loaderData.syncLog[0];
+		const syncLog = loaderData?.syncLog[0];
 		const endedAt = syncLog?.endedAt;
 		const lastModified = endedAt ? new Date(endedAt).toUTCString() : '';
 		return {

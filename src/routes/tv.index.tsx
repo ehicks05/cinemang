@@ -1,6 +1,6 @@
 import { createFileRoute, stripSearchParams } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
-import { MediaListSimple } from '~/app/MediaList/MediaList';
+import { MediaList } from '~/app/MediaList';
 import { findShows } from '~/server/findShows';
 import { DEFAULT_TV_SEARCH_FORM } from '~/utils/searchParams/constants';
 import { type TvSearchForm, TvSearchFormSchema } from '~/utils/searchParams/types';
@@ -17,5 +17,5 @@ export const Route = createFileRoute('/tv/')({
 function RouteComponent() {
 	const { shows, hasMore } = Route.useLoaderData();
 
-	return <MediaListSimple media={shows} hasMore={hasMore} />;
+	return <MediaList media={shows} hasMore={hasMore} />;
 }
