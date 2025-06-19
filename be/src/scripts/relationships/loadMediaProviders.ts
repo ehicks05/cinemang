@@ -47,7 +47,7 @@ export const loadMediaProviders = async (type: 'movie' | 'tv') => {
 				const where =
 					type === 'movie' ? { movieId: { in: ids } } : { showId: { in: ids } };
 
-				await prisma.mediaProvider.deleteMany({ where: where });
+				await prisma.mediaProvider.deleteMany({ where });
 				await prisma.mediaProvider.createMany({ data });
 			} catch (e) {
 				logger.error(e);

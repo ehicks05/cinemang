@@ -36,6 +36,6 @@
 		}
 	},
 	"files": {
-		"includes": ["src/**", "!src/generated/**", "!src/routeTree.gen.ts"]
+		"includes": ["src/**", "!src/generated/**", "!src/routeTree.gen.ts", "be/src/**"]
 	}
 }

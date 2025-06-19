@@ -1,5 +1,6 @@
+import pMap from 'p-map';
 import logger from '~/services/logger.js';
-import prisma from '~/services/prisma.js';
+import prisma, { PRISMA_CONCURRENCY } from '~/services/prisma.js';
 import { tmdb } from '~/services/tmdb.js';
 
 export const updateGenres = async () => {
@@ -43,8 +44,27 @@ export const updateProviders = async () => {
 		name: o.provider_name,
 	}));
 
-	await prisma.provider.deleteMany();
-	await prisma.provider.createMany({ data: providers });
+	// upsert instead of dropload to avoid breaking mediaProvider rels
+	await prisma.provider.deleteMany({
+		where: { id: { notIn: providers.map((o) => o.id) } },
+	});
+	await pMap(
+		providers,
+		async (provider) =>
+			await prisma.provider.upsert({
+				where: { id: provider.id },
+				create: provider,
+				update: provider,
+			}),
+		PRISMA_CONCURRENCY,
+	);
+
+	// remove dead providers
+	if (providers.length > 0) {
+		await prisma.provider.deleteMany({
+			where: { id: { notIn: providers.map((o) => o.id) } },
+		});
+	}
 };
 
 export const droploadSystemTables = async () => {
