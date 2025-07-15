@@ -22,12 +22,12 @@ export const ROUTE_META = {
 		from: '/',
 		navigateFrom: '/',
 	},
-	'/films': {
+	'/films/': {
 		mode: 'movie',
 		from: '/films/',
 		navigateFrom: '/films',
 	},
-	'/tv': {
+	'/tv/': {
 		mode: 'tv',
 		from: '/tv/',
 		navigateFrom: '/tv',

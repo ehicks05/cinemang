@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useSearch } from '@tanstack/react-router';
+import { useMatch, useNavigate, useSearch } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import { useDebounceValue } from 'usehooks-ts';
@@ -38,7 +38,7 @@ export const SearchForm = () => (
 );
 
 const FormFields = () => {
-	const { pathname } = useLocation();
+	const { pathname } = useMatch({ strict: false });
 	const { mode, from, navigateFrom } =
 		ROUTE_META[pathname as keyof typeof ROUTE_META];
 
