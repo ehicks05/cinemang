@@ -76,6 +76,8 @@ export const MediaDetail = ({ media, palette, trailer }: Props) => {
 					<div className="flex flex-col grow gap-2">
 						{trailer && <Trailer trailer={trailer} />}
 
+						<GeneralInfo media={media} palette={palette} />
+
 						<div className="flex gap-1 items-center">
 							{'providers' in media && (
 								<>
@@ -85,7 +87,6 @@ export const MediaDetail = ({ media, palette, trailer }: Props) => {
 							)}
 							<TmdbLink media={media} palette={palette} />
 						</div>
-						<GeneralInfo media={media} palette={palette} />
 					</div>
 				</div>
 			</div>
