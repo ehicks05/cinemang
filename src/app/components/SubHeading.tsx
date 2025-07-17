@@ -11,10 +11,13 @@ export const SubHeading = ({ media }: Props) => {
 
 	if ('releasedAt' in media) {
 		const year = format(media.releasedAt, 'yyyy');
-		const runtime = intervalToDuration({
+		const _runtime = intervalToDuration({
 			end: addMinutes(new Date(), Number(media.runtime)),
 			start: new Date(),
 		});
+		const h = _runtime.hours ? `${_runtime.hours}h` : '';
+		const m = _runtime.minutes ? ` ${_runtime.minutes}m` : '';
+		const runtime = `${h}${m}`;
 
 		return (
 			<>
@@ -26,7 +29,7 @@ export const SubHeading = ({ media }: Props) => {
 					{genres.find((genre) => genre.id === media.genreId)?.name}
 				</span>
 				{' • '}
-				<span className="whitespace-nowrap">{`${runtime.hours || 0}h ${runtime.minutes}m`}</span>
+				<span className="whitespace-nowrap">{runtime}</span>
 
 				{media.languageId !== 'en' && (
 					<span>
