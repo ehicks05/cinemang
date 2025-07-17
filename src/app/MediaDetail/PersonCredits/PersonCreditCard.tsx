@@ -45,7 +45,7 @@ export const PersonCreditCard = ({ bgColor, credit }: Props) => {
 						</HoverCard.Trigger>
 						<span className="text-xs">{year}</span>
 					</div>
-					<div>{credit.character || `${credit.department} - ${credit.job}`}</div>
+					<div>{credit.character || credit.job}</div>
 				</div>
 				<div>
 					<MediaStats bgColor={bgColor} object={credit.movie || credit.show} />
