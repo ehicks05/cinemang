@@ -1,4 +1,4 @@
-import { orderBy } from 'lodash-es';
+import { groupBy, orderBy } from 'es-toolkit';
 import type React from 'react';
 import { useState } from 'react';
 import type { IconType } from 'react-icons';
@@ -55,46 +55,54 @@ interface Props {
 
 export const PersonCredits = ({ person, palette }: Props) => {
 	const [sort, setSort] = useState<SortKey>('releasedAt');
-	const sortOptions = (
-		<SortButtons darkVibrant={palette.darkMuted} setSort={setSort} sort={sort} />
-	);
+	const sortFn = (o: Credit) => toSortValue(o, sort);
 
-	const castCredits = orderBy(
-		person.credits.filter((c) => c.character),
-		(o) => toSortValue(o, sort),
-		'desc',
-	);
-	const crewCredits = orderBy(
-		person.credits.filter((c) => c.job),
-		(o) => toSortValue(o, sort),
-		'desc',
-	);
+	const castCredits = person.credits.filter((c) => c.character);
+	const crewCredits = person.credits.filter((c) => c.job);
+
+	const keyedCastCredits = groupBy(castCredits, (o) => o.movieId || o.showId || 0);
+	const mergedCastCredits = Object.entries(keyedCastCredits).map(([, credits]) => {
+		const characters = credits.map((credit) => credit.character);
+		return { ...credits[0], character: characters.join(', ') };
+	});
+
+	const keyedCrewCredits = groupBy(crewCredits, (o) => o.movieId || o.showId || 0);
+	const mergedCrewCredits = Object.entries(keyedCrewCredits).map(([, credits]) => {
+		const jobs = credits.map((credit) => credit.job);
+		return { ...credits[0], job: jobs.join(', ') };
+	});
 
 	const creditSections = [
-		...(castCredits.length > 0 ? [{ label: 'Cast', credits: castCredits }] : []),
-		...(crewCredits.length > 0 ? [{ label: 'Crew', credits: crewCredits }] : []),
+		{ label: 'Cast', credits: orderBy(mergedCastCredits, [sortFn], ['desc']) },
+		{ label: 'Crew', credits: orderBy(mergedCrewCredits, [sortFn], ['desc']) },
 	];
 
 	return (
 		<div className="flex flex-col gap-4">
-			{creditSections.map(({ label, credits }) => (
-				<div key={label}>
-					<h1 className="flex items-end justify-between text-xl font-bold">
-						{label}
-						{sortOptions}
-					</h1>
-
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-						{credits.map((c) => (
-							<PersonCreditCard
-								bgColor={palette.darkMuted}
-								credit={c}
-								key={c.creditId}
+			{creditSections
+				.filter((section) => section.credits.length)
+				.map(({ label, credits }) => (
+					<div key={label}>
+						<h1 className="flex items-end justify-between text-xl font-bold">
+							{label}
+							<SortButtons
+								darkVibrant={palette.darkMuted}
+								setSort={setSort}
+								sort={sort}
 							/>
-						))}
+						</h1>
+
+						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+							{credits.map((c) => (
+								<PersonCreditCard
+									bgColor={palette.darkMuted}
+									credit={c}
+									key={c.creditId}
+								/>
+							))}
+						</div>
 					</div>
-				</div>
-			))}
+				))}
 		</div>
 	);
 };
