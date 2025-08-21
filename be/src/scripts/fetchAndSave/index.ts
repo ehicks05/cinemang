@@ -1,5 +1,5 @@
 import { appendFile, rename } from 'node:fs/promises';
-import { chunk } from 'lodash-es';
+import { chunk } from 'es-toolkit';
 import pMap from 'p-map';
 import { argv } from '~/services/args.js';
 import logger from '~/services/logger.js';

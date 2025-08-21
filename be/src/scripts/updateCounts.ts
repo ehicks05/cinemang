@@ -1,4 +1,4 @@
-import { omit } from 'lodash-es';
+import { omit } from 'es-toolkit';
 import pMap from 'p-map';
 import logger from '~/services/logger.js';
 import prisma, { PRISMA_CONCURRENCY } from '~/services/prisma.js';

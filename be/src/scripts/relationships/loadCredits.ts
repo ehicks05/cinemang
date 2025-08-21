@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client';
-import { uniqBy } from 'lodash-es';
+import { uniqBy } from 'es-toolkit';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
 import { processLines } from '../processLineByLine.js';
