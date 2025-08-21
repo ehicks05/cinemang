@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client';
 import { z } from 'zod/v4';
+import type { Prisma } from '~/generated/prisma/client.js';
 import type { MovieResponse } from '../types.js';
 import { ValidTrimmedMovieSchema } from './validation.js';
 

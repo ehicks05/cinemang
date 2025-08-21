@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client';
 import { z } from 'zod/v4';
+import type { Prisma } from '~/generated/prisma/client.js';
 import type { ShowResponse } from '../types.js';
 import { ValidTrimmedShowSchema } from './validation.js';
 

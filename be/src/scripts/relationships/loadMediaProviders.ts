@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client';
 import { keyBy } from 'es-toolkit';
+import type { Prisma } from '~/generated/prisma/client.js';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
 import { processLines } from '../processLineByLine.js';

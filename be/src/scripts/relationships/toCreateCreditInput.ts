@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '~/generated/prisma/client.js';
 import type { MediaResponse } from '../types.js';
 
 const toMediaKey = (media: MediaResponse) => {

@@ -1,5 +1,5 @@
 import type { SeasonSummary } from '@ehicks05/tmdb-api';
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '~/generated/prisma/client.js';
 import logger from '~/services/logger.js';
 import prisma from '~/services/prisma.js';
 import { processLines } from '../processLineByLine.js';

@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '~/generated/prisma/client.js';
 import type { PersonResponse } from '../types.js';
 
 const isValidPerson = (person: PersonResponse) => person.profile_path;
