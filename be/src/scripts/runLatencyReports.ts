@@ -14,7 +14,7 @@ const reportDbLatency = async () => {
 	await prisma.$executeRaw`select 1`;
 	const end = Date.now();
 	const dur = Math.round((end - start) / 3);
-	logger.info(`db latency: ${dur} ms`);
+	return dur;
 };
 
 const reportTmdbLatency = async () => {
@@ -30,10 +30,12 @@ const reportTmdbLatency = async () => {
 	await tmdb.movie({ id });
 	const end = Date.now();
 	const dur = Math.round((end - start) / 3);
-	logger.info(`tmdb latency: ${dur} ms`);
+	return dur;
 };
 
 export const runLatencyReports = async () => {
-	await reportDbLatency();
-	await reportTmdbLatency();
+	const db = await reportDbLatency();
+	const tmdb = await reportTmdbLatency();
+
+	logger.info(`latencies...db: ${db} ms, tmdb: ${tmdb} ms`)
 };
