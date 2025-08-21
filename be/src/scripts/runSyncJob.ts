@@ -20,5 +20,5 @@ export const runSyncJob = async () => {
 	const log = await prisma.syncRunLog.update({ data: { endedAt }, where: { id } });
 	const duration = intervalToDuration({ start: log.createdAt, end: endedAt });
 
-	logger.info(`finished ${taskName} in ${formatDuration(duration)}`);
+	logger.info(`finished ${taskName} in ${formatDuration(duration) || 'less than 1 second'}`);
 };
