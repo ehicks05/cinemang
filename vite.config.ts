@@ -10,6 +10,6 @@ export default defineConfig({
       projects: ['./tsconfig.json'],
     }),
     // tailwindcss(), sentry(), ...
-    tanstackStart({ target: 'vercel' })
+    tanstackStart({ customViteReactPlugin: true, target: 'node-server' })
   ]
 })
