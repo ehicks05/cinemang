@@ -1,3 +1,4 @@
+import { existsSync, mkdirSync } from 'node:fs';
 import logger from '~/services/logger.js';
 import { checkFullMode } from './checkFullMode.js';
 import type { FileType } from './types.js';
@@ -7,6 +8,10 @@ const base = prod ? '/app/storage/' : './script-data/';
 logger.info(`writing data files to ${base}`);
 const isFullMode = checkFullMode();
 const mode = isFullMode ? '.full' : '.incremental';
+
+if (!existsSync(base)) {
+	mkdirSync(base, { recursive: true })
+}
 
 export const getPath = (type: FileType) => `${base}${type}${mode}.txt`;
 
